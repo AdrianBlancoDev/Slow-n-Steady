@@ -1,20 +1,21 @@
-<%-- 
-    Document   : project
-    Created on : 16 abr 2024, 11:04:13
-    Author     : Mati
---%>
-
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
     <head>
         <meta name="viewport" http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>List project</title>
-        <link rel="stylesheet" href="./css/project.css"/>
+        <link rel="stylesheet" href="./styles/project/project.css"/>
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
+        <script>
+      $(function() {
+         $("#includeHtml").load("views/components/Navbar_View.jsp");
+      });
+   </script>
     </head>
     <body class="body">
+        <div id="includeHtml"></div>
         <section>
             <article>
                 <h1 class="tittle">Project</h1>
