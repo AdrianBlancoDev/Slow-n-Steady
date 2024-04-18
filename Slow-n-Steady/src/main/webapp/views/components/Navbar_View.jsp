@@ -11,16 +11,16 @@
         <title>NavBar</title>
     </head>
     <body>
-        <nav id="nav" class="navbar navbar-expand-lg bg-body-tertiary">
+        <nav id="nav" class="navbar navbar-expand-lg">
             <div class="container-fluid">
                 <img src="views/img/Logo4.jpg" class="imgCircle" alt=""/>
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                       <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="./Tasks_Controller">Projects</a>
+                        <a class="nav-link active" aria-current="page" href="_target">Projects</a>
                       </li>
                       <li class="nav-item">
-                        <a class="nav-link active" aria-current="page"  href="#">User Stories</a>
+                        <a class="nav-link active" aria-current="page"  href="./Tasks_Controller">User Stories</a>
                       </li>        
                       <li class="nav-item">
                         <a class="nav-link active" aria-current="page" href="#">Agile Board</a>
