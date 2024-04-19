@@ -8,6 +8,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.HashMap;
 import java.util.Map;
 import model.DbConnect;
 import model.User;
@@ -27,6 +28,7 @@ public class UserDao {
      */
     public UserDao() {
         dbConnect = new DbConnect();
+        queries = new HashMap<>();
         initQueries();
     }
 
