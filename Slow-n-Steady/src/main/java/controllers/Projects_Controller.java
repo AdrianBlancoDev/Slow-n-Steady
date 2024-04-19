@@ -41,7 +41,7 @@ public class Projects_Controller extends HttpServlet {
         projectList.add(new Projects("Final"));
 
         request.setAttribute("project", projectList);
-        request.setAttribute("a", "adm");
+        request.setAttribute("a", "admin");
         rd.forward(request, response);
     }
 
