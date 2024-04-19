@@ -12,6 +12,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import java.util.ArrayList;
 
 /**
  *
@@ -32,8 +33,15 @@ public class Projects_Controller extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        
-       RequestDispatcher rd = request.getRequestDispatcher("/views/Projects_View.jsp");
+        RequestDispatcher rd = request.getRequestDispatcher("/views/Projects_View.jsp");
+
+        ArrayList<Projects> projectList = new ArrayList<Projects>();
+        projectList.add(new Projects("Primero"));
+        projectList.add(new Projects("Segundo"));
+        projectList.add(new Projects("Final"));
+
+        request.setAttribute("project", projectList);
+        request.setAttribute("a", "adm");
         rd.forward(request, response);
     }
 

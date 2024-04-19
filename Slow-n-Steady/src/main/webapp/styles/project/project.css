@@ -10,7 +10,6 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/CascadeStyleSheet.css
 .body {
   font: 1rem/1.5 var(--bs-font-sans-serif);
   background: linear-gradient(180deg, var(--bs-blue) 40%, var(--bs-green) 60%);
-  height:1200px;
 }
 
 .tittle {
