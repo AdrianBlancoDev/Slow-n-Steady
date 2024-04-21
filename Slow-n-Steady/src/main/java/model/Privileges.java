@@ -11,12 +11,22 @@ package model;
 public class Privileges {
 
     private long id;
+    private String role;
     private boolean create;
     private boolean read;
     private boolean update;
     private boolean delete;
 
     //Constructors
+    public Privileges(long id, String role, boolean create, boolean read, boolean update, boolean delete) {
+        this.id = id;
+        this.role = role;
+        this.create = create;
+        this.read = read;
+        this.update = update;
+        this.delete = delete;
+    }
+
     public Privileges(long id, boolean create, boolean read, boolean update, boolean delete) {
         this.id = id;
         this.create = create;
@@ -43,6 +53,14 @@ public class Privileges {
 
     public void setId(long id) {
         this.id = id;
+    }
+
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
     }
 
     public boolean isCreate() {
@@ -76,14 +94,13 @@ public class Privileges {
     public void setDelete(boolean delete) {
         this.delete = delete;
     }
-    
-    //toString
 
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
         sb.append("Privileges{");
         sb.append("id=").append(id);
+        sb.append(", role=").append(role);
         sb.append(", create=").append(create);
         sb.append(", read=").append(read);
         sb.append(", update=").append(update);
@@ -91,5 +108,6 @@ public class Privileges {
         sb.append('}');
         return sb.toString();
     }
-    
+
+
 }
