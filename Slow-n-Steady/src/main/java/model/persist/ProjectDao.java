@@ -40,7 +40,7 @@ public class ProjectDao {
         //Deletes a Project by Id
         queries.put("deleteProject", "DELETE FROM project WHERE id = ?;");
         //Updates existing Project by ID, given a new Project Object
-        queries.put("updateProject", "UPDATE project SET name = ? description = ? start_date = ? WHERE id = ?");
+        queries.put("updateProject", "UPDATE project SET name = ?, description = ?, start_date = ? WHERE id = ?");
     }
 
     /**
@@ -70,7 +70,7 @@ public class ProjectDao {
      * @return a list with all the projects or null in case any error takes
      * place.
      */
-    public List<Project> searchAllProjects() {
+    public List<Project> selectAllProjects() {
         List<Project> result = new ArrayList<>();
         try (Connection conn = dbConnect.getConnection()) {
             String query = queries.get("selectProjects");
