@@ -1,0 +1,34 @@
+/*
+Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/CascadeStyleSheet.css to edit this template
+*/
+/* 
+    Created on : 16 abr 2024, 11:33:10
+    Author     : Mati
+*/
+
+.body {
+  font: 1rem/1.5 var(--bs-font-sans-serif);
+  background: linear-gradient(180deg, var(--bs-blue) 40%, var(--bs-green) 60%);
+}
+
+.tittle {
+    color: white;
+    border: black solid;
+    border-radius:  5px 5px 0px 0px;
+    background-color: #48FF9C;
+    width: fit-content;
+    padding: 5px;
+    margin-top: 20px;
+    margin-left: 10px;
+    margin-bottom: 0px;
+}
+
+.container-project{
+    border: solid;
+    border-radius:  0px 5px 5px 5px;
+    background-color: #BDEFFF;
+    width: fit-content;
+    padding: 5px;
+    margin-left: 10px;
+}

@@ -94,7 +94,7 @@ public class UserProjectDao {
      */
     public List<UserProject> selectProjectsWhereUserAdmin(long userId) {
         List<UserProject> result = null;
-        try (Connection conn = dbConnect.getConnection()) {
+        try (Connection conn = dbConnect.getConnectionArnau()) {
             if (conn != null) {
                 String query = queries.get("selectProjectsWhereUserAdmin");
                 PreparedStatement st = conn.prepareStatement(query);
