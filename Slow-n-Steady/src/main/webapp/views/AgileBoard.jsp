@@ -17,10 +17,13 @@
     <body>
         <aside class="projectMenu">
             <h1>Projects</h1>
-            <div class="d-grid gap-2">
+            <div class="d-grid gap-2" style="min-width: 200px; width: 200px;">
                 <button class="btn btn-primary" type="button">Project 1</button>
                 <button class="btn btn-primary" type="button">Project 2</button>
             </div>
         </aside>
+        <div class="agileBoard">
+
+        </div>
     </body>
 </html>
