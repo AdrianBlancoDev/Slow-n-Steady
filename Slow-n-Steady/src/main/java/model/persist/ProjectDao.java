@@ -58,7 +58,7 @@ public class ProjectDao {
         String name = rs.getString("name");
         String description = rs.getString("description");
         Date creationDate = rs.getDate("creation_date");
-        Date startDate = rs.getDate("start_date");
+        Date startDate = rs.getDate("starting_date");
         //We instantiate a new User object usign the previous attributes
         project = new Project(id, name, description, creationDate, startDate);
         return project;

@@ -11,7 +11,12 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import model.Project;
 import model.persist.ProjectDao;
 
@@ -35,7 +40,6 @@ public class Projects_Controller extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         RequestDispatcher rd = request.getRequestDispatcher("/views/Projects_View.jsp");
-
         ProjectDao projectDao = new ProjectDao();
         List<Project> projectList = projectDao.selectAllProjects();
         request.setAttribute("project", projectList);
