@@ -4,8 +4,12 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import model.DbConnect;
 import model.UserProject;
 
@@ -25,6 +29,12 @@ public class UserProjectDao {
      * operations we want to do with UserProject table from database.
      */
     private void initQueries() {
+        //Show Role of the User to a Project
+        queries.put("selectUserRoleInProjects", "SELECT * FROM user_project WHERE user_id = ? AND project_id = ?;");
+        //Select Projects Where User Admin
+        queries.put("selectProjectsWhereUserAdmin", "SELECT * FROM user_project WHERE user_id = ? AND privileges_id = 1;");
+        //Select Projects Where UserCollaborator
+        queries.put("selectProjectsWhereUserCollab", "SELECT * FROM user_project WHERE user_id = ? AND privileges_id = 2;");
         //Set User as admin of a project (ID 1 stands for ADMIN role)
         queries.put("setProjectAdmin", "INSERT INTO user_project VALUES (?, ?, 1);");
         //Ser User as collaborator of a project (ID 2 stands for COLLAB role)
@@ -51,6 +61,82 @@ public class UserProjectDao {
         long privilegesId = rs.getLong("privilege_id");
         userProject = new UserProject(userId, projectId, privilegesId);
         return userProject;
+    }
+
+    /**
+     * Method that
+     *
+     * @param userId
+     * @param projectId
+     * @return
+     */
+    public UserProject selectUserRoleInProjects(long userId, long projectId) {
+        UserProject result = null;
+        try (Connection conn = dbConnect.getConnection()) {
+            String query = queries.get("selectUserRoleInProjects");
+            PreparedStatement st = conn.prepareStatement(query);
+            st.setLong(1, userId);
+            st.setLong(2, projectId);
+            ResultSet rs = st.executeQuery(query);
+            if (rs.next()) {
+                result = userProjectFromResultSet(rs);
+            }
+        } catch (SQLException ex) {
+            result = null;
+        }
+        return result;
+    }
+    
+    /**
+     * List all the participations in projects where the User is admin.
+     * @param userId id of the user
+     * @return List of participations or null in case any error takes place
+     */
+    public List<UserProject> selectProjectsWhereUserAdmin(long userId) {
+        List<UserProject> result = null;
+        try (Connection conn = dbConnect.getConnection()) {
+            if (conn != null) {
+                String query = queries.get("selectProjectsWhereUserAdmin");
+                PreparedStatement st = conn.prepareStatement(query);
+                st.setLong(1, userId);
+                ResultSet rs = st.executeQuery(query);
+                while (rs.next()) {
+                    UserProject userProj = userProjectFromResultSet(rs);
+                    if (userProj != null) {
+                        result.add(userProj);
+                    }
+                }
+            }
+        } catch (SQLException ex) {
+            
+        }
+        return result;
+    }
+    
+    /**
+     * List all the participations in projects where the User is collaborator.
+     * @param userId id of the user
+     * @return List of participations or null in case any error takes place
+     */
+    public List<UserProject> selectProjectsWhereUserCollaborator(long userId) {
+        List<UserProject> result = null;
+        try (Connection conn = dbConnect.getConnection()) {
+            if (conn != null) {
+                String query = queries.get("selectProjectsWhereUserCollab");
+                PreparedStatement st = conn.prepareStatement(query);
+                st.setLong(1, userId);
+                ResultSet rs = st.executeQuery(query);
+                while (rs.next()) {
+                    UserProject userProj = userProjectFromResultSet(rs);
+                    if (userProj != null) {
+                        result.add(userProj);
+                    }
+                }
+            }
+        } catch (SQLException ex) {
+            result = null;
+        }
+        return result;
     }
 
     /**
