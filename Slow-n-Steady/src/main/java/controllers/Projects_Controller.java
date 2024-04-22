@@ -6,13 +6,14 @@ package controllers;
 
 import jakarta.servlet.RequestDispatcher;
 import java.io.IOException;
-import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import java.util.ArrayList;
+import java.util.List;
+import model.Project;
+import model.persist.ProjectDao;
 
 /**
  *
@@ -35,11 +36,8 @@ public class Projects_Controller extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         RequestDispatcher rd = request.getRequestDispatcher("/views/Projects_View.jsp");
 
-        ArrayList<Projects> projectList = new ArrayList<Projects>();
-        projectList.add(new Projects("Primero"));
-        projectList.add(new Projects("Segundo"));
-        projectList.add(new Projects("Final"));
-
+        ProjectDao projectDao = new ProjectDao();
+        List<Project> projectList = projectDao.selectAllProjects();
         request.setAttribute("project", projectList);
         request.setAttribute("a", "admin");
         rd.forward(request, response);
