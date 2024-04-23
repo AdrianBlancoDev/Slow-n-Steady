@@ -25,26 +25,20 @@
                     <p>
                         asadfghfdsazxcvbngfdsadf dsdfghtrsdf gfdsfg hfdsfgdghfdg dg
                     </p>
-                    <c:choose>
-                        <c:when test="${a=='admin'}">
                             <ul>
-                                <c:forEach items="${project}" var="project">
-                                    <li>${project.getName()} 
+                                <c:forEach items="${projectAdmin}" var="projectAdmin">
+                                    <li>${projectAdmin.getName()} 
                                         <a href="./modificar" target="_blank">Modificar</a>
                                         <a href="./borrar" target="_blank">Eliminar</a>
                                     </li>
                                 </c:forEach>
                             </ul>
-                        </c:when>    
-                        <c:otherwise>
                             <ul>
-                                <c:forEach items="${project}" var="project">
+                                <c:forEach items="${projectCollaborator}" var="project">
                                     <li>${project.getName()} 
                                     </li>
                                 </c:forEach>
                             </ul>
-                        </c:otherwise>
-                    </c:choose>
                     <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
                         Launch demo modal
                     </button>

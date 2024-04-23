@@ -11,6 +11,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -18,7 +19,9 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import model.Project;
+import model.UserProject;
 import model.persist.ProjectDao;
+import model.persist.UserProjectDao;
 
 /**
  *
@@ -43,7 +46,17 @@ public class Projects_Controller extends HttpServlet {
         ProjectDao projectDao = new ProjectDao();
         List<Project> projectList = projectDao.selectAllProjects();
         request.setAttribute("project", projectList);
-        request.setAttribute("a", "admin");
+        
+        HttpSession session=request.getSession(false);  
+        long  id = (long)session.getAttribute("userId");
+        
+        UserProjectDao userProjectDao = new UserProjectDao();
+        List<UserProject> adminProjectList = userProjectDao.selectProjectsWhereUserAdmin(id);
+        request.setAttribute("projectAdmin", adminProjectList);
+       
+        List<UserProject> collaboratorProjectList = userProjectDao.selectProjectsWhereUserCollaborator(id);
+        request.setAttribute("projectCollaborator", collaboratorProjectList);
+        
         rd.forward(request, response);
     }
 
