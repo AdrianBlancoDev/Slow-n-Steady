@@ -6,6 +6,7 @@ package controllers;
 
 import jakarta.servlet.RequestDispatcher;
 import java.io.IOException;
+import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -16,7 +17,7 @@ import jakarta.servlet.http.HttpServletResponse;
  *
  * @author Mati
  */
-@WebServlet(name = "UserStories", urlPatterns = {"/UserStories"})
+@WebServlet(name = "Tasks_Controller", urlPatterns = {"/Tasks_Controller"})
 public class Tasks_Controller extends HttpServlet {
 
     /**
