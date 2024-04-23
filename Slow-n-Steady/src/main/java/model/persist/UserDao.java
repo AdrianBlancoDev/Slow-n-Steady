@@ -86,8 +86,8 @@ public class UserDao {
                 String query = queries.get("insert");
                 PreparedStatement st = conn.prepareStatement(query);
                 st.setString(1, user.getUsername());
-                st.setString(2, user.getPassword());
-                st.setString(3, user.getEmail());
+                st.setString(2, user.getEmail());
+                st.setString(3, user.getPassword());
                 result = st.executeUpdate();
             }
         } catch (SQLException ex) {

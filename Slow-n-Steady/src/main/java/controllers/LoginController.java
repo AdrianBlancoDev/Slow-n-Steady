@@ -41,7 +41,7 @@ public class LoginController extends HttpServlet {
         if (oUser != null) {
             session = request.getSession();
             session.setAttribute("userId", oUser.getId()); //send to project view
-            request.getRequestDispatcher("./views/Projects_View.jsp").forward(request, response);
+            request.getRequestDispatcher("/Projects").forward(request, response);
         }
     }
 
