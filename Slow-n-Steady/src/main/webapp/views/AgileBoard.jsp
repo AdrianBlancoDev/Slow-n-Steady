@@ -27,6 +27,7 @@
         </style>
     </head>
     <body class="body">
+        <!-- ASIDE -->
         <aside class="projectMenu">
             <h1 class="projectsTitle">Projects</h1>
             <div class="d-grid gap-2" style="min-width: 200px; width: 200px;">
@@ -34,18 +35,26 @@
                 <button class="btn btn-primary" type="button">Project 2</button>
             </div>
         </aside>
+        <!-- BOARD -->
         <div class="board">
-            <form id="todo-form">
-                <input type="text" placeholder="New Task..." id="todo-input">
-                <button type="submit"> Add +</button>
-            </form>
+            <!-- SPRINT SELECT -->
+            <div class="sprint-select">
+                <select class="form-select" aria-label="Default select example">
+                    <option selected value="1">Sprint 1</option>
+                    <option value="2">Sprint 2</option>
+                    <option value="3">Sprint 3</option>
+                  </select>
 
+                  <form>
+                    <button type="submit"> Create Sprint +</button>
+                </form>
+            </div>
             <div class="lanes">
                 <div id="sprint-backlog-lane" class="swim-lane">
                     <h3 class="heading">Sprint Backlog</h3>
-                    <p class="task" draggable="true">Develop Login</p>
-                    <p class="task" draggable="true">Design Login View</p>
-                    <p class="task" draggable="true">Implement Login Backend with Login Views</p>
+                    <form id="todo-form">
+                        <button type="submit"> Add +</button>
+                    </form>
                 </div>
 
                 <div id="in-progress-lane" class="swim-lane">
