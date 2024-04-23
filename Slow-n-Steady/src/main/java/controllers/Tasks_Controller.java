@@ -17,7 +17,7 @@ import jakarta.servlet.http.HttpServletResponse;
  *
  * @author Mati
  */
-@WebServlet(name = "Tasks_Controller", urlPatterns = {"/Tasks_Controller"})
+@WebServlet(name = "UserStories", urlPatterns = {"/UserStories"})
 public class Tasks_Controller extends HttpServlet {
 
     /**
