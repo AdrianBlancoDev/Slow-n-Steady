@@ -1,0 +1,26 @@
+.creationTasksDiv{
+    background-color: black; 
+    width: auto;
+    height: 500px; 
+    margin-left: 5%; 
+    margin-right: 5%;
+}
+
+.nameProjectDiv{
+    margin-top: 3%;
+    margin-left: 2%;
+    width: 60%;
+}
+
+.modify{
+    width: 7%;
+    margin-top: 3%;
+}
+
+.delete{
+    margin-top: 3%;
+}
+
+.contentTasks{
+    display: flex;
+}
