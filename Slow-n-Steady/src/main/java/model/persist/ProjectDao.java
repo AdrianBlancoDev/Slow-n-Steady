@@ -70,21 +70,19 @@ public class ProjectDao {
      * @return a list with all the projects or null in case any error takes
      * place.
      */
-    public List<Project> selectAllProjects() {
+    public List<Project> selectAllProjects() throws SQLException {
         List<Project> result = new ArrayList<>();
         try (Connection conn = dbConnect.getConnection()) {
             String query = queries.get("selectProjects");
             Statement st = conn.createStatement();
             ResultSet rs = st.executeQuery(query);
             while (rs.next()) {
-                Project project = projectFromResultSet(rs);
+                var project = projectFromResultSet(rs);
                 if (project != null) {
                     result.add(project);
                 }
             }
-        } catch (SQLException ex) {
-            result = null;
-        }
+        } 
         return result;
     }
 
@@ -94,8 +92,9 @@ public class ProjectDao {
      *
      * @param project with the new project data
      * @return 1 if successfull, 0 in case any error takes place.
+     * @throws java.sql.SQLException
      */
-    public int createProject(Project project) {
+    public int createProject(Project project) throws SQLException {
         int result = 0;
         try (Connection conn = dbConnect.getConnection()) {
             String query = queries.get("addProject");
@@ -105,8 +104,6 @@ public class ProjectDao {
             st.setDate(3, (java.sql.Date) project.getCreationDate());
             st.setDate(4, (java.sql.Date) project.getStartDate());
             result = st.executeUpdate();
-        } catch (SQLException ex) {
-            result = 0;
         }
         return result;
     }
@@ -116,16 +113,15 @@ public class ProjectDao {
      *
      * @param projectId of the project we want to delete
      * @return 1 if successfull, 0 in case of any error takes place.
+     * @throws java.sql.SQLException
      */
-    public int deleteProject(long projectId) {
+    public int deleteProject(long projectId) throws SQLException {
         int result = 0;
         try (Connection conn = dbConnect.getConnection()) {
             String query = queries.get("deleteProject");
             PreparedStatement st = conn.prepareStatement(query);
             st.setLong(1, projectId);
             result = st.executeUpdate();
-        } catch (SQLException ex) {
-            result = 0;
         }
         return result;
     }
@@ -135,8 +131,9 @@ public class ProjectDao {
      * @param projectId
      * @param updatedProject
      * @return 
+     * @throws java.sql.SQLException 
      */
-    public int modifyProject(long projectId, Project updatedProject) {
+    public int modifyProject(long projectId, Project updatedProject) throws SQLException {
         int result = 0;
         try (Connection conn = dbConnect.getConnection()) {
             String query = queries.get("updateProject");
@@ -145,9 +142,6 @@ public class ProjectDao {
             st.setString(2, updatedProject.getDescription());
             st.setDate(3, (java.sql.Date) updatedProject.getStartDate());
             st.setLong(4, projectId);
-            result = st.executeUpdate();
-        } catch (SQLException ex) {
-            result = 0;
         }
         return result;
     }

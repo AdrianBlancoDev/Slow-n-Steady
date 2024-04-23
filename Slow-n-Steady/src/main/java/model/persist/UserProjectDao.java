@@ -69,8 +69,9 @@ public class UserProjectDao {
      * @param userId
      * @param projectId
      * @return
+     * @throws java.sql.SQLException
      */
-    public UserProject selectUserRoleInProjects(long userId, long projectId) {
+    public UserProject selectUserRoleInProjects(long userId, long projectId) throws SQLException {
         UserProject result = null;
         try (Connection conn = dbConnect.getConnection()) {
             String query = queries.get("selectUserRoleInProjects");
@@ -81,8 +82,6 @@ public class UserProjectDao {
             if (rs.next()) {
                 result = userProjectFromResultSet(rs);
             }
-        } catch (SQLException ex) {
-            result = null;
         }
         return result;
     }
