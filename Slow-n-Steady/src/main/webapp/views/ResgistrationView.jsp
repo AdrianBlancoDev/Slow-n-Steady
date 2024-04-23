@@ -70,27 +70,19 @@
                                         <form method="POST" action="./login">
                                             <div data-mdb-input-init class="form-outline mb-4">
                                                 <input id="user" class="form-control"
-                                                       placeholder="User name"/>
+                                                       placeholder="User name" name="user"/>
                                             </div>
                                             
                                             <div data-mdb-input-init class="form-outline mb-4">
                                                 <input type="email" id="email" class="form-control"
-                                                       placeholder="Email"/>
+                                                       placeholder="Email" name="email"/>
                                             </div>
 
                                             <div data-mdb-input-init class="form-outline mb-4">
-                                                <input type="password" id="password" class="form-control" />
+                                                <input type="password" id="password" class="form-control" name="password" />
                                             </div>
-
-                                            <div class="text-center pt-1 mb-5 pb-1 container row">
-                                                <button  class="btn btn-primary btn-block border border-0 gradient-custom-2 col" type="submit">Log
-                                                    in</button>
-                                                <a class="text-muted text-end col" href="#!">Forgot password?</a>
-                                            </div>
-                                                
                                             <div class="d-flex align-items-center justify-content-center pb-4">
-                                                <p class="mb-0 me-2">Don't have an account?</p>
-                                                <button type="submit" formaction="./register" class="btn">Create new</button>
+                                                <button type="submit" formaction="./register" class="btn">Sign in</button>
                                             </div>
 
                                         </form>

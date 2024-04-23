@@ -85,7 +85,7 @@
 
                                             <div class="d-flex align-items-center justify-content-center pb-4">
                                                 <p class="mb-0 me-2">Don't have an account?</p>
-                                                <button type="submit" formaction="./register" class="btn">Create new</button>
+                                                <button type="submit" formaction="./register" formmethod="GET" class="btn">Create new</button>
                                             </div>
 
                                         </form>
