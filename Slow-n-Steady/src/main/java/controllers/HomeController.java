@@ -15,7 +15,7 @@ import jakarta.servlet.http.HttpServletRequest;
  *
  * @author Mati
  */
-@WebServlet(name = "HomeController", urlPatterns = {"/home"})
+@WebServlet("")
     public class HomeController extends HttpServlet {
 
     /**
