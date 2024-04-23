@@ -15,7 +15,7 @@ import jakarta.servlet.http.HttpServletRequest;
  *
  * @author Mati
  */
-@WebServlet(name = "HomeController", urlPatterns = {"/"})
+@WebServlet(name = "HomeController", urlPatterns = {"/home"})
     public class HomeController extends HttpServlet {
 
     /**
@@ -30,7 +30,7 @@ import jakarta.servlet.http.HttpServletRequest;
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         //String urlPath = request.getRequestURL();
-        response.setContentType("text/html;charset=UTF-8");
+            response.setContentType("text/html;charset=UTF-8");
         request.getRequestDispatcher("./views/LoginView.jsp").forward(request, response);
         }
 

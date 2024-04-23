@@ -9,17 +9,14 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
 import java.io.IOException;
-import model.User;
-import model.persist.UserDao;
 
 /**
  *
- * @author Mati
+ * @author ivan-
  */
-@WebServlet(name = "LoginController", urlPatterns = {"/login"})
-public class LoginController extends HttpServlet {
+@WebServlet(name = "RegistrationController", urlPatterns = {"/register"})
+public class RegistrationController extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -32,16 +29,8 @@ public class LoginController extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        HttpSession session;
         response.setContentType("text/html;charset=UTF-8");
-        String sUser = request.getParameter("user");
-        String sPassword = request.getParameter("password");
-        UserDao userDao = new UserDao();
-        User oUser = userDao.searchUserByUsernameAndPassword(sUser, sPassword);
-        if (oUser != null) {
-            session = request.getSession();
-            session.setAttribute("userId", oUser.getId()); //send to project view
-        }
+      request.getRequestDispatcher("./views/ResgistrationView.jsp").forward(request, response);
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
@@ -56,7 +45,9 @@ public class LoginController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        response.setContentType("text/html;charset=UTF-8");
+  
+
     }
 
     /**

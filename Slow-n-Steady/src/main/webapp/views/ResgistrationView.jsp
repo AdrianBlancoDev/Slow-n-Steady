@@ -1,7 +1,7 @@
 <%-- 
-    Document   : Login
-    Created on : 16 abr 2024, 10:34:02
-    Author     : IvyDeb
+    Document   : Resgistration
+    Created on : 21 abr 2024, 19:38:33
+    Author     : ivan-
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
@@ -24,12 +24,12 @@
 
                 /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
                 /*background: linear-gradient(to right, #ee7724, #d8363a, #dd3675, #b44593);*/
-                
+
                 background: rgb(15,15,17);
                 background: linear-gradient(90deg, rgba(15,15,17,1) 0%, rgba(147,49,189,1) 33%, rgba(26,29,189,1) 100%);
             }
-            
-            
+
+
 
 
             @media (min-width: 768px) {
@@ -69,12 +69,17 @@
 
                                         <form method="POST" action="./login">
                                             <div data-mdb-input-init class="form-outline mb-4">
-                                                <input id="user" class="form-control" name="user"
-                                                       placeholder="User name or email address" />
+                                                <input id="user" class="form-control"
+                                                       placeholder="User name"/>
+                                            </div>
+                                            
+                                            <div data-mdb-input-init class="form-outline mb-4">
+                                                <input type="email" id="email" class="form-control"
+                                                       placeholder="Email"/>
                                             </div>
 
                                             <div data-mdb-input-init class="form-outline mb-4">
-                                                <input type="password" id="password" class="form-control" name="password" />
+                                                <input type="password" id="password" class="form-control" />
                                             </div>
 
                                             <div class="text-center pt-1 mb-5 pb-1 container row">
@@ -82,7 +87,7 @@
                                                     in</button>
                                                 <a class="text-muted text-end col" href="#!">Forgot password?</a>
                                             </div>
-
+                                                
                                             <div class="d-flex align-items-center justify-content-center pb-4">
                                                 <p class="mb-0 me-2">Don't have an account?</p>
                                                 <button type="submit" formaction="./register" class="btn">Create new</button>
