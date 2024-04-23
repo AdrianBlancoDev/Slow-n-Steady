@@ -1,0 +1,11 @@
+.projectMenu {
+    display: flex;
+    flex-direction: column;
+    min-width: 200px;
+    width: 200px;
+    height: 100%;
+    min-height: 100%;
+    align-items: flex-start; /* Alinea el contenido al inicio del eje transversal (vertical) */
+    align-content: center;
+    background-color: #87DBFF;
+}
