@@ -10,6 +10,9 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import model.User;
 import model.persist.UserDao;
 
@@ -67,7 +70,12 @@ public class RegistrationController extends HttpServlet {
         String sPassword = request.getParameter("password");
         String sEmail = request.getParameter("email");
         UserDao userDao = new UserDao();
-        int x = userDao.registerUser(new User(sUser, sPassword, sEmail));
+        int x = -1;
+        try {
+            x = userDao.registerUser(new User(sUser, sPassword, sEmail));
+        } catch (SQLException ex) {
+            Logger.getLogger(RegistrationController.class.getName()).log(Level.SEVERE, null, ex);
+        }
         if (x == 1) {
             request.getRequestDispatcher("./views/LoginView.jsp").forward(request, response);
         }

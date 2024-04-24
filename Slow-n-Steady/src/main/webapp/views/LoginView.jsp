@@ -67,7 +67,7 @@
                                             <h4 class="mt-1 mb-5 pb-1">Slow and Steady</h4>
                                         </div>
 
-                                        <form method="POST" action="./login">
+                                        <form method="POST" action="./">
                                             <div data-mdb-input-init class="form-outline mb-4">
                                                 <input id="user" class="form-control" name="user"
                                                        placeholder="User name or email address" />
