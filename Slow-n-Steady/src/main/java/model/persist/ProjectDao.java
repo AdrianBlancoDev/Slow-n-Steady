@@ -51,7 +51,7 @@ public class ProjectDao {
      * @return Project object with that data
      * @throws SQLException in case of error
      */
-    private Project projectFromResultSet(ResultSet rs) throws SQLException {
+    public Project projectFromResultSet(ResultSet rs) throws SQLException {
         Project project;
         //We read the attributes fetched from the queries
         long id = rs.getLong("id");
