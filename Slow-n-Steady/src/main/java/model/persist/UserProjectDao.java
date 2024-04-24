@@ -11,6 +11,7 @@ import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import model.DbConnect;
+import model.Project;
 import model.UserProject;
 
 public class UserProjectDao {
@@ -31,10 +32,14 @@ public class UserProjectDao {
     private void initQueries() {
         //Show Role of the User to a Project
         queries.put("selectUserRoleInProjects", "SELECT * FROM user_project WHERE user_id = ? AND project_id = ?;");
+        //Select UserProjects Where User Admin
+        queries.put("selectUserProjectsWhereUserAdmin", "SELECT * FROM user_project WHERE user_id = ? AND privilege_id = 1;");
         //Select Projects Where User Admin
-        queries.put("selectProjectsWhereUserAdmin", "SELECT * FROM user_project WHERE user_id = ? AND privileges_id = 1;");
-        //Select Projects Where UserCollaborator
-        queries.put("selectProjectsWhereUserCollab", "SELECT * FROM user_project WHERE user_id = ? AND privileges_id = 2;");
+        queries.put("selectProjectsWhereUserAdmin", "SELECT project.* FROM project INNER JOIN user_project ON project.id = user_project.project_id WHERE user_project.user_id = ? AND user_project.privilege_id = 1;");
+        //Select UserProjects Where User Collaborator
+        queries.put("selectUserProjectsWhereUserCollab", "SELECT * FROM user_project WHERE user_id = ? AND privilege_id = 2;");
+        //Select Projects where User Collaborator
+        queries.put("selectProjectsWhereUserCollaborator", "SELECT project.* FROM project INNER JOIN user_project ON project.id = user_project.project_id WHERE user_project.user_id = ? AND user_project.privilege_id = 2");
         //Set User as admin of a project (ID 1 stands for ADMIN role)
         queries.put("setProjectAdmin", "INSERT INTO user_project VALUES (?, ?, 1);");
         //Ser User as collaborator of a project (ID 2 stands for COLLAB role)
@@ -69,8 +74,9 @@ public class UserProjectDao {
      * @param userId
      * @param projectId
      * @return
+     * @throws java.sql.SQLException in case of error
      */
-    public UserProject selectUserRoleInProjects(long userId, long projectId) {
+    public UserProject selectUserRoleInProjects(long userId, long projectId) throws SQLException {
         UserProject result = null;
         try (Connection conn = dbConnect.getConnection()) {
             String query = queries.get("selectUserRoleInProjects");
@@ -81,8 +87,6 @@ public class UserProjectDao {
             if (rs.next()) {
                 result = userProjectFromResultSet(rs);
             }
-        } catch (SQLException ex) {
-            result = null;
         }
         return result;
     }
@@ -91,12 +95,13 @@ public class UserProjectDao {
      * List all the participations in projects where the User is admin.
      * @param userId id of the user
      * @return List of participations or null in case any error takes place
+     * @throws java.sql.SQLException in case of error
      */
-    public List<UserProject> selectProjectsWhereUserAdmin(long userId) {
-        List<UserProject> result = null;
-        try (Connection conn = dbConnect.getConnectionArnau()) {
+    public List<UserProject> selectUserProjectsWhereUserAdmin(long userId) throws SQLException {
+        List<UserProject> result = new ArrayList<>();
+        try (Connection conn = dbConnect.getConnection()) {
             if (conn != null) {
-                String query = queries.get("selectProjectsWhereUserAdmin");
+                String query = queries.get("selectUserProjectsWhereUserAdmin");
                 PreparedStatement st = conn.prepareStatement(query);
                 st.setLong(1, userId);
                 ResultSet rs = st.executeQuery(query);
@@ -107,8 +112,26 @@ public class UserProjectDao {
                     }
                 }
             }
-        } catch (SQLException ex) {
-            
+        }
+        return result;
+    }
+    
+    public List<Project> selectProjectsWhereUserAdmin(long userId) throws SQLException{
+        List<Project> result = new ArrayList<>();
+        try(Connection conn = dbConnect.getConnection()) {
+            if (conn != null) {
+                String query = queries.get("selectProjectsWhereUserAdmin");
+                PreparedStatement st = conn.prepareStatement(query);
+                st.setLong(1, userId);
+                ResultSet rs = st.executeQuery(query);
+                while (rs.next()) {
+                    ProjectDao projectDao = new ProjectDao();
+                    Project proj = projectDao.projectFromResultSet(rs);
+                    if (proj != null) {
+                        result.add(proj);
+                    }
+                }
+            }
         }
         return result;
     }
@@ -117,12 +140,13 @@ public class UserProjectDao {
      * List all the participations in projects where the User is collaborator.
      * @param userId id of the user
      * @return List of participations or null in case any error takes place
+     * @throws java.sql.SQLException in case of error
      */
-    public List<UserProject> selectProjectsWhereUserCollaborator(long userId) {
-        List<UserProject> result = null;
+    public List<UserProject> selectUserProjectsWhereUserCollaborator(long userId) throws SQLException {
+        List<UserProject> result = new ArrayList<>();
         try (Connection conn = dbConnect.getConnection()) {
             if (conn != null) {
-                String query = queries.get("selectProjectsWhereUserCollab");
+                String query = queries.get("selectUserProjectsWhereUserCollab");
                 PreparedStatement st = conn.prepareStatement(query);
                 st.setLong(1, userId);
                 ResultSet rs = st.executeQuery(query);
@@ -133,10 +157,12 @@ public class UserProjectDao {
                     }
                 }
             }
-        } catch (SQLException ex) {
-            result = null;
         }
         return result;
+    }
+    
+    public List<Project> selectProjectsWhereUserCollaborator(long userId){
+        
     }
 
     /**
@@ -146,8 +172,9 @@ public class UserProjectDao {
      * @param projectId id of the project we want to set the admin
      * @param userId id of the user we want to set as an admin of the project
      * @return number of lines modified: 1 if successfull, 0 in case of error.
+     * @throws java.sql.SQLException in case of error
      */
-    public int setProjectAdmin(long projectId, long userId) {
+    public int setProjectAdmin(long projectId, long userId) throws SQLException {
         int result = 0;
         try (Connection conn = dbConnect.getConnection()) {
             if (conn != null) {
@@ -157,9 +184,7 @@ public class UserProjectDao {
                 st.setLong(2, userId);
                 result = st.executeUpdate();
             }
-        } catch (SQLException ex) {
-            result = 0;
-        }
+        } 
         return result;
     }
 
@@ -170,8 +195,9 @@ public class UserProjectDao {
      * @param projectId id of the project we want to add an admin to.
      * @param userId id of the user we want to add as a collab to the project
      * @return number of lines modified: 1 if successfull, 0 in case of error.
+     * @throws java.sql.SQLException in case of error
      */
-    public int addProjectCollaborator(long projectId, long userId) {
+    public int addProjectCollaborator(long projectId, long userId) throws SQLException {
         int result = 0;
         try (Connection conn = dbConnect.getConnection()) {
             if (conn != null) {
@@ -181,8 +207,6 @@ public class UserProjectDao {
                 st.setLong(2, userId);
                 result = st.executeUpdate();
             }
-        } catch (SQLException ex) {
-            result = 0;
         }
         return result;
     }
@@ -193,8 +217,9 @@ public class UserProjectDao {
      * @param userId id of user we want to delete from project
      * @param projectId id of the project we want to delete the user from
      * @return number of lines modified: 1 is successfull, 0 in case of error.
+     * @throws java.sql.SQLException in case of error
      */
-    public int deleteCollaborator(long userId, long projectId) {
+    public int deleteCollaborator(long userId, long projectId) throws SQLException {
         int result = 0;
         try (Connection conn = dbConnect.getConnection()) {
             if (conn != null) {
@@ -204,9 +229,7 @@ public class UserProjectDao {
                 st.setLong(2, projectId);
                 result = st.executeUpdate();
             }
-        } catch (SQLException ex) {
-            result = 0;
-        }
+        } 
         return result;
     }
 
@@ -218,8 +241,9 @@ public class UserProjectDao {
      * @param userId user we want to change the privileges to
      * @param projectId user's project
      * @return number of lines modified: 1 is successfull, 0 in case of error.
+     * @throws java.sql.SQLException in case of error
      */
-    public int changeCollaboratorPrivileges(long privilegesId, long userId, long projectId) {
+    public int changeCollaboratorPrivileges(long privilegesId, long userId, long projectId) throws SQLException {
         int result = 0;
         try (Connection conn = dbConnect.getConnection()) {
             if (conn != null) {
@@ -230,8 +254,6 @@ public class UserProjectDao {
                 st.setLong(3, projectId);
                 result = st.executeUpdate();
             }
-        } catch (SQLException ex) {
-            result = 0;
         }
         return result;
     }

@@ -4,12 +4,12 @@
     <head>
         <title>Agile Board</title>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <link rel="stylesheet" href="styles/AgileBoardStyles.css"/>
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
-        <link rel="stylesheet" href="styles/AgileBoardStyles.css"/>
+        <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
         <script src="scripts/drag.js" defer></script>
         <script src="scripts/todo.js" defer></script>
-        <link rel="stylesheet" href="styles/AgileBoardStyles.css"/>
         <style>
             /* Estilos CSS para posicionar el aside a la izquierda */
             .projectMenu {
@@ -46,14 +46,76 @@
                   </select>
 
                   <form>
-                    <button type="submit"> Create Sprint +</button>
+                    <button class="createSprintButton" type="button" data-bs-toggle="modal" data-bs-target="#createSprintModal">Create Sprint +</button>
+                    <!-- CREATE SPRINT MODAL -->
+                    <div class="modal fade" id="createSprintModal" tabindex="-1" aria-labelledby="createSprintModalLabel" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="createSprintModalLabel">Creating a Sprint</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <form>
+                                        <div class="mb-3">
+                                            <label for="sprint-name" class="col-form-label">Name:</label>
+                                            <input type="text" class="form-control" id="recipient-name">
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="sprint-description" class="col-form-label">Description:</label>
+                                            <textarea class="form-control" id="message-text"></textarea>
+                                        </div>
+                                    </form>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                    <button type="button" class="btn btn-primary">Create Sprint</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </form>
             </div>
             <div class="lanes">
                 <div id="sprint-backlog-lane" class="swim-lane">
                     <h3 class="heading">Sprint Backlog</h3>
                     <form id="todo-form">
-                        <button type="submit"> Add +</button>
+                        <button type="button" data-bs-toggle="modal" data-bs-target="#addTaskModal"> Add +</button>
+                        <!-- ADD TASK MODAL -->
+                        <div class="modal fade" id="addTaskModal" tabindex="-1" aria-labelledby="addTaskModalLabel" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="addTaskModalLabel">Adding Tasks</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <div class="input-group mb-3">
+                                            <div class="input-group-text">
+                                              <input class="form-check-input mt-0" type="checkbox" value="" aria-label="Checkbox for following text input">
+                                            </div>
+                                            <input type="text" class="form-control" aria-label="Text input with checkbox" value="User Story 1" readonly>
+                                        </div>
+                                        <div class="input-group mb-3">
+                                            <div class="input-group-text">
+                                              <input class="form-check-input mt-0" type="checkbox" value="" aria-label="Checkbox for following text input">
+                                            </div>
+                                            <input type="text" class="form-control" aria-label="Text input with checkbox" value="User Story 2" readonly>
+                                        </div>                     
+                                        <div class="input-group mb-3">
+                                            <div class="input-group-text">
+                                              <input class="form-check-input mt-0" type="checkbox" value="" aria-label="Checkbox for following text input">
+                                            </div>
+                                            <input type="text" class="form-control" aria-label="Text input with checkbox" value="User Story 3" readonly>
+                                        </div>                                                            
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                        <button type="button" class="btn btn-primary">Add Tasks</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </form>
                 </div>
 
