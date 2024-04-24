@@ -78,8 +78,9 @@ public class TaskDao {
      * @param projectId whose tasks we are looking for
      * @return a list with the found tasks, or null in case any error takes
      * place.
+     * @throws java.sql.SQLException
      */
-    public List<Task> selectProjectTasks(long projectId) {
+    public List<Task> selectProjectTasks(long projectId) throws SQLException {
         List<Task> result = new ArrayList<>();
         try (Connection conn = dbConnect.getConnection()) {
             String query = queries.get("selectTasksByProject");
@@ -92,8 +93,6 @@ public class TaskDao {
                     result.add(task);
                 }
             }
-        } catch (Exception e) {
-            result = null;
         }
         return result;
     }
@@ -106,8 +105,9 @@ public class TaskDao {
      * @param sprintId id of the sprint of the project
      * @return a list with the found tasks, or null in case any error takes
      * place.
+     * @throws java.sql.SQLException
      */
-    public List<Task> selectSprintProjectTasks(long projectId, long sprintId) {
+    public List<Task> selectSprintProjectTasks(long projectId, long sprintId) throws SQLException {
         List<Task> result = new ArrayList<>();
         try (Connection conn = dbConnect.getConnection()) {
             String query = queries.get("selectTaskBySprintByProject");
@@ -121,8 +121,6 @@ public class TaskDao {
                     result.add(task);
                 }
             }
-        } catch (Exception e) {
-            result = null;
         }
         return result;
     }
@@ -133,8 +131,9 @@ public class TaskDao {
      * @param projectId id of the project whose tasks we are fetching
      * @param stateId state of the tasks we want to list
      * @return a list of Tasks found, or null in case any error takes place.
+     * @throws java.sql.SQLException
      */
-    public List<Task> selectProjectTasksByState(long projectId, long stateId) {
+    public List<Task> selectProjectTasksByState(long projectId, long stateId) throws SQLException {
         List<Task> result = new ArrayList<>();
         try (Connection conn = dbConnect.getConnection()) {
             String query = queries.get("selectTasksByState");
@@ -148,8 +147,6 @@ public class TaskDao {
                     result.add(task);
                 }
             }
-        } catch (Exception e) {
-            result = null;
         }
         return result;
     }
@@ -161,8 +158,9 @@ public class TaskDao {
      * @param sprintId id of the sprint of the project
      * @param stateId id of the state of the tasks
      * @return a list of Tasks found, or null in case any error takes place.
+     * @throws java.sql.SQLException
      */
-    public List<Task> selectSprintProjectTasksByState(long projectId, long sprintId, long stateId) {
+    public List<Task> selectSprintProjectTasksByState(long projectId, long sprintId, long stateId) throws SQLException {
         List<Task> result = new ArrayList<>();
         try (Connection conn = dbConnect.getConnection()) {
             String query = queries.get("selectTasksByState");
@@ -177,8 +175,6 @@ public class TaskDao {
                     result.add(task);
                 }
             }
-        } catch (Exception e) {
-            result = null;
         }
         return result;
     }
@@ -188,8 +184,9 @@ public class TaskDao {
      *
      * @param task with the data we want to insert
      * @return 1 if successfull, 0 in case any error takes place.
+     * @throws java.sql.SQLException
      */
-    public int createTask(Task task) {
+    public int createTask(Task task) throws SQLException {
         int result = 0;
         try (Connection conn = dbConnect.getConnection()) {
             String query = queries.get("addTask");
@@ -202,8 +199,6 @@ public class TaskDao {
             st.setLong(6, task.getSprintId());
             st.setLong(7, task.getStateId());
             result = st.executeUpdate();
-        } catch (SQLException ex) {
-            result = 0;
         }
         return result;
     }
@@ -213,16 +208,15 @@ public class TaskDao {
      *
      * @param taskId of the task we want to delete
      * @return 1 if successfull, 0 in case of error.
+     * @throws java.sql.SQLException
      */
-    public int deleteTask(long taskId) {
+    public int deleteTask(long taskId) throws SQLException {
         int result = 0;
         try (Connection conn = dbConnect.getConnection()) {
             String query = queries.get("deleteTask");
             PreparedStatement st = conn.prepareStatement(query);
             st.setLong(1, taskId);
             result = st.executeUpdate();
-        } catch (SQLException ex) {
-            result = 0;
         }
         return result;
     }
@@ -232,8 +226,9 @@ public class TaskDao {
      * @param taskId id of the task we want to modify
      * @param updatedTask task object with new data
      * @return 1 if successfull, 0 in case any error takes place.
+     * @throws java.sql.SQLException
      */
-    public int modifyTask(int taskId, Task updatedTask) {
+    public int modifyTask(int taskId, Task updatedTask) throws SQLException {
         int result = 0;
         try (Connection conn = dbConnect.getConnection()) {
             String query = queries.get("modifyTask");
@@ -247,8 +242,6 @@ public class TaskDao {
             st.setLong(7, updatedTask.getStateId());
             st.setLong(8, taskId);
             result = st.executeUpdate();
-        } catch (SQLException ex) {
-            result = 0;
         }
         return result;
     }

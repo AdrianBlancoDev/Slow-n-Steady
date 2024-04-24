@@ -73,8 +73,9 @@ public class SprintDao {
      *
      * @param projectId of the project whose sprint we want to fetch
      * @return a list of Sprints found or null in case any error takes place.
+     * @throws java.sql.SQLException
      */
-    public List<Sprint> selectSprintsByProject(long projectId) {
+    public List<Sprint> selectSprintsByProject(long projectId) throws SQLException {
         List<Sprint> result = new ArrayList<>();
         try (Connection conn = dbConnect.getConnection()) {
             if (conn != null) {
@@ -89,8 +90,6 @@ public class SprintDao {
                     }
                 }
             }
-        } catch (SQLException ex) {
-            result = null;
         }
         return result;
     }
@@ -100,8 +99,9 @@ public class SprintDao {
      *
      * @param sprint with the data we want to insert
      * @return 1 if successfull, 0 in case any error takes place.
+     * @throws java.sql.SQLException
      */
-    public int createSprint(Sprint sprint) {
+    public int createSprint(Sprint sprint) throws SQLException {
         int result = 0;
         try (Connection conn = dbConnect.getConnection()) {
             if (conn != null) {
@@ -114,8 +114,6 @@ public class SprintDao {
                 st.setLong(5, sprint.getProjectId());
                 result = st.executeUpdate();
             }
-        } catch (SQLException ex) {
-            result = 0;
         }
         return result;
     }
@@ -126,8 +124,9 @@ public class SprintDao {
      * @param sprintId id of the sprint to modify
      * @param updatedSprint Sprint object with the new data
      * @return 1 if successfull, 0 in case any error takes place.
+     * @throws java.sql.SQLException
      */
-    public int modifySprint(long sprintId, Sprint updatedSprint) {
+    public int modifySprint(long sprintId, Sprint updatedSprint) throws SQLException {
         int result = 0;
         try(Connection conn = dbConnect.getConnection()) {
             String query = queries.get("modifySprint");
@@ -138,8 +137,6 @@ public class SprintDao {
             st.setDate(4, (java.sql.Date) updatedSprint.getEndDate());
             st.setLong(5, sprintId);
             result = st.executeUpdate();
-        } catch (SQLException ex) {
-            result = 0;
         }
         return result;
     }

@@ -4,31 +4,24 @@
  */
 package controllers;
 
-import jakarta.servlet.RequestDispatcher;
-import java.io.IOException;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
-import java.sql.Connection;
-import java.sql.DriverManager;
+import java.io.IOException;
 import java.sql.SQLException;
-import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import model.Project;
-import model.UserProject;
-import model.persist.ProjectDao;
-import model.persist.UserProjectDao;
+import model.User;
+import model.persist.UserDao;
 
 /**
  *
- * @author Mati
+ * @author ivan-
  */
-@WebServlet(name = "Projects", urlPatterns = {"/Projects"})
-public class Projects_Controller extends HttpServlet {
+@WebServlet(name = "RegistrationController", urlPatterns = {"/register"})
+public class RegistrationController extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -41,24 +34,7 @@ public class Projects_Controller extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        try {
-            response.setContentType("text/html;charset=UTF-8");
-            RequestDispatcher rd = request.getRequestDispatcher("/views/Projects_View.jsp");
-            
-            HttpSession session=request.getSession(false);
-            long  id = (long)session.getAttribute("userId");
-            
-            UserProjectDao userProjectDao = new UserProjectDao();
-            List<Project> adminProjectList = userProjectDao.selectProjectsWhereUserAdmin(id);
-            request.setAttribute("projectAdmin", adminProjectList);
-            
-            List<Project> collaboratorProjectList = userProjectDao.selectProjectsWhereUserCollaborator(id);
-            request.setAttribute("projectCollaborator", collaboratorProjectList);
-            
-            rd.forward(request, response);
-        } catch (SQLException ex) {
-            Logger.getLogger(Projects_Controller.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        response.setContentType("text/html;charset=UTF-8");
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
@@ -73,7 +49,9 @@ public class Projects_Controller extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        response.setContentType("text/html;charset=UTF-8");
+        request.getRequestDispatcher("./views/ResgistrationView.jsp").forward(request, response);
+
     }
 
     /**
@@ -87,7 +65,20 @@ public class Projects_Controller extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        response.setContentType("text/html;charset=UTF-8");
+        String sUser = request.getParameter("user");
+        String sPassword = request.getParameter("password");
+        String sEmail = request.getParameter("email");
+        UserDao userDao = new UserDao();
+        int x = -1;
+        try {
+            x = userDao.registerUser(new User(sUser, sPassword, sEmail));
+        } catch (SQLException ex) {
+            Logger.getLogger(RegistrationController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        if (x == 1) {
+            request.getRequestDispatcher("./views/LoginView.jsp").forward(request, response);
+        }
     }
 
     /**

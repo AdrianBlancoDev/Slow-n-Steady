@@ -78,20 +78,19 @@ public class UserDao {
      * @param user with the data
      * @return number of rows modified. If succesfull 1, in case any error takes
      * place, 0.
+     * @throws java.sql.SQLException
      */
-    public int registerUser(User user) {
+    public int registerUser(User user) throws SQLException {
         int result = 0;
         try (Connection conn = dbConnect.getConnection()) {
             if (conn != null) {
                 String query = queries.get("insert");
                 PreparedStatement st = conn.prepareStatement(query);
                 st.setString(1, user.getUsername());
-                st.setString(2, user.getPassword());
-                st.setString(3, user.getEmail());
+                st.setString(2, user.getEmail());
+                st.setString(3, user.getPassword());
                 result = st.executeUpdate();
             }
-        } catch (SQLException ex) {
-            result = 0;
         }
         return result;
     }
@@ -101,8 +100,9 @@ public class UserDao {
      *
      * @param userId id of the user we are looking for
      * @return the found user or null in case no found or an error takes place.
+     * @throws java.sql.SQLException
      */
-    public User searchUserById(long userId) {
+    public User searchUserById(long userId) throws SQLException {
         User result = null;
         try (Connection conn = dbConnect.getConnection()) {
             if (conn != null) {
@@ -114,8 +114,6 @@ public class UserDao {
                     result = userFromResultSet(rs);
                 }
             }
-        } catch (SQLException ex) {
-            result = null;
         }
         return result;
     }
@@ -127,8 +125,9 @@ public class UserDao {
      * @param username of the user
      * @param password of the user
      * @return the found user or null in case no found or an error takes place.
+     * @throws java.sql.SQLException
      */
-    public User searchUserByUsernameAndPassword(String username, String password) {
+    public User searchUserByUsernameAndPassword(String username, String password) throws SQLException {
         User result = null;
         try (Connection conn = dbConnect.getConnection()) {
             if (conn != null) {
@@ -141,8 +140,6 @@ public class UserDao {
                     result = userFromResultSet(rs);
                 }
             }
-        } catch (SQLException ex) {
-            result = null;
         }
         return result;
     }
@@ -153,7 +150,7 @@ public class UserDao {
      * @param username literal user's
      * @return the found user or null in case no found or an error takes place.
      */
-    public User searchUserByUsername(String username) {
+    public User searchUserByUsername(String username) throws SQLException {
         User result = null;
         try (Connection conn = dbConnect.getConnection()) {
             if (conn != null) {
@@ -165,8 +162,6 @@ public class UserDao {
                     result = userFromResultSet(rs);
                 }
             }
-        } catch (SQLException ex) {
-            result = null;
         }
         return result;
     }
@@ -176,8 +171,9 @@ public class UserDao {
      *
      * @param username literal user's
      * @return the found user or null in case no found or an error takes place.
+     * @throws java.sql.SQLException
      */
-    public User searchUserBySimilarUsername(String username) {
+    public User searchUserBySimilarUsername(String username) throws SQLException {
         User result = null;
         try (Connection conn = dbConnect.getConnection()) {
             if (conn != null) {
@@ -189,8 +185,6 @@ public class UserDao {
                     result = userFromResultSet(rs);
                 }
             }
-        } catch (SQLException ex) {
-            result = null;
         }
         return result;
     }
@@ -200,8 +194,9 @@ public class UserDao {
      *
      * @param email of the user we are looking for
      * @return found User, null if not found or in case an error takes place.
+     * @throws java.sql.SQLException
      */
-    public User searchUserByEmail(String email) {
+    public User searchUserByEmail(String email) throws SQLException {
         User result = null;
         try (Connection conn = dbConnect.getConnection()) {
             String query = queries.get("selectUserByMail");
@@ -211,8 +206,6 @@ public class UserDao {
             if (rs.next()) {
                 result = userFromResultSet(rs);
             }
-        } catch (SQLException ex) {
-            result = null;
         }
 
         return result;
@@ -225,15 +218,15 @@ public class UserDao {
      * @param user whose password is gonna be modified.
      * @param password new password value
      * @return 1 if successfull, 0 in case any error takes place.
+     * @throws java.sql.SQLException
      */
-    public int modifyUserPassword(User user, String password) {
+    public int modifyUserPassword(User user, String password) throws SQLException {
         int result = 0;
         try (Connection conn = dbConnect.getConnection()) {
             String query = queries.get("updateUserPasswordByEmail");
             PreparedStatement st = conn.prepareStatement(query);
             st.setString(1, password);
             st.setString(2, user.getEmail());
-        } catch (Exception e) {
         }
         return result;
     }
