@@ -3,6 +3,9 @@
     margin: 0;
     box-sizing: border-box;
     font-family: sans-serif;
+
+    -ms-overflow-style: none;
+    scrollbar-width: none;
 }
 
 *::-webkit-scrollbar {
@@ -126,4 +129,18 @@
     box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.25);
     background: rgb(50, 50, 50);
     color: white;
+}
+
+/* ASIDE STYLES */
+.projectMenu {
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    width: auto; /* ajustar según sea necesario */
+    background-color: #f0f0f0; /* color de fondo opcional */
+    padding: 20px; /* espaciado interno opcional */
+}
+.board {
+    margin-left: 220px; /* ancho del aside + espaciado */
 }

@@ -6,6 +6,12 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import java.sql.SQLException;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import model.Project;
+import model.persist.UserProjectDao;
 
 public class AgileBoardController extends HttpServlet {
 
@@ -21,7 +27,16 @@ public class AgileBoardController extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        RequestDispatcher rd = request.getRequestDispatcher("/views/AgileBoard.jsp");
+        RequestDispatcher rd = request.getRequestDispatcher("/views/AgileBoardView.jsp");
+        //Pillo un id hardcoded para probar
+        long userId = 1;
+        UserProjectDao userProjectDao = new UserProjectDao();
+        try {
+            List<Project> userProjects = userProjectDao.selectProjectsByUserId(userId);
+        } catch (SQLException ex) {
+            Logger.getLogger(AgileBoardController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
         rd.forward(request, response);
     }
 

@@ -11,23 +11,14 @@
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
         <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>
         <script src="scripts/drag.js" defer></script>
-        <style>
-            /* Estilos CSS para posicionar el aside a la izquierda */
-            .projectMenu {
-                position: absolute;
-                top: 0;
-                left: 0;
-                bottom: 0;
-                width: auto; /* ajustar según sea necesario */
-                background-color: #f0f0f0; /* color de fondo opcional */
-                padding: 20px; /* espaciado interno opcional */
-            }
-            .board {
-                margin-left: 220px; /* ancho del aside + espaciado */
-            }
-        </style>
+        <script>
+            $(function () {
+               $("#includeHtml").load("views/components/Navbar_View.jsp"); 
+            });
+        </script>
     </head>
     <body class="body">
+        <div id="includeHtml"></div>
         <!-- ASIDE -->
         <aside class="projectMenu">
             <h1 class="projectsTitle">Projects</h1>
