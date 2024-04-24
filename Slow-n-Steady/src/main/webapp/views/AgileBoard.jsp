@@ -8,8 +8,9 @@
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
         <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>
         <script src="scripts/drag.js" defer></script>
-        <script src="scripts/todo.js" defer></script>
         <style>
             /* Estilos CSS para posicionar el aside a la izquierda */
             .projectMenu {
@@ -64,6 +65,30 @@
                                             <label for="sprint-description" class="col-form-label">Description:</label>
                                             <textarea class="form-control" id="message-text"></textarea>
                                         </div>
+                                        <div class="mb-3">
+                                            <label for="date" class="col-form-label">Start Date:</label>
+                                            <div class="input-group date" id="startDatePicker">
+                                                <input type="text" class="form-control">
+                                                <span class="input-group-append">
+                                            </div>
+                                            <script type="text/javascript">
+                                                $(function(){
+                                                    $("#startDatePicker").datepicker();
+                                                })
+                                            </script>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="date" class="col-form-label">End Date:</label>
+                                            <div class="input-group date" id="endDatePicker">
+                                                <input type="text" class="form-control">
+                                                <span class="input-group-append">
+                                            </div>
+                                            <script type="text/javascript">
+                                                $(function(){
+                                                    $("#endDatePicker").datepicker();
+                                                })
+                                            </script>
+                                        </div>
                                     </form>
                                 </div>
                                 <div class="modal-footer">
@@ -79,7 +104,7 @@
                 <div id="sprint-backlog-lane" class="swim-lane">
                     <h3 class="heading">Sprint Backlog</h3>
                     <form>
-                        <button id="addTaskButton" type="button" data-bs-toggle="modal" data-bs-target="#addTaskModal"> Add +</button>
+                        <button id="addTaskButton" class="btn btn-secondary btn-lg" type="button" data-bs-toggle="modal" data-bs-target="#addTaskModal"> Add +</button>
                         <!-- ADD TASK MODAL -->
                         <div class="modal fade" id="addTaskModal" tabindex="-1" aria-labelledby="addTaskModalLabel" aria-hidden="true">
                             <div class="modal-dialog">
