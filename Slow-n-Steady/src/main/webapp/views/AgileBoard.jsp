@@ -43,9 +43,8 @@
                     <option selected value="1">Sprint 1</option>
                     <option value="2">Sprint 2</option>
                     <option value="3">Sprint 3</option>
-                  </select>
-
-                  <form>
+                </select>
+                <form>
                     <button class="createSprintButton" type="button" data-bs-toggle="modal" data-bs-target="#createSprintModal">Create Sprint +</button>
                     <!-- CREATE SPRINT MODAL -->
                     <div class="modal fade" id="createSprintModal" tabindex="-1" aria-labelledby="createSprintModalLabel" aria-hidden="true">
@@ -79,8 +78,8 @@
             <div class="lanes">
                 <div id="sprint-backlog-lane" class="swim-lane">
                     <h3 class="heading">Sprint Backlog</h3>
-                    <form id="todo-form">
-                        <button type="button" data-bs-toggle="modal" data-bs-target="#addTaskModal"> Add +</button>
+                    <form>
+                        <button id="addTaskButton" type="button" data-bs-toggle="modal" data-bs-target="#addTaskModal"> Add +</button>
                         <!-- ADD TASK MODAL -->
                         <div class="modal fade" id="addTaskModal" tabindex="-1" aria-labelledby="addTaskModalLabel" aria-hidden="true">
                             <div class="modal-dialog">
