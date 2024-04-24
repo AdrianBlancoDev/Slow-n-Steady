@@ -11,6 +11,9 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import java.io.IOException;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import model.User;
 import model.persist.UserDao;
 
@@ -18,7 +21,7 @@ import model.persist.UserDao;
  *
  * @author Mati
  */
-@WebServlet(name = "LoginController", urlPatterns = {"/login"})
+@WebServlet("")
 public class LoginController extends HttpServlet {
 
     /**
@@ -32,17 +35,6 @@ public class LoginController extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        HttpSession session;
-        response.setContentType("text/html;charset=UTF-8");
-        String sUser = request.getParameter("user");
-        String sPassword = request.getParameter("password");
-        UserDao userDao = new UserDao();
-        User oUser = userDao.searchUserByUsernameAndPassword(sUser, sPassword);
-        if (oUser != null) {
-            session = request.getSession();
-            session.setAttribute("userId", oUser.getId()); //send to project view
-            request.getRequestDispatcher("/Projects").forward(request, response);
-        }
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
@@ -57,7 +49,9 @@ public class LoginController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        System.out.println("as");
+        response.setContentType("text/html;charset=UTF-8");
+        request.getRequestDispatcher("./views/LoginView.jsp").forward(request, response);
     }
 
     /**
@@ -71,7 +65,23 @@ public class LoginController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        HttpSession session;
+        request.setCharacterEncoding("UTF-8");
+        response.setContentType("text/html;charset=UTF-8");
+        String sUser = request.getParameter("user");
+        String sPassword = request.getParameter("password");
+        UserDao userDao = new UserDao();
+        User oUser = null;
+        try {
+            oUser = userDao.searchUserByUsernameAndPassword(sUser, sPassword);
+        } catch (SQLException ex) {
+            Logger.getLogger(LoginController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        if (oUser != null) {
+            session = request.getSession();
+            session.setAttribute("userId", oUser.getId()); //send to project view
+            request.getRequestDispatcher("/Projects").forward(request, response);
+        }    
     }
 
     /**
