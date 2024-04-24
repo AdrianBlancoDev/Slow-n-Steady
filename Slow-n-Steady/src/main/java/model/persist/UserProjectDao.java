@@ -123,7 +123,7 @@ public class UserProjectDao {
                 String query = queries.get("selectProjectsWhereUserAdmin");
                 PreparedStatement st = conn.prepareStatement(query);
                 st.setLong(1, userId);
-                ResultSet rs = st.executeQuery(query);
+                ResultSet rs = st.executeQuery();
                 while (rs.next()) {
                     ProjectDao projectDao = new ProjectDao();
                     Project proj = projectDao.projectFromResultSet(rs);
@@ -173,7 +173,7 @@ public class UserProjectDao {
                 String query = queries.get("selectProjectsWhereUserCollaborator");
                 PreparedStatement st = conn.prepareStatement(query);
                 st.setLong(1, userId);
-                ResultSet rs = st.executeQuery(query);
+                ResultSet rs = st.executeQuery();
                 while (rs.next()) {
                     ProjectDao projectDao = new ProjectDao();
                     Project proj = projectDao.projectFromResultSet(rs);

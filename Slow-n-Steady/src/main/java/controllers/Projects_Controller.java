@@ -11,6 +11,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -18,7 +19,9 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import model.Project;
+import model.UserProject;
 import model.persist.ProjectDao;
+import model.persist.UserProjectDao;
 
 /**
  *
@@ -38,13 +41,24 @@ public class Projects_Controller extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
-        RequestDispatcher rd = request.getRequestDispatcher("/views/Projects_View.jsp");
-        ProjectDao projectDao = new ProjectDao();
-        List<Project> projectList = projectDao.selectAllProjects();
-        request.setAttribute("project", projectList);
-        request.setAttribute("a", "admin");
-        rd.forward(request, response);
+        try {
+            response.setContentType("text/html;charset=UTF-8");
+            RequestDispatcher rd = request.getRequestDispatcher("/views/Projects_View.jsp");
+            
+            HttpSession session=request.getSession(false);
+            long  id = (long)session.getAttribute("userId");
+            
+            UserProjectDao userProjectDao = new UserProjectDao();
+            List<Project> adminProjectList = userProjectDao.selectProjectsWhereUserAdmin(id);
+            request.setAttribute("projectAdmin", adminProjectList);
+            
+            List<Project> collaboratorProjectList = userProjectDao.selectProjectsWhereUserCollaborator(id);
+            request.setAttribute("projectCollaborator", collaboratorProjectList);
+            
+            rd.forward(request, response);
+        } catch (SQLException ex) {
+            Logger.getLogger(Projects_Controller.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

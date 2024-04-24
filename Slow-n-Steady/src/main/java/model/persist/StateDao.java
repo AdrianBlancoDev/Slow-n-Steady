@@ -58,8 +58,9 @@ public class StateDao {
      * Method that looks for certain State from database given its id.
      * @param stateId id of the state we are looking for
      * @return found State or null in case of error.
+     * @throws java.sql.SQLException
      */
-    public State selectStateById(long stateId) {
+    public State selectStateById(long stateId) throws SQLException {
         State result = null;
         try (Connection conn = dbConnect.getConnection()) {
             if (conn != null) {
@@ -71,8 +72,6 @@ public class StateDao {
                     result = stateFromResultSet(rs);
                 }
             }
-        } catch (SQLException ex) {
-            result = null;
         }
         return result;
     }
@@ -81,8 +80,9 @@ public class StateDao {
      * Method that looks for certain State from database given its name.
      * @param stateName name of the state we are looking for
      * @return found State or null in case of error.
+     * @throws java.sql.SQLException
      */
-    public State selectStateByName(String stateName) {
+    public State selectStateByName(String stateName) throws SQLException {
         State result = null;
         try (Connection conn = dbConnect.getConnection()) {
             if (conn != null) {
@@ -94,8 +94,6 @@ public class StateDao {
                     result = stateFromResultSet(rs);
                 }
             }
-        } catch (SQLException ex) {
-            result = null;
         }
         return result;
     }
@@ -106,8 +104,9 @@ public class StateDao {
      * @param state object containing the new data
      * @return number of lines modified: 1 if successfull, 0 in case any error 
      * takes place.
+     * @throws java.sql.SQLException
      */
-    public int createState(State state){
+    public int createState(State state) throws SQLException{
         int result = 0;
         try(Connection conn = dbConnect.getConnection()) {
             if (conn != null) {
@@ -116,8 +115,6 @@ public class StateDao {
                 st.setString(1, state.getName());
                 result = st.executeUpdate();
             }
-        } catch (SQLException ex) {
-            result = 0;
         }
         return result;
     }
