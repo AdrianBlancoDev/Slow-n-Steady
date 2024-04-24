@@ -15,13 +15,8 @@
                 <img src="views/img/Logo4.jpg" class="imgCircle" alt=""/>
                 <div class="container" id="navbarSupportedContent">
                     <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-<<<<<<< HEAD
-                      <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="./Projects">Projects</a>
-=======
                       <li class="nav-item p-2">
                         <button class="active btn btn-dark bg-gradient" aria-current="page" href="./Tasks_Controller">Projects</button>
->>>>>>> main
                       </li>
                       <li class="nav-item p-2">
                         <button class="active btn btn-dark bg-gradient" aria-current="page" href="./UserStories">User Stories</button>

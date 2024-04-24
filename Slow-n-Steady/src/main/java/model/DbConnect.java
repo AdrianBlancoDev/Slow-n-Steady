@@ -55,18 +55,4 @@ public class DbConnect {
         return conn;
     }
 
-    public static Connection getConnectionArnau() throws SQLException {
-        Connection connection = null;
-        try {
-            String URL = "jdbc:mysql://localhost/sns_db?autoReconnect=true&useSSL=false";
-            String DRIVER = "com.mysql.cj.jdbc.Driver";
-            String USER = "root";
-            String PASSWORD = "123456";
-            Class.forName(DRIVER);
-            connection = DriverManager.getConnection(URL, USER, PASSWORD);
-        } catch (ClassNotFoundException ex) {
-            Logger.getLogger(DbConnect.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        return connection;
-    }
 }
