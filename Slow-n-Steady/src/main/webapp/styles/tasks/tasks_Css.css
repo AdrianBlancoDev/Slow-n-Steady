@@ -1,35 +1,24 @@
 .fullSizeView{
     height: 100%;
     width: 100%;
-    left: 0;
-    top: 0;
-    overflow: hidden;
-    position: fixed;
+    position: absolute;
 }
 
-.creationTasksDiv{
-    background-color: black; 
-    width: auto;
-    height: 500px; 
-    margin-left: 5%; 
-    margin-right: 5%;
+.bg-image{
+    background-image: url(https://coolbackgrounds.io/images/backgrounds/index/ranger-4df6c1b6.png);
+    background-position: center;
+    background-size: cover;
 }
 
-.nameProjectDiv{
-    margin-top: 3%;
-    margin-left: 2%;
-    width: 60%;
+.bg-image-modal{
+    background-image: url("https://mcdn.wallpapersafari.com/medium/60/69/BcRF3o.png");
+    background-position: center;
+    background-size: cover;
 }
 
-.modify{
-    width: 7%;
-    margin-top: 3%;
+.custom-btn:hover{
+  background-color:grey !important;
+  color:black !important; 
 }
 
-.delete{
-    margin-top: 3%;
-}
 
-.contentTasks{
-    display: flex;
-}
