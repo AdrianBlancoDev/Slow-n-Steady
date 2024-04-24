@@ -15,6 +15,26 @@
     border-radius:50%;
 }
 
-.collapse{
-    margin-left: 1%;
+.navbar
+{
+    display: block;
 }
+    
+@media (max-width: 768px){
+    .dropdown-button{
+        margin-left: 50%;
+    }
+    
+    .offcanvas.offcanvas-end{
+        width: 55%;
+    }
+}
+
+.none-padding{
+    padding: 0;
+}
+
+.none-margin{
+    margin: 0;
+}
+

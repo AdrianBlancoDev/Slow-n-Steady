@@ -34,7 +34,7 @@
                 </div>
                 <div class="container-sm --bs-warning bg-gradient p-2 rounded-end-4 rounded-bottom-4">
                     <div class="container-sm p-4">
-                        <div class=" row container-sm border border-dark my-2 py-3 shadow --bs-info-bg-subtle bg-gradient">
+                        <div class="row none-margin container-sm border border-dark my-2 py-3 shadow --bs-info-bg-subtle bg-gradient">
                             <div class="col-md-6">
                                 <a>Task 1 Hardcoded</a>
                             </div>
@@ -60,7 +60,7 @@
                                 </div>
                             </div>                            
                         </div>
-                        <div class="container-sm d-grid gap-1">
+                        <div class="container-sm d-grid gap-1 none-padding">
                             <button class="btn btn-dark shadow bg-gradient" type="button" data-bs-toggle="modal" data-bs-target="#addTaskModal">
                                 Add Task
                             </button>
@@ -122,7 +122,7 @@
                     </div>
                 </div>
                 <!-- Info Modal -->
-                 <div class="modal fade" id="infoModal" data-bs-backdrop="static">
+                <div class="modal fade" id="infoModal" data-bs-backdrop="static">
                     <div class="modal-dialog modal-lg">
                         <div class="modal-content bg-image-modal">
                             <!-- Modal Header -->
@@ -212,7 +212,7 @@
                     </div>
                 </div>
                 <!-- Delete Modal -->
-                 <div class="modal fade" id="deleteModal" data-bs-backdrop="static">
+                <div class="modal fade" id="deleteModal" data-bs-backdrop="static">
                     <div class="modal-dialog modal-dialog-centered">
                         <div class="modal-content bg-image-modal">
                             <!-- Modal Header -->
