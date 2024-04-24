@@ -70,8 +70,9 @@ public class PrivilegesDao {
      *
      * @return a list with all the privileges or null in case any error takes
      * place
+     * @throws java.sql.SQLException
      */
-    public List<Privileges> selectAllPrivileges() {
+    public List<Privileges> selectAllPrivileges() throws SQLException {
         List<Privileges> result = new ArrayList<>();
         try (Connection conn = dbConnect.getConnection()) {
             if (conn != null) {
@@ -85,8 +86,6 @@ public class PrivilegesDao {
                     }
                 }
             }
-        } catch (SQLException ex) {
-            result = null;
         }
         return result;
     }
@@ -95,8 +94,9 @@ public class PrivilegesDao {
      * Method that looks for certain Privileges from database given its id.
      * @param privilegesId of the Privileged we are looking for.
      * @return found Privileges or null in case any error takes place.
+     * @throws java.sql.SQLException
      */
-    public Privileges selectPrivilegesById(long privilegesId) {
+    public Privileges selectPrivilegesById(long privilegesId) throws SQLException {
         Privileges result = null;
         try (Connection conn = dbConnect.getConnection()) {
             if (conn != null) {
@@ -108,8 +108,6 @@ public class PrivilegesDao {
                     result = privilegesFromResultSet(rs);
                 }
             }
-        } catch (SQLException ex) {
-            result = null;
         }
         return result;
     }
@@ -118,8 +116,9 @@ public class PrivilegesDao {
      * Methot that looks for certain Privileges from database given the role.
      * @param role role of the Privileges
      * @return found Privileges or null in case any error takes place.
+     * @throws java.sql.SQLException
      */
-    public Privileges selectPrivilegesByRole(String role){
+    public Privileges selectPrivilegesByRole(String role) throws SQLException{
         Privileges result = null;
         try (Connection conn = dbConnect.getConnection()) {
             if (conn != null) {
@@ -128,11 +127,10 @@ public class PrivilegesDao {
                 st.setString(1, role);
                 ResultSet rs = st.executeQuery();
                 if (rs.next()) {
-                    result = privilegesFromResultSet(rs);
+                    result = privilegesFromResultSet(rs
+                    );
                 }
             }
-        } catch (SQLException ex) {
-            result = null;
         }
         return result;
     }
