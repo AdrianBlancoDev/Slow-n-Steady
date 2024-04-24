@@ -20,21 +20,21 @@
     </head>
     <body>
         <div id="includeHtml"></div>
-        <div class="bg-gradient bg-primary">
+        <div class="bg-image fullSizeView">
             <div class="container-sm p-5">
                 <div>
-                    <button class="btn btn-secondary bg-gradient dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    <button class="btn btn-dark bg-gradient dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                         Projects
                     </button>
-                    <ul class="dropdown-menu">
-                        <li><a class="dropdown-item" href="#">Proyecto1</a></li>
-                        <li><a class="dropdown-item" href="#">Proyecto 2</a></li>
-                        <li><a class="dropdown-item" href="#">Proyecto 3</a></li>
+                    <ul class="dropdown-menu text-bg-dark">
+                        <li><button class="dropdown-item btn btn-dark text-light custom-btn" data-bs-toggle="button" aria-pressed="true" href="#">Proyecto 1</button></li>
+                        <li><button class="dropdown-item btn btn-dark text-light custom-btn" data-bs-toggle="button" aria-pressed="true" href="#">Proyecto 2</button></li>
+                        <li><button class="dropdown-item btn btn-dark text-light custom-btn" data-bs-toggle="button" aria-pressed="true" href="#">Proyecto 3</button></li>
                     </ul>
                 </div>
-                <div class="container-sm bg-info bg-gradient p-2">
+                <div class="container-sm --bs-warning bg-gradient p-2 rounded-end-4 rounded-bottom-4">
                     <div class="container-sm p-4">
-                        <div class=" row container-sm border border-dark my-2 py-3 shadow bg-info bg-gradient">
+                        <div class=" row container-sm border border-dark my-2 py-3 shadow --bs-info-bg-subtle bg-gradient">
                             <div class="col-md-6">
                                 <a>Task 1 Hardcoded</a>
                             </div>
@@ -61,16 +61,16 @@
                             </div>                            
                         </div>
                         <div class="container-sm d-grid gap-1">
-                            <button class="btn btn-secondary shadow bg-gradient" type="button" data-bs-toggle="modal" data-bs-target="#addTaskModal">
+                            <button class="btn btn-dark shadow bg-gradient" type="button" data-bs-toggle="modal" data-bs-target="#addTaskModal">
                                 Add Task
                             </button>
                         </div>                    
                     </div>
                 </div>
                 <!-- Add Task Modal -->
-                <div class="modal" id="addTaskModal">
-                    <div class="modal-dialog">
-                        <div class="modal-content bg-info bg-gradient">
+                <div class="modal fade" id="addTaskModal" data-bs-backdrop="static">
+                    <div class="modal-dialog modal-lg">
+                        <div class="modal-content bg-image-modal">
                             <!-- Modal Header -->
                             <div class="modal-header">
                                 <h4 class="modal-title col-12 text-center">New Task</h4>
@@ -87,13 +87,13 @@
                                     <div class="mb-3">
                                         <label for="basic-url" class="form-label">Collaborators:</label>
                                         <div class="input-group">
-                                            <button class="btn btn-secondary bg-gradient dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                            <button class="btn btn-dark bg-gradient dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                                                 Collaborators
                                             </button>
-                                            <ul class="dropdown-menu">
-                                                <li><a class="dropdown-item" href="#">Proyecto1</a></li>
-                                                <li><a class="dropdown-item" href="#">Proyecto 2</a></li>
-                                                <li><a class="dropdown-item" href="#">Proyecto 3</a></li>
+                                            <ul class="dropdown-menu text-bg-dark">
+                                                <li><button class="dropdown-item btn btn-dark text-light custom-btn" data-bs-toggle="button" aria-pressed="true" href="#">Proyecto 1</button></li>
+                                                <li><button class="dropdown-item btn btn-dark text-light custom-btn" data-bs-toggle="button" aria-pressed="true" href="#">Proyecto 1</button></li>
+                                                <li><button class="dropdown-item btn btn-dark text-light custom-btn" data-bs-toggle="button" aria-pressed="true" href="#">Proyecto 1</button></li>
                                             </ul>
                                         </div>
                                     </div>
@@ -113,8 +113,8 @@
                             </div>
                             <!-- Modal footer -->
                             <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                <button class="btn btn-secondary" type="submit" data-bs-toggle="modal" data-bs-target="#addTaskModal">
+                                <button type="button" class="btn btn-dark" data-bs-dismiss="modal">Close</button>
+                                <button class="btn btn-dark" type="submit" data-bs-toggle="modal" data-bs-target="#addTaskModal">
                                     Add Task
                                 </button>
                             </div>
@@ -122,9 +122,9 @@
                     </div>
                 </div>
                 <!-- Info Modal -->
-                 <div class="modal" id="infoModal">
-                    <div class="modal-dialog">
-                        <div class="modal-content bg-info bg-gradient">
+                 <div class="modal fade" id="infoModal" data-bs-backdrop="static">
+                    <div class="modal-dialog modal-lg">
+                        <div class="modal-content bg-image-modal">
                             <!-- Modal Header -->
                             <div class="modal-header">
                                 <h4 class="modal-title col-12 text-center">Task Info</h4>
@@ -154,15 +154,15 @@
                             </div>
                             <!-- Modal footer -->
                             <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                <button type="button" class="btn btn-dark" data-bs-dismiss="modal">Close</button>
                             </div>
                         </div>
                     </div>
                 </div>
                 <!-- Modify Modal -->
-                <div class="modal" id="modifyModal">
-                    <div class="modal-dialog">
-                        <div class="modal-content bg-info bg-gradient">
+                <div class="modal fade" id="modifyModal" data-bs-backdrop="static">
+                    <div class="modal-dialog modal-lg">
+                        <div class="modal-content bg-image-modal">
                             <!-- Modal Header -->
                             <div class="modal-header">
                                 <h4 class="modal-title col-12 text-center">Modify Task</h4>
@@ -178,13 +178,13 @@
                                 <div class="mb-3">
                                     <label for="basic-url" class="form-label">Collaborators:</label>
                                     <div class="input-group">
-                                        <button class="btn btn-secondary bg-gradient dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                        <button class="btn btn-dark bg-gradient dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                                             Collaborators
                                         </button>
-                                        <ul class="dropdown-menu">
-                                            <li><a class="dropdown-item" href="#">Proyecto1</a></li>
-                                            <li><a class="dropdown-item" href="#">Proyecto 2</a></li>
-                                            <li><a class="dropdown-item" href="#">Proyecto 3</a></li>
+                                        <ul class="dropdown-menu text-bg-dark">
+                                            <li><button class="dropdown-item btn btn-dark text-light custom-btn" data-bs-toggle="button" aria-pressed="true" href="#">Proyecto 1</button></li>
+                                            <li><button class="dropdown-item btn btn-dark text-light custom-btn" data-bs-toggle="button" aria-pressed="true" href="#">Proyecto 1</button></li>
+                                            <li><button class="dropdown-item btn btn-dark text-light custom-btn" data-bs-toggle="button" aria-pressed="true" href="#">Proyecto 1</button></li>
                                         </ul>
                                     </div>
                                 </div>
@@ -203,8 +203,8 @@
                             </div>
                             <!-- Modal footer -->
                             <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                <button class="btn btn-secondary" type="button" data-bs-toggle="modal" data-bs-target="#addTaskModal">
+                                <button type="button" class="btn btn-dark" data-bs-dismiss="modal">Close</button>
+                                <button class="btn btn-dark" type="button" data-bs-toggle="modal" data-bs-target="#addTaskModal">
                                     Modify
                                 </button>
                             </div>
@@ -212,9 +212,9 @@
                     </div>
                 </div>
                 <!-- Delete Modal -->
-                 <div class="modal" id="deleteModal">
+                 <div class="modal fade" id="deleteModal" data-bs-backdrop="static">
                     <div class="modal-dialog modal-dialog-centered">
-                        <div class="modal-content bg-info bg-gradient">
+                        <div class="modal-content bg-image-modal">
                             <!-- Modal Header -->
                             <div class="modal-header">
                                 <h4 class="modal-title col-12 text-center fw-bold">Deleting Task</h4>

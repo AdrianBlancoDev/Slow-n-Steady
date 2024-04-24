@@ -1,5 +1,7 @@
-.navbar{
-    background-color: #001271;
+.bg-image{
+    background-image: url(https://coolbackgrounds.io/images/backgrounds/index/ranger-4df6c1b6.png);
+    background-position: center;
+    background-size: cover;
 }
 
 .form-inline{
