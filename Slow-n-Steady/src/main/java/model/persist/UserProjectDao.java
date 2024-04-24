@@ -165,9 +165,30 @@ public class UserProjectDao {
         }
         return result;
     }
-    
-    public List<Project> selectProjectsWhereUserCollaborator(long userId){
-        
+    /**
+     * List all the projects where the User is collaborator
+     * @param userId id of the user
+     * @return List of participations
+     * @throws SQLException in case of error
+     */
+    public List<Project> selectProjectsWhereUserCollaborator(long userId) throws SQLException{
+        List<Project> result = new ArrayList<>();
+        try(Connection conn = dbConnect.getConnection()) {
+            if (conn != null) {
+                String query = queries.get("selectProjectsWhereUserCollaborator");
+                PreparedStatement st = conn.prepareStatement(query);
+                st.setLong(1, userId);
+                ResultSet rs = st.executeQuery(query);
+                while (rs.next()) {
+                    ProjectDao projectDao = new ProjectDao();
+                    Project proj = projectDao.projectFromResultSet(rs);
+                    if (proj != null) {
+                        result.add(proj);
+                    }
+                }
+            }
+        }
+        return result;
     }
 
     /**
