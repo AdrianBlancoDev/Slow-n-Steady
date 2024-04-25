@@ -1,6 +1,7 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@page import="java.util.*" %>
 <%@page import="model.Project" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
     <head>
@@ -27,9 +28,9 @@
                         Projects
                     </button>
                     <ul class="dropdown-menu text-bg-dark">
-                        <li><button class="dropdown-item btn btn-dark text-light custom-btn" data-bs-toggle="button" aria-pressed="true" href="#">Proyecto 1</button></li>
-                        <li><button class="dropdown-item btn btn-dark text-light custom-btn" data-bs-toggle="button" aria-pressed="true" href="#">Proyecto 2</button></li>
-                        <li><button class="dropdown-item btn btn-dark text-light custom-btn" data-bs-toggle="button" aria-pressed="true" href="#">Proyecto 3</button></li>
+                        <c:forEach items="${projects}" var="project">
+                            <li><button class="dropdown-item btn btn-dark text-light custom-btn" data-bs-toggle="button" aria-pressed="true" type="submit">${project.getName()}</button></li>
+                        </c:forEach>
                     </ul>
                 </div>
                 <div class="container-sm --bs-warning bg-gradient p-2 rounded-end-4 rounded-bottom-4">
@@ -77,7 +78,7 @@
                             </div>
                             <!-- Modal body -->
                             <div class="modal-body">
-                                <form action="./Tasks_Controller" method="post">
+                                <form action="./UserStories" method="post">
                                     <div class="mb-3">
                                         <label for="basic-url" class="form-label">Task Name:</label>
                                         <div class="input-group">

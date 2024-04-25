@@ -12,7 +12,16 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
+import java.sql.SQLException;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import model.Project;
+import model.Task;
+import model.UserProject;
 import model.persist.TaskDao;
+import model.persist.UserProjectDao;
 
 /**
  *
@@ -34,6 +43,19 @@ public class Tasks_Controller extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         
+        HttpSession session=request.getSession(false);
+        long  id = (long)session.getAttribute("userId");
+        
+        UserProjectDao userProjectDao = new UserProjectDao();
+        try {
+            List<Project> projects = userProjectDao.selectProjectsByUserId(id);
+            
+            request.setAttribute("projects", projects);
+            
+        } catch (SQLException ex) {
+            Logger.getLogger(Tasks_Controller.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
         RequestDispatcher rd = request.getRequestDispatcher("/views/Tasks_View.jsp");
         rd.forward(request, response);
     }
@@ -51,6 +73,8 @@ public class Tasks_Controller extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         processRequest(request, response);
+        
+        
     }
 
     /**
@@ -66,10 +90,7 @@ public class Tasks_Controller extends HttpServlet {
             throws ServletException, IOException {
         processRequest(request, response);
         
-        Task task = new Task();
-        TaskDao taskDao = new TaskDao();
-        
-        request.getAttribute("name")
+        System.out.println("hola");
     }
 
     /**
