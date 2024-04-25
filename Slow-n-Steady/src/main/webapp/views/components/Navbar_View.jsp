@@ -23,10 +23,10 @@
                                 <div class="container" id="navbarSupportedContent">
                                     <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                                         <li class="nav-item p-2">
-                                            <button class="btn btn-dark bg-gradient" aria-current="page" href="./Tasks_Controller">Projects</button>
+                                            <a class="btn btn-dark bg-gradient" aria-current="page" href="./Projects">Projects</a>
                                         </li>
                                         <li class="nav-item p-2">
-                                            <button class="btn btn-dark bg-gradient" aria-current="page" href="./UserStories">User Stories</button>
+                                            <a class="btn btn-dark bg-gradient" aria-current="page" href="./UserStories">User Stories</a>
                                         </li>        
                                         <li class="nav-item p-2">
                                             <button class="btn btn-dark bg-gradient" aria-current="page" href="./Tasks_Controller">Agile Board</button>
