@@ -17,10 +17,12 @@ import model.UserProject;
 public class UserProjectDao {
 
     private final DbConnect dbConnect;
+    private final ProjectDao projectDao;
     private final Map<String, String> queries;
 
     public UserProjectDao() {
         dbConnect = new DbConnect();
+        projectDao = new ProjectDao();
         queries = new HashMap<>();
         initQueries();
     }
@@ -32,6 +34,8 @@ public class UserProjectDao {
     private void initQueries() {
         //Show Role of the User to a Project
         queries.put("selectUserRoleInProjects", "SELECT * FROM user_project WHERE user_id = ? AND project_id = ?;");
+        //Select All Projects By User Id
+        queries.put("selectProjectsByUserId", "SELECT project.* FROM project INNER JOIN user_project ON project.id = user_project.project_id WHERE user_project.user_id = ?;");
         //Select UserProjects Where User Admin
         queries.put("selectUserProjectsWhereUserAdmin", "SELECT * FROM user_project WHERE user_id = ? AND privilege_id = 1;");
         //Select Projects Where User Admin
@@ -91,6 +95,24 @@ public class UserProjectDao {
         return result;
     }
     
+    public List<Project> selectProjectsByUserId(long userId) throws SQLException{
+        List<Project> result = new ArrayList<>();
+        try(Connection conn = dbConnect.getConnection()) {
+            if (conn != null) {
+                String query = queries.get("selectProjectsByUserId");
+                PreparedStatement st = conn.prepareStatement(query);
+                st.setLong(1, userId);
+                ResultSet rs = st.executeQuery();
+                while (rs.next()) {
+                    Project proj = projectDao.projectFromResultSet(rs);
+                    if (proj != null) {
+                        result.add(proj);
+                    }
+                }
+            }
+        }
+        return result;
+    }
     /**
      * List all the participations in projects where the User is admin.
      * @param userId id of the user
@@ -125,7 +147,6 @@ public class UserProjectDao {
                 st.setLong(1, userId);
                 ResultSet rs = st.executeQuery();
                 while (rs.next()) {
-                    ProjectDao projectDao = new ProjectDao();
                     Project proj = projectDao.projectFromResultSet(rs);
                     if (proj != null) {
                         result.add(proj);
