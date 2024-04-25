@@ -41,7 +41,7 @@
                                             <a>admin</a>
                                         </div>
                                         <div class="col-md">
-                                            <a class="btn btn-outline-* p-0 fw-bold text-decoration-underline" data-bs-toggle="modal" data-bs-target="#modifyModal">Modificar</a>
+                                            <a class="btn btn-outline-* p-0 fw-bold text-decoration-underline modify-btn" data-bs-toggle="modal" data-bs-target="#modifyModal" data-project-name="${projectAdmin.getName()}" data-project-description="${projectAdmin.getDescription()}" data-project-startdate="${projectAdmin.getStartDate()}" >Modificar</a>
                                         </div>
                                         <div class="col-md">
                                             <a type="button" class="btn btn-outline-* p-0 fw-bold text-decoration-underline" data-bs-toggle="modal" data-bs-target="#deleteModal">Eliminar</a>
@@ -94,7 +94,7 @@
                             <div class="modal-body">
                                 <form action="./Tasks_Controller" method="post">
                                     <div class="mb-3">
-                                        <label for="basic-url" class="form-label">Task Name:</label>
+                                        <label for="basic-url" class="form-label">New Project:</label>
                                         <div class="input-group">
                                             <input type="text" class="form-control" id="name" name="name" required/>
                                         </div>
@@ -180,14 +180,14 @@
                         <div class="modal-content bg-image-modal">
                             <!-- Modal Header -->
                             <div class="modal-header">
-                                <h4 class="modal-title col-12 text-center">Modify Task</h4>
+                                <h4 class="modal-title col-12 text-center">Modify Project</h4>
                             </div>
                             <!-- Modal body -->
                             <div class="modal-body">
                                 <div class="mb-3">
-                                    <label for="basic-url" class="form-label">Task Name:</label>
+                                    <label for="basic-url" class="form-label">Project Name:</label>
                                     <div class="input-group">
-                                        <input type="text" class="form-control" id="basic-url" aria-describedby="basic-addon3 basic-addon4">
+                                        <input type="text" class="form-control" id="modal_body" aria-describedby="basic-addon3 basic-addon4">
                                     </div>
                                 </div>
                                 <div class="mb-3">
@@ -206,13 +206,13 @@
                                 <div class="mb-3">
                                     <label for="basic-url" class="form-label">Description:</label>
                                     <div class="input-group">
-                                        <textarea class="form-control" aria-label="With textarea"></textarea>
+                                        <textarea class="form-control" aria-label="With textarea" id="modal_description"></textarea>
                                     </div>
                                 </div>
                                 <div class="mb-3">
                                     <label for="basic-url" class="form-label">Start Date:</label>
                                     <div class="input-group">
-                                        <input type="text" class="form-control" id="basic-url" aria-describedby="basic-addon3 basic-addon4">
+                                        <input type="text" class="form-control" id="modal_startDate" aria-describedby="basic-addon3 basic-addon4">
                                     </div>
                                 </div>
                             </div>
@@ -251,4 +251,22 @@
             </article>
         </section>
     </body>
+    
+  <script type="text/javascript"> 
+    $(".modify-btn").click(function () {
+        var projectName = $(this).data("project-name");
+        var projectDescription = $(this).data("project-description");
+        var projectStartdate = $(this).data("project-startdate");
+        
+        $("#modal_body").attr("value", projectName);
+        $("#modal_description").val(projectDescription);
+        $("#modal_startDate").attr("value", projectStartdate);
+        
+        console.log("projectStartdate:", projectStartdate);
+console.log("Modal Start Date Element:", $("#modal_startDate"));
+
+    }); 
+</script>
+
+    
 </html>
