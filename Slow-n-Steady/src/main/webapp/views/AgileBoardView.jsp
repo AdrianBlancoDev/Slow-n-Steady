@@ -1,7 +1,7 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page contentType="text/html" pageEncoding="UTF-8" %>
 <!DOCTYPE html>
 <html>
-
     <head>
         <title>Agile Board</title>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -27,56 +27,47 @@
 
     <body class="body">
         <div id="includeHtml"></div>
-        <!-- ASIDE -->
-        <aside>
-            <ul>
-                <li>
-                    <a href="#">
-                        <img src="assets/projects.svg" alt="">
-                        <span class="nav-item">Projects</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="#">
-                        <img src="assets/todo.svg" alt="">
-                        <span class="nav-item">Home</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="#">
-                        <img src="assets/todo.svg" alt="">
-                        <span class="nav-item">Profile</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="#">
-                        <img src="assets/todo.svg" alt="">
-                        <span class="nav-item">Wallet</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="#">
-                        <img src="assets/todo.svg" alt="">
-                        <span class="nav-item">Analytics</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="#">
-                        <img src="assets/todo.svg" alt="">
-                        <span class="nav-item">Home</span>
-                    </a>
-                </li>
-            </ul>
-        </aside>
         <!-- BOARD -->
         <div class="board">
             <!-- SPRINT SELECT -->
-            <div class="sprint-select">
-                <select class="form-select" aria-label="Default select example">
-                    <option selected value="1">Sprint 1</option>
-                    <option value="2">Sprint 2</option>
-                    <option value="3">Sprint 3</option>
-                </select>
+            <div class="project-sprint-select-create">
+                <div class="projectSelect">
+                    <select  class="form-select" aria-label="Default Select Example">
+                        <c:forEach items="${userProjects}" var="userProject" varStatus="loop">
+                            <option value="${userProject.getId()}">${userProject.getName()}</option>
+                        </c:forEach>
+                    </select>
+                </div>
+                <div class="sprintSelect">
+                    <select class="form-select" aria-label="Default select example">
+                    </select>
+                </div>
+                <script>
+                    $(document).ready(function () {
+                        $(".projectSelect").change(function () {
+                            var projectId = $(this).val();
+                            var $sprintSelect = $(this).closest(".project-sprint-select-create").find(".sprintSelect select");
+                            $.ajax({
+                                url: "getProjectSprints",
+                                type: "GET",
+                                data: {projectId: projectId},
+                                dataType: "json",
+                                success: function (data) {
+                                    //We clear the second select option selected
+                                    $(".sprintSelect").empty();
+                                    //Now we list the existing sprints for the selected project
+                                    $.each(data, function (index, sprint) {
+                                        $(".sprintSelect")
+                                                .append('<option value="' + sprint.getId() + '">' + sprint.getName() + '</option>');
+                                    });
+                                },
+                                error: function (xhr, status, error) {
+                                    console.error("ERROR getting Project Sprints: " + error)
+                                }
+                            });
+                        });
+                    });
+                </script>
                 <form>
                     <button class="createSprintButton" type="button" data-bs-toggle="modal"
                             data-bs-target="#createSprintModal">Create Sprint +</button>
