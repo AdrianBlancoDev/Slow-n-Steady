@@ -41,7 +41,7 @@
                                             <a>admin</a>
                                         </div>
                                         <div class="col-md">
-                                            <a class="btn btn-outline-* p-0 fw-bold text-decoration-underline modify-btn" data-bs-toggle="modal" data-bs-target="#modifyModal" data-project-name="${projectAdmin.getName()}" data-project-description="${projectAdmin.getDescription()}" data-project-startdate="${projectAdmin.getStartDate()}" >Modificar</a>
+                                            <a class="btn btn-outline-* p-0 fw-bold text-decoration-underline modify-btn" data-bs-toggle="modal" data-bs-target="#modifyModal" data-project-id="${projectAdmin.getId()}"  data-project-name="${projectAdmin.getName()}" data-project-description="${projectAdmin.getDescription()}" data-project-startdate="${projectAdmin.getStartDate()}" >Modificar</a>
                                         </div>
                                         <div class="col-md">
                                             <a type="button" class="btn btn-outline-* p-0 fw-bold text-decoration-underline" data-bs-toggle="modal" data-bs-target="#deleteModal">Eliminar</a>
@@ -218,10 +218,10 @@
                             </div>
                             <!-- Modal footer -->
                             <div class="modal-footer">
-                                <button type="button" class="btn btn-dark" data-bs-dismiss="modal">Close</button>
-                                <button class="btn btn-dark" type="button" data-bs-toggle="modal" data-bs-target="#addTaskModal">
+                                <button id="modifyProjectBtn" class="btn btn-dark" type="button">
                                     Modify
                                 </button>
+                                <button type="button" class="btn btn-dark" data-bs-dismiss="modal">Close</button>
                             </div>
                         </div>
                     </div>
@@ -251,22 +251,62 @@
             </article>
         </section>
     </body>
-    
-  <script type="text/javascript"> 
-    $(".modify-btn").click(function () {
-        var projectName = $(this).data("project-name");
-        var projectDescription = $(this).data("project-description");
-        var projectStartdate = $(this).data("project-startdate");
-        
-        $("#modal_body").attr("value", projectName);
-        $("#modal_description").val(projectDescription);
-        $("#modal_startDate").attr("value", projectStartdate);
-        
-        console.log("projectStartdate:", projectStartdate);
-console.log("Modal Start Date Element:", $("#modal_startDate"));
+    <!-- Script placeholders -->
+    <script type="text/javascript">
+        $(".modify-btn").click(function () {
+            var projectId = $(this).data("project-id");
+            var projectName = $(this).data("project-name");
+            var projectDescription = $(this).data("project-description");
+            var projectStartdate = $(this).data("project-startdate");
 
-    }); 
-</script>
+            $("#modal_body").attr("value", projectName);
+            $("#modal_description").val(projectDescription);
+            $("#modal_startDate").attr("value", projectStartdate);
+            
+            $("#modifyProjectBtn").data("project-id", projectId);
+        });
+    </script>
 
-    
+
 </html>
+
+<script type="text/javascript">
+ $(document).ready(function() {
+    $("#modifyProjectBtn").click(function() {
+        // Obtener el ID del proyecto del modal
+        var projectId = $("#modifyModal").data("project-id");
+        
+        // Obtener los valores del modal
+        var projectName = $("#modal_body").val();
+        var projectDescription = $("#modal_description").val();
+        var projectStartDate = $("#modal_startDate").val();
+
+        // Crear un objeto Project
+        var projectData = {
+            id: projectId,
+            name: projectName,
+            description: projectDescription,
+            startDate: projectStartDate
+        };
+
+        // Realizar la solicitud de modificación al servidor
+        $.ajax({
+            type: "POST",
+            url: "http://localhost:8080/model.persist/Project/modify",
+            data: JSON.stringify(projectData),
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            success: function(response) {
+                // Manejar la respuesta del servidor
+                console.log("Modificación exitosa:", response);
+                // Otra lógica de actualización de la interfaz de usuario si es necesario
+            },
+            error: function(error) {
+                console.error("Error al modificar el proyecto:", error);
+                // Lógica para manejar errores si es necesario
+            }
+        });
+    });
+});
+
+</script>
