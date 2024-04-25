@@ -32,9 +32,13 @@ public class AgileBoardController extends HttpServlet {
         long userId = 1;
         UserProjectDao userProjectDao = new UserProjectDao();
         try {
+            //Busco todos los proyectos en los cuáles pertenece el usuario, tanto como admin como colaborador
             List<Project> userProjects = userProjectDao.selectProjectsByUserId(userId);
+            //Envío el listado de proyectos al JSP
+            request.setAttribute("userProjects", userProjects);
         } catch (SQLException ex) {
-            Logger.getLogger(AgileBoardController.class.getName()).log(Level.SEVERE, null, ex);
+            //TODO: Capturar excepción mostrando algún mensaje de error
+            //Logger.getLogger(AgileBoardController.class.getName()).log(Level.SEVERE, null, ex);
         }
         
         rd.forward(request, response);

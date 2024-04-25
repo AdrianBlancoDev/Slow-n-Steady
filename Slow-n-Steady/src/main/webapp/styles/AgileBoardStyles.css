@@ -130,17 +130,3 @@
     background: rgb(50, 50, 50);
     color: white;
 }
-
-/* ASIDE STYLES */
-.projectMenu {
-    position: absolute;
-    top: 0;
-    left: 0;
-    bottom: 0;
-    width: auto; /* ajustar según sea necesario */
-    background-color: #f0f0f0; /* color de fondo opcional */
-    padding: 20px; /* espaciado interno opcional */
-}
-.board {
-    margin-left: 220px; /* ancho del aside + espaciado */
-}
