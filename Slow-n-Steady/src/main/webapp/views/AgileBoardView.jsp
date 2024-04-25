@@ -33,7 +33,7 @@
             <div class="project-sprint-select-create">
                 <div class="projectSelect">
                     <select  class="form-select" aria-label="Default Select Example">
-                        <c:forEach items="${userProjects}" var="userProject" varStatus="loop">
+                        <c:forEach items="${userProjects}" var="userProject">
                             <option value="${userProject.getId()}">${userProject.getName()}</option>
                         </c:forEach>
                     </select>
@@ -62,7 +62,7 @@
                                     });
                                 },
                                 error: function (xhr, status, error) {
-                                    console.error("ERROR getting Project Sprints: " + error)
+                                    console.error("ERROR getting Project Sprints: " + error);
                                 }
                             });
                         });
