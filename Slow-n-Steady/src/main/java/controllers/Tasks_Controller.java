@@ -12,6 +12,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import model.persist.TaskDao;
 
 /**
  *
@@ -64,6 +65,11 @@ public class Tasks_Controller extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         processRequest(request, response);
+        
+        Task task = new Task();
+        TaskDao taskDao = new TaskDao();
+        
+        request.getAttribute("name")
     }
 
     /**

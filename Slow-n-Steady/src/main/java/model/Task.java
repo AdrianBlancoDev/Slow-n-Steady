@@ -20,6 +20,8 @@ public class Task {
     private long stateId;
 
     //Constructor
+    public Task(){}
+    
     public Task(long id, String name, String description, String timeEstimacy, int priority, long projectId, long sprintId, long stateId) {
         this.id = id;
         this.name = name;
