@@ -60,8 +60,8 @@ public class SprintDao {
         long id = rs.getLong("id");
         String name = rs.getString("name");
         String description = rs.getString("description");
-        Date startDate = rs.getDate("start_date");
-        Date endDate = rs.getDate("end_date");
+        Date startDate = rs.getDate("starting_date");
+        Date endDate = rs.getDate("ending_date");
         long projectId = rs.getLong("project_id");
         //We instantiate a new Sprint object usign the previous attributes
         sprint = new Sprint(id, name, description, startDate, endDate, projectId);
@@ -82,7 +82,7 @@ public class SprintDao {
                 String query = queries.get("selectSprintsByProject");
                 PreparedStatement st = conn.prepareStatement(query);
                 st.setLong(1, projectId);
-                ResultSet rs = st.executeQuery(query);
+                ResultSet rs = st.executeQuery();
                 while (rs.next()) {
                     Sprint sprint = sprintFromResultSet(rs);
                     if (sprint != null) {
