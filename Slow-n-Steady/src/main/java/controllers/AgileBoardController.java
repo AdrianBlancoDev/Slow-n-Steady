@@ -3,6 +3,7 @@ package controllers;
 import jakarta.servlet.RequestDispatcher;
 import java.io.IOException;
 import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -13,6 +14,7 @@ import java.util.logging.Logger;
 import model.Project;
 import model.persist.UserProjectDao;
 
+@WebServlet(name = "AgileBoard", urlPatterns = {"/AgileBoard"})
 public class AgileBoardController extends HttpServlet {
 
     /**

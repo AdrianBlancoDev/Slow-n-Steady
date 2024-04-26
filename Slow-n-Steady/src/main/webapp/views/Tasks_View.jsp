@@ -48,10 +48,10 @@
                                         Priority: 7
                                     </div>
                                     <div class="col-md">
-                                        <a class="btn btn-outline-* p-0 fw-bold text-decoration-underline" data-bs-toggle="modal" data-bs-target="#modifyModal">Modificar</a>
+                                        <a class="btn btn-outline-* p-0 fw-bold text-decoration-underline" data-bs-toggle="modal" data-bs-target="#modifyModal">Modify</a>
                                     </div>
                                     <div class="col-md">
-                                        <a type="button" class="btn btn-outline-* p-0 fw-bold text-decoration-underline" data-bs-toggle="modal" data-bs-target="#deleteModal">Eliminar</a>
+                                        <a type="button" class="btn btn-outline-* p-0 fw-bold text-decoration-underline" data-bs-toggle="modal" data-bs-target="#deleteModal">Delete</a>
                                     </div>
                                     <div class="col-md">
                                         <icon>
@@ -68,173 +68,174 @@
                         </div>                    
                     </div>
                 </div>
-                <!-- Add Task Modal -->
-                <div class="modal fade" id="addTaskModal" data-bs-backdrop="static">
-                    <div class="modal-dialog modal-lg">
-                        <div class="modal-content bg-image-modal">
-                            <!-- Modal Header -->
-                            <div class="modal-header">
-                                <h4 class="modal-title col-12 text-center">New Task</h4>
-                            </div>
-                            <!-- Modal body -->
-                            <div class="modal-body">
-                                <form action="./UserStories" method="post">
-                                    <div class="mb-3">
-                                        <label for="basic-url" class="form-label">Task Name:</label>
-                                        <div class="input-group">
-                                            <input type="text" class="form-control" id="name" name="name" required/>
-                                        </div>
-                                    </div>
-                                    <div class="mb-3">
-                                        <label for="basic-url" class="form-label">Collaborators:</label>
-                                        <div class="input-group">
-                                            <button class="btn btn-dark bg-gradient dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                                Collaborators
-                                            </button>
-                                            <ul class="dropdown-menu text-bg-dark">
-                                                <li><button class="dropdown-item btn btn-dark text-light custom-btn" data-bs-toggle="button" aria-pressed="true" href="#">Proyecto 1</button></li>
-                                                <li><button class="dropdown-item btn btn-dark text-light custom-btn" data-bs-toggle="button" aria-pressed="true" href="#">Proyecto 1</button></li>
-                                                <li><button class="dropdown-item btn btn-dark text-light custom-btn" data-bs-toggle="button" aria-pressed="true" href="#">Proyecto 1</button></li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                    <div class="mb-3">
-                                        <label for="basic-url" class="form-label">Description:</label>
-                                        <div class="input-group">
-                                            <textarea class="form-control" aria-label="With textarea" id="description" name="description" required></textarea>
-                                        </div>
-                                    </div>
-                                    <div class="mb-3">
-                                        <label for="basic-url" class="form-label">Start Date:</label>
-                                        <div class="input-group">
-                                            <input type="text" class="form-control" id="basic-url" aria-describedby="basic-addon3 basic-addon4">
-                                        </div>
-                                    </div>
-                                </form>
-                            </div>
-                            <!-- Modal footer -->
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-dark" data-bs-dismiss="modal">Close</button>
-                                <button class="btn btn-dark" type="submit" data-bs-toggle="modal" data-bs-target="#addTaskModal">
-                                    Add Task
-                                </button>
-                            </div>
-                        </div>
+            </div>
+        </div>     
+        <!-- Add Task Modal -->
+        <div class="modal fade" id="addTaskModal" data-bs-backdrop="static">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content bg-image-modal">
+                    <!-- Modal Header -->
+                    <div class="modal-header">
+                        <h4 class="modal-title col-12 text-center">New Task</h4>
                     </div>
-                </div>
-                <!-- Info Modal -->
-                <div class="modal fade" id="infoModal" data-bs-backdrop="static">
-                    <div class="modal-dialog modal-lg">
-                        <div class="modal-content bg-image-modal">
-                            <!-- Modal Header -->
-                            <div class="modal-header">
-                                <h4 class="modal-title col-12 text-center">Task Info</h4>
-                            </div>
-                            <!-- Modal body -->
-                            <div class="modal-body">
-                                <div class="mb-3">
-                                    <label for="basic-url" class="form-label">Task Name:</label>
-                                    <span>Name of task</span>
-                                </div>
-                                <div class="mb-3">
-                                    <label for="basic-url" class="form-label">Collaborators:</label>
-                                    <div class="input-group">
-                                        <span>colaborator 1, etc</span>
-                                    </div>
-                                </div>
-                                <div class="mb-3">
-                                    <label for="basic-url" class="form-label">Description:</label>
-                                    <div class="input-group">
-                                        <span class="form-control" aria-label="With textarea">descripttion dbadbnasbfasdlhjkfbadsbfapdgba dasbfapdgadsf asdufbapusdfb</span>
-                                    </div>
-                                </div>
-                                <div class="mb-3">
-                                    <label for="basic-url" class="form-label">Start Date:</label>
-                                    <span>fecha</span>
+                    <!-- Modal body -->
+                    <div class="modal-body">
+                        <form action="./UserStories" method="post">
+                            <div class="mb-3">
+                                <label for="basic-url" class="form-label">Task Name:</label>
+                                <div class="input-group">
+                                    <input type="text" class="form-control" id="name" name="name" required/>
                                 </div>
                             </div>
-                            <!-- Modal footer -->
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-dark" data-bs-dismiss="modal">Close</button>
+                            <div class="mb-3">
+                                <label for="basic-url" class="form-label">Collaborators:</label>
+                                <div class="input-group">
+                                    <button class="btn btn-dark bg-gradient dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                        Collaborators
+                                    </button>
+                                    <ul class="dropdown-menu text-bg-dark">
+                                        <li><button class="dropdown-item btn btn-dark text-light custom-btn" data-bs-toggle="button" aria-pressed="true" href="#">Proyecto 1</button></li>
+                                        <li><button class="dropdown-item btn btn-dark text-light custom-btn" data-bs-toggle="button" aria-pressed="true" href="#">Proyecto 1</button></li>
+                                        <li><button class="dropdown-item btn btn-dark text-light custom-btn" data-bs-toggle="button" aria-pressed="true" href="#">Proyecto 1</button></li>
+                                    </ul>
+                                </div>
                             </div>
-                        </div>
+                            <div class="mb-3">
+                                <label for="basic-url" class="form-label">Description:</label>
+                                <div class="input-group">
+                                    <textarea class="form-control" aria-label="With textarea" id="description" name="description" required></textarea>
+                                </div>
+                            </div>
+                            <div class="mb-3">
+                                <label for="basic-url" class="form-label">Start Date:</label>
+                                <div class="input-group">
+                                    <input type="text" class="form-control" id="basic-url" aria-describedby="basic-addon3 basic-addon4">
+                                </div>
+                            </div>
+                        </form>
                     </div>
-                </div>
-                <!-- Modify Modal -->
-                <div class="modal fade" id="modifyModal" data-bs-backdrop="static">
-                    <div class="modal-dialog modal-lg">
-                        <div class="modal-content bg-image-modal">
-                            <!-- Modal Header -->
-                            <div class="modal-header">
-                                <h4 class="modal-title col-12 text-center">Modify Task</h4>
-                            </div>
-                            <!-- Modal body -->
-                            <div class="modal-body">
-                                <div class="mb-3">
-                                    <label for="basic-url" class="form-label">Task Name:</label>
-                                    <div class="input-group">
-                                        <input type="text" class="form-control" id="basic-url" aria-describedby="basic-addon3 basic-addon4">
-                                    </div>
-                                </div>
-                                <div class="mb-3">
-                                    <label for="basic-url" class="form-label">Collaborators:</label>
-                                    <div class="input-group">
-                                        <button class="btn btn-dark bg-gradient dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                            Collaborators
-                                        </button>
-                                        <ul class="dropdown-menu text-bg-dark">
-                                            <li><button class="dropdown-item btn btn-dark text-light custom-btn" data-bs-toggle="button" aria-pressed="true" href="#">Proyecto 1</button></li>
-                                            <li><button class="dropdown-item btn btn-dark text-light custom-btn" data-bs-toggle="button" aria-pressed="true" href="#">Proyecto 1</button></li>
-                                            <li><button class="dropdown-item btn btn-dark text-light custom-btn" data-bs-toggle="button" aria-pressed="true" href="#">Proyecto 1</button></li>
-                                        </ul>
-                                    </div>
-                                </div>
-                                <div class="mb-3">
-                                    <label for="basic-url" class="form-label">Description:</label>
-                                    <div class="input-group">
-                                        <textarea class="form-control" aria-label="With textarea"></textarea>
-                                    </div>
-                                </div>
-                                <div class="mb-3">
-                                    <label for="basic-url" class="form-label">Start Date:</label>
-                                    <div class="input-group">
-                                        <input type="text" class="form-control" id="basic-url" aria-describedby="basic-addon3 basic-addon4">
-                                    </div>
-                                </div>
-                            </div>
-                            <!-- Modal footer -->
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-dark" data-bs-dismiss="modal">Close</button>
-                                <button class="btn btn-dark" type="button" data-bs-toggle="modal" data-bs-target="#addTaskModal">
-                                    Modify
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <!-- Delete Modal -->
-                <div class="modal fade" id="deleteModal" data-bs-backdrop="static">
-                    <div class="modal-dialog modal-dialog-centered">
-                        <div class="modal-content bg-image-modal">
-                            <!-- Modal Header -->
-                            <div class="modal-header">
-                                <h4 class="modal-title col-12 text-center fw-bold">Deleting Task</h4>
-                            </div>
-                            <!-- Modal body -->
-                            <div class="modal-body">
-                                <div class="text-center text-light">
-                                    <span><em>Are you sure you want to delete this task?</em></span>
-                                </div>
-                            </div>
-                            <!-- Modal footer -->
-                            <div class="modal-footer d-grid gap-2 d-md-flex justify-content-center">
-                                <button type="button" class="btn btn-light" data-bs-dismiss="modal">Cancel</button>
-                                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Delete</button>
-                            </div>
-                        </div>
+                    <!-- Modal footer -->
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-dark" data-bs-dismiss="modal">Close</button>
+                        <button class="btn btn-dark" type="submit" data-bs-toggle="modal" data-bs-target="#addTaskModal">
+                            Add Task
+                        </button>
                     </div>
                 </div>
             </div>
-        </div>        
+        </div>
+        <!-- Info Modal -->
+        <div class="modal fade" id="infoModal" data-bs-backdrop="static">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content bg-image-modal">
+                    <!-- Modal Header -->
+                    <div class="modal-header">
+                        <h4 class="modal-title col-12 text-center">Task Info</h4>
+                    </div>
+                    <!-- Modal body -->
+                    <div class="modal-body">
+                        <div class="mb-3">
+                            <label for="basic-url" class="form-label">Task Name:</label>
+                            <span>Name of task</span>
+                        </div>
+                        <div class="mb-3">
+                            <label for="basic-url" class="form-label">Collaborators:</label>
+                            <div class="input-group">
+                                <span>colaborator 1, etc</span>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="basic-url" class="form-label">Description:</label>
+                            <div class="input-group">
+                                <span class="form-control" aria-label="With textarea">descripttion dbadbnasbfasdlhjkfbadsbfapdgba dasbfapdgadsf asdufbapusdfb</span>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="basic-url" class="form-label">Start Date:</label>
+                            <span>fecha</span>
+                        </div>
+                    </div>
+                    <!-- Modal footer -->
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-dark" data-bs-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Modify Modal -->
+        
+        <div class="modal fade" id="modifyModal" data-bs-backdrop="static">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content bg-image-modal">
+                    <!-- Modal Header -->
+                    <div class="modal-header">
+                        <h4 class="modal-title col-12 text-center">Modify Task</h4>
+                    </div>
+                    <!-- Modal body -->
+                    <div class="modal-body">
+                        <div class="mb-3">
+                            <label for="basic-url" class="form-label">Task Name:</label>
+                            <div class="input-group">
+                                <input type="text" class="form-control" id="basic-url" aria-describedby="basic-addon3 basic-addon4">
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="basic-url" class="form-label">Collaborators:</label>
+                            <div class="input-group">
+                                <button class="btn btn-dark bg-gradient dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    Collaborators
+                                </button>
+                                <ul class="dropdown-menu text-bg-dark">
+                                    <li><button class="dropdown-item btn btn-dark text-light custom-btn" data-bs-toggle="button" aria-pressed="true" href="#">Proyecto 1</button></li>
+                                    <li><button class="dropdown-item btn btn-dark text-light custom-btn" data-bs-toggle="button" aria-pressed="true" href="#">Proyecto 1</button></li>
+                                    <li><button class="dropdown-item btn btn-dark text-light custom-btn" data-bs-toggle="button" aria-pressed="true" href="#">Proyecto 1</button></li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="basic-url" class="form-label">Description:</label>
+                            <div class="input-group">
+                                <textarea class="form-control" aria-label="With textarea"></textarea>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="basic-url" class="form-label">Start Date:</label>
+                            <div class="input-group">
+                                <input type="text" class="form-control" id="basic-url" aria-describedby="basic-addon3 basic-addon4">
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Modal footer -->
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-dark" data-bs-dismiss="modal">Close</button>
+                        <button class="btn btn-dark" type="button" data-bs-toggle="modal" data-bs-target="#addTaskModal">
+                            Modify
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Delete Modal -->
+        <div class="modal fade" id="deleteModal" data-bs-backdrop="static">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content bg-image-modal">
+                    <!-- Modal Header -->
+                    <div class="modal-header">
+                        <h4 class="modal-title col-12 text-center fw-bold">Deleting Task</h4>
+                    </div>
+                    <!-- Modal body -->
+                    <div class="modal-body">
+                        <div class="text-center text-light">
+                            <span><em>Are you sure you want to delete this task?</em></span>
+                        </div>
+                    </div>
+                    <!-- Modal footer -->
+                    <div class="modal-footer d-grid gap-2 d-md-flex justify-content-center">
+                        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Delete</button>
+                        <button type="button" class="btn btn-light" data-bs-dismiss="modal">Cancel</button>
+                    </div>
+                </div>
+            </div>
+        </div>
     </body>
 </html>

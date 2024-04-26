@@ -29,12 +29,13 @@
                                             <a class="btn btn-dark bg-gradient" aria-current="page" href="./UserStories">User Stories</a>
                                         </li>        
                                         <li class="nav-item p-2">
-                                            <button class="btn btn-dark bg-gradient" aria-current="page" href="./Tasks_Controller">Agile Board</button>
+                                            <a class="btn btn-dark bg-gradient" aria-current="page" href="./AgileBoard">Agile Board</a>
                                         </li>
                                     </ul>
                                 </div>
                             </nav>
                         </div>
+                        <!-- Offcanvas -->
                         <div class="col col-md-1">
                             <button class="navbar-toggler dropdown-button border border-4 border-black" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasDarkNavbar" aria-controls="offcanvasDarkNavbar" aria-label="Toggle navigation">
                                 <span class="navbar-toggler-icon"></span>
@@ -47,19 +48,19 @@
                                 <div class="offcanvas-body">
                                     <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
                                         <li class="nav-item p-2">
-                                            <button class="btn btn-dark bg-gradient" aria-current="page" href="#">Home</button>
+                                            <a class="btn btn-dark bg-gradient" aria-current="page" href="./Projects">Home</a>
                                         </li>
                                         <li class="nav-item p-2">
                                             <button class="btn btn-dark bg-gradient" href="#">Profile</button>
                                         </li>
                                         <li class="nav-item p-2 d-md-none">
-                                            <button class="btn btn-dark bg-gradient" aria-current="page" href="./Tasks_Controller">Projects</button>
+                                            <a class="btn btn-dark bg-gradient" aria-current="page" href="./Projects">Projects</a>
                                         </li>
                                         <li class="nav-item p-2 d-md-none">
-                                            <button class="btn btn-dark bg-gradient" aria-current="page" href="./UserStories">User Stories</button>
+                                            <a class="btn btn-dark bg-gradient" aria-current="page" href="./UserStories">User Stories</a>
                                         </li>        
                                         <li class="nav-item p-2 d-md-none">
-                                            <button class="btn btn-dark bg-gradient" aria-current="page" href="./Tasks_Controller">Agile Board</button>
+                                            <a class="btn btn-dark bg-gradient" aria-current="page" href="./AgileBoard">Agile Board</a>
                                         </li>
                                         <li class="nav-item dropdown p-2">
                                             <button class="btn btn-dark bg-gradient dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -74,6 +75,9 @@
                                                 <li><button class="dropdown-item btn btn-dark text-light custom-btn" href="#">Something else here</button></li>
                                             </ul>
                                         </li>
+                                        <li class="nav-item p-2 ">
+                                            <a type="button" class="btn btn-outline-* p-0 fw-bold text-decoration-underline" data-bs-toggle="modal" data-bs-target="#presentacionModal">About Us</a>
+                                        </li>
                                     </ul>
                                 </div>
                             </div>
@@ -81,6 +85,47 @@
                     </div>
                 </div>
             </nav>
+        </div>
+        <!-- Modal para la presentacion -->
+        <div class="modal fade" id="presentacionModal">
+            <div class="modal-dialog modal-dialog-centered modal-fullscreen">
+                <div class="modal-content bg-image-modal">
+                    <!-- Modal Header -->
+                    <!-- Modal body -->
+                    <div class="modal-body">
+                        <div id="carouselExample" class="carousel slide">
+                            <div class="carousel-inner">
+                                <div class="carousel-item active">
+                                    <img src="views/carousel/" class="d-block w-100" alt="...">
+                                </div>
+                                <div class="carousel-item">
+                                    <img src="views/carousel/" class="d-block w-100" alt="...">
+                                </div>
+                                <div class="carousel-item">
+                                    <img src="views/carousel/" class="d-block w-100" alt="...">
+                                </div>
+                                <div class="carousel-item">
+                                    <img src="views/carousel/" class="d-block w-100" alt="...">
+                                </div>
+                                <div class="carousel-item">
+                                    <img src="views/carousel/" class="d-block w-100" alt="...">
+                                </div>
+                                <div class="carousel-item">
+                                    <img src="views/carousel/" class="d-block w-100" alt="...">
+                                </div>
+                            </div>
+                            <button class="carousel-control-prev" type="button" data-bs-target="#carouselExample" data-bs-slide="prev">
+                                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                <span class="visually-hidden">Previous</span>
+                            </button>
+                            <button class="carousel-control-next" type="button" data-bs-target="#carouselExample" data-bs-slide="next">
+                                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                <span class="visually-hidden">Next</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </body>
 </html>
