@@ -29,8 +29,8 @@
                 </div>
                 <div class="container-sm --bs-warning bg-gradient p-2 rounded-end-4 rounded-bottom-4">
                     <div class="container-sm p-4">
-                        <div class="row none-margin container-sm border border-dark my-2 py-3 shadow --bs-info-bg-subtle bg-gradient">
                             <c:forEach items="${projectAdmin}" var="projectAdmin">
+                        <div class="row none-margin container-sm border border-dark my-2 py-3 shadow --bs-info-bg-subtle bg-gradient">
                                 <div class="col-md-6">
                                     <a>${projectAdmin.getName()}</a>
                                 </div>
@@ -55,8 +55,8 @@
                                 </div>                            
                             </div>
                         </c:forEach>
-                        <div class="row none-margin container-sm border border-dark my-2 py-3 shadow --bs-info-bg-subtle bg-gradient">
                             <c:forEach items="${projectCollaborator}" var="project">
+                        <div class="row none-margin container-sm border border-dark my-2 py-3 shadow --bs-info-bg-subtle bg-gradient">
                                 <div class="col-md-6">
                                     <a>${project.getName()}</a>
                                 </div>
@@ -73,8 +73,8 @@
                                         </div>
                                     </div>
                                 </div>                            
-                            </c:forEach>
                         </div>
+                            </c:forEach>
                         <div class="container-sm d-grid gap-1 none-padding">
                             <button class="btn btn-dark shadow bg-gradient" type="button" data-bs-toggle="modal" data-bs-target="#addTaskModal">
                                 Add Project
