@@ -33,6 +33,7 @@
             <div class="project-sprint-select-create">
                 <div class="projectSelect">
                     <select  class="form-select" aria-label="Default Select Example">
+
                         <c:forEach items="${userProjects}" var="userProject">
                             <option value="${userProject.getId()}">${userProject.getName()}</option>
                         </c:forEach>
@@ -45,20 +46,20 @@
                 <script>
                     $(document).ready(function () {
                         $(".projectSelect").change(function () {
-                            var projectId = $(this).val();
+                            // var projectId = $(this).val();
+                            var projectId = $(this).find("option:selected").val();
+                            console.log(projectId);
                             var $sprintSelect = $(this).closest(".project-sprint-select-create").find(".sprintSelect select");
+                            $sprintSelect.empty();
                             $.ajax({
                                 url: "getProjectSprints",
                                 type: "GET",
                                 data: {projectId: projectId},
                                 dataType: "json",
                                 success: function (data) {
-                                    //We clear the second select option selected
-                                    $(".sprintSelect").empty();
                                     //Now we list the existing sprints for the selected project
                                     $.each(data, function (index, sprint) {
-                                        $(".sprintSelect")
-                                                .append('<option value="' + sprint.getId() + '">' + sprint.getName() + '</option>');
+                                        $sprintSelect.append('<option value="' + sprint.id + '">' + sprint.name + '</option>');
                                     });
                                 },
                                 error: function (xhr, status, error) {

@@ -47,7 +47,14 @@ public class ProjectSprintsAPI extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         long projectId = Long.parseLong(request.getParameter("projectId"));
+        System.err.println(projectId);
         List<Sprint> projectSprints = getProjectSprints(projectId);
+        for (Sprint projectSprint : projectSprints) {
+            System.out.println(projectSprint.toString());
+        }
+        if (projectSprints.isEmpty()) {
+            System.err.println("LA LISTA DE SPRINTS ESTÁ VACÍA!");
+        }
         //We parse the sprint list to JSON
         Gson gsonParser = new Gson();
         String sprintsToJson = gsonParser.toJson(projectSprints);
@@ -74,7 +81,7 @@ public class ProjectSprintsAPI extends HttpServlet {
         try {
             result = sprintDao.selectSprintsByProject(projectId);
         } catch (SQLException ex) {
-            //TODO: manage exceptions
+            System.out.println(ex.getLocalizedMessage());
         }
         return result;
     }
