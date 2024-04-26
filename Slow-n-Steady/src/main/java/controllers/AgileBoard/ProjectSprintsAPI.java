@@ -1,19 +1,22 @@
-package controllers;
+package controllers.AgileBoard;
 
-import jakarta.servlet.RequestDispatcher;
 import java.io.IOException;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+
+import com.google.gson.Gson;
+
 import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import java.sql.SQLException;
-import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import model.Project;
-import model.persist.UserProjectDao;
+import model.Sprint;
+import model.persist.SprintDao;
 
-public class AgileBoardController extends HttpServlet {
+@WebServlet(name = "ProjectSprintsAPI", urlPatterns = {"/getProjectSprints"})
+public class ProjectSprintsAPI extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -26,22 +29,9 @@ public class AgileBoardController extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
-        RequestDispatcher rd = request.getRequestDispatcher("/views/AgileBoardView.jsp");
-        //Pillo un id hardcoded para probar
-        long userId = 1;
-        UserProjectDao userProjectDao = new UserProjectDao();
-        try {
-            //Busco todos los proyectos en los cuáles pertenece el usuario, tanto como admin como colaborador
-            List<Project> userProjects = userProjectDao.selectProjectsByUserId(userId);
-            //Envío el listado de proyectos al JSP
-            request.setAttribute("userProjects", userProjects);
-        } catch (SQLException ex) {
-            //TODO: Capturar excepción mostrando algún mensaje de error
-            //Logger.getLogger(AgileBoardController.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        
-        rd.forward(request, response);
+        //We set the response type of the servlet
+        response.setContentType("application/json");
+        response.setCharacterEncoding("UTF-8");
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
@@ -56,7 +46,19 @@ public class AgileBoardController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        long projectId = Long.parseLong(request.getParameter("projectId"));
+        System.err.println(projectId);
+        List<Sprint> projectSprints = getProjectSprints(projectId);
+        for (Sprint projectSprint : projectSprints) {
+            System.out.println(projectSprint.toString());
+        }
+        if (projectSprints.isEmpty()) {
+            System.err.println("LA LISTA DE SPRINTS ESTÁ VACÍA!");
+        }
+        //We parse the sprint list to JSON
+        Gson gsonParser = new Gson();
+        String sprintsToJson = gsonParser.toJson(projectSprints);
+        response.getWriter().write(sprintsToJson);
     }
 
     /**
@@ -73,6 +75,17 @@ public class AgileBoardController extends HttpServlet {
         processRequest(request, response);
     }
 
+    private List<Sprint> getProjectSprints(long projectId) {
+        SprintDao sprintDao = new SprintDao();
+        List<Sprint> result = new ArrayList<>();
+        try {
+            result = sprintDao.selectSprintsByProject(projectId);
+        } catch (SQLException ex) {
+            System.out.println(ex.getLocalizedMessage());
+        }
+        return result;
+    }
+
     /**
      * Returns a short description of the servlet.
      *
@@ -82,5 +95,4 @@ public class AgileBoardController extends HttpServlet {
     public String getServletInfo() {
         return "Short description";
     }// </editor-fold>
-
 }
