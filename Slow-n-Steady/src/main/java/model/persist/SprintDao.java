@@ -109,8 +109,8 @@ public class SprintDao {
                 PreparedStatement st = conn.prepareStatement(query);
                 st.setString(1, sprint.getName());
                 st.setString(2, sprint.getDescription());
-                st.setDate(3, (java.sql.Date) sprint.getStartDate());
-                st.setDate(4, (java.sql.Date) sprint.getEndDate());
+                st.setDate(3, new java.sql.Date(sprint.getStartDate().getTime()));
+                st.setDate(4, new java.sql.Date(sprint.getEndDate().getTime()));
                 st.setLong(5, sprint.getProjectId());
                 result = st.executeUpdate();
             }

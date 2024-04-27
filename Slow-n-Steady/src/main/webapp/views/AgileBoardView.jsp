@@ -38,6 +38,7 @@
                             <option value="${userProject.getId()}">${userProject.getName()}</option>
                         </c:forEach>
                     </select>
+                    <input type="hidden" id="projectId" name="project-id">
                 </div>
                 <div class="sprintSelect">
                     <select class="form-select" aria-label="Default select example">
@@ -48,11 +49,11 @@
                         $(".projectSelect").change(function () {
                             // var projectId = $(this).val();
                             var projectId = $(this).find("option:selected").val();
-                            console.log(projectId);
+                            $("#projectId").val(projectId);
                             var $sprintSelect = $(this).closest(".project-sprint-select-create").find(".sprintSelect select");
                             $sprintSelect.empty();
                             $.ajax({
-                                url: "getProjectSprints",
+                                url: "projectSprints",
                                 type: "GET",
                                 data: {projectId: projectId},
                                 dataType: "json",
@@ -69,7 +70,7 @@
                         });
                     });
                 </script>
-                <form>
+                <form action="ProjectSprintsAPI" method="post">
                     <button class="createSprintButton" type="button" data-bs-toggle="modal"
                             data-bs-target="#createSprintModal">Create Sprint +</button>
                     <!-- CREATE SPRINT MODAL -->
@@ -86,16 +87,16 @@
                                     <form>
                                         <div class="mb-3">
                                             <label for="sprint-name" class="col-form-label">Name:</label>
-                                            <input type="text" class="form-control" id="recipient-name">
+                                            <input id="sprintName" name="sprint-name" type="text" class="form-control" >
                                         </div>
                                         <div class="mb-3">
                                             <label for="sprint-description" class="col-form-label">Description:</label>
-                                            <textarea class="form-control" id="message-text"></textarea>
+                                            <textarea id="sprintDescription" name="sprint-description" class="form-control"></textarea>
                                         </div>
                                         <div class="mb-3">
-                                            <label for="date" class="col-form-label">Start Date:</label>
+                                            <label for="start-date-picker" class="col-form-label">Start Date:</label>
                                             <div class="input-group date" id="startDatePicker">
-                                                <input type="text" class="form-control">
+                                                <input id="startDate" name="start-date-picker" type="text" class="form-control">
                                                 <span class="input-group-append">
                                             </div>
                                             <script type="text/javascript">
@@ -105,9 +106,9 @@
                                             </script>
                                         </div>
                                         <div class="mb-3">
-                                            <label for="date" class="col-form-label">End Date:</label>
+                                            <label for="end-date-picker" class="col-form-label">End Date:</label>
                                             <div class="input-group date" id="endDatePicker">
-                                                <input type="text" class="form-control">
+                                                <input id="endDate" name="end-date-picker" type="text" class="form-control">
                                                 <span class="input-group-append">
                                             </div>
                                             <script type="text/javascript">
@@ -121,11 +122,54 @@
                                 <div class="modal-footer">
                                     <button type="button" class="btn btn-secondary"
                                             data-bs-dismiss="modal">Cancel</button>
-                                    <button type="button" class="btn btn-primary">Create Sprint</button>
+                                    <button id="confirmCreateSprintButton" type="button" class="btn btn-primary">Create Sprint</button>
                                 </div>
                             </div>
                         </div>
                     </div>
+                    <script>
+                        $(document).ready(function () {
+                            $("#confirmCreateSprintButton").click(function () {
+                                //We verified that the user at least gave the Sprint he's trying to create a name
+                                var sprintName = $("#sprintName").val();
+                                var sprintDescription = $("#sprintDescription").val();
+                                var startDate = $("#startDate").val();
+                                var endDate = $("#endDate").val();
+                                
+                                if (sprintName.trim() === '') {
+                                    alert("Please, enter at least a name for the new Sprint");
+                                    return;
+                                }
+
+                                var sprintData = {
+                                    "sprint-name": sprintName,
+                                    "sprint-description": sprintDescription,
+                                    "start-date-picker": startDate,
+                                    "end-date-picker": endDate,
+                                    "project-id": $(".projectSelect select").val()
+                                };
+                                console.log(sprintData);
+                                //We send form data to the API through AJAX
+                                $.ajax({
+                                    url: "projectSprints",
+                                    type: "POST",
+                                    data: JSON.stringify(sprintData),
+                                    contentType: "application/json",
+                                    success: function (response) {
+                                        //Handle server answer
+                                        $(".sprintSelect select").append('option value="' + response.id + '">' + response.name + '</option>');
+                                        $("#createSprintModal").modal("hide");
+                                        console.log(response);
+                                    },
+                                    error: function (xhr, status, error) {
+                                        console.error("ERROR while creating new sprint: ", error);
+                                        console.log(data);
+                                        console.log(error);
+                                    }
+                                });
+                            });
+                        });
+                    </script>
                 </form>
             </div>
             <div class="lanes">
