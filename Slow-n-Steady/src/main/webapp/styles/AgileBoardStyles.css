@@ -3,6 +3,9 @@
     margin: 0;
     box-sizing: border-box;
     font-family: sans-serif;
+
+    -ms-overflow-style: none;
+    scrollbar-width: none;
 }
 
 *::-webkit-scrollbar {
@@ -10,22 +13,28 @@
 }
 
 /* SELECT STYLES */
-.sprint-select {
+.project-sprint-select-create {
     display: flex;
     flex-direction: row;
     padding-left: 32px;
     padding-top: 24px;
 }
-.sprint-select select {
+.project-sprint-select-create select {
     width: 225px;
     max-width: 225px;
-    text-align: center;
+}
+
+.projectSelect{
+    padding-right: 16px;
+}
+
+.sprintSelect{
+    padding-right: 16px;
 }
 .createSprintButton {
     width: 225px;
     max-width: 225px;
     height: 100%;
-    margin-left: 16px;
     border-radius: 4px;
     border: none;
 
@@ -43,6 +52,7 @@
     justify-content: center;
     align-items: center;
 }
+
 #addTaskButton {
     width: 200px;
     max-width: 200px;
