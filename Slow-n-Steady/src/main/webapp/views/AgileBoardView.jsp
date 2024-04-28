@@ -56,6 +56,7 @@
                                     dataType: "json",
                                     success: function (data) {
                                         //Now we list the existing sprints for the selected project
+                                        $sprintSelect.append('<option value=""></option>');
                                         $.each(data, function (index, sprint) {
                                             $sprintSelect.append('<option value="' + sprint.id + '">' + sprint.name + '</option>');
                                         });
@@ -303,7 +304,7 @@
                 </script>
             </div>
             <div class="lanes">
-                <div id="sprint-backlog-lane" class="swim-lane">
+                <div id="sprint-backlog-lane" class="swim-lane" data-state-id="1">
                     <h3 class="heading">Sprint Backlog</h3>
                     <!--ADDING TASK MODAL-->
                     <form>
@@ -385,7 +386,7 @@
                                 $("input[type='checkbox']:checked").each(function () {
                                     selectedTasksIds.push($(this).val());
                                 });
-                                
+
                                 console.log(selectedTasksIds);
                                 // Verificar si se han seleccionado tareas antes de enviar la solicitud
                                 if (selectedTasksIds.length === 0) {
@@ -398,7 +399,7 @@
                                     sprintId: $(".sprintSelect select").val(),
                                     selectedTasksIds: selectedTasksIds
                                 };
-                                
+
                                 console.log(requestData);
                                 $.ajax({
                                     url: "sprintTasks",
@@ -406,6 +407,7 @@
                                     data: requestData,
                                     success: function (response) {
                                         alert(response);
+                                        location.reload();
                                     },
                                     error: function (xhr, status, error) {
                                         console.error("Error adding tasks to sprint: " + error);
@@ -414,30 +416,195 @@
                             });
                         });
                     </script>
+                    <div class="tasks-container"></div>
                 </div>
-
-
-                <div id="in-progress-lane" class="swim-lane">
+                <div id="in-progress-lane" class="swim-lane" data-state-id="2">
                     <h3 class="heading">In Progress</h3>
-                    <p class="task" draggable="true">Develop Login</p>
+                    <div class="tasks-container"></div>
+                    <!-- <p class="task" draggable="true">Develop Login</p>
                     <p class="task" draggable="true">Design Login View</p>
-                    <p class="task" draggable="true">Implement Login Backend with Login Views</p>
+                    <p class="task" draggable="true">Implement Login Backend with Login Views</p> -->
                 </div>
 
-                <div id="for-testing-lane" class="swim-lane">
+                <div id="for-testing-lane" class="swim-lane" data-state-id="3">
                     <h3 class="heading">Ready for Testing</h3>
-                    <p class="task" draggable="true">Develop Login</p>
+                    <div class="tasks-container"></div>
+                    <!-- <p class="task" draggable="true">Develop Login</p>
                     <p class="task" draggable="true">Design Login View</p>
-                    <p class="task" draggable="true">Implement Login Backend with Login Views</p>
+                    <p class="task" draggable="true">Implement Login Backend with Login Views</p> -->
                 </div>
-
-                <div id="completed-lane" class="swim-lane">
+                <div id="completed-lane" class="swim-lane" data-state-id="4">
                     <h3 class="heading">Completed</h3>
-                    <p class="task" draggable="true">Develop Login</p>
+                    <div class="tasks-container"></div>
+                    <!-- <p class="task" draggable="true">Develop Login</p>
                     <p class="task" draggable="true">Design Login View</p>
-                    <p class="task" draggable="true">Implement Login Backend with Login Views</p>
+                    <p class="task" draggable="true">Implement Login Backend with Login Views</p> -->
                 </div>
             </div>
+            <script>
+                $(document).ready(function () {
+                    function loadTasksInLane(sprintId, stateId, laneSelector) {
+                        var requestData = {
+                            action: "loadTasks",
+                            sprintId: sprintId,
+                            stateId: stateId
+                        };
+                        $.ajax({
+                            url: "sprintTasks",
+                            type: "GET",
+                            data: requestData,
+                            dataType: "json",
+                            success: function (data) {
+                                var tasksContainer = $(laneSelector + " .tasks-container");
+                                tasksContainer.empty();//We clear the existing tasks
+                                $.each(data, function (index, task) {
+                                    tasksContainer.append('<p class="task" draggable="true" data-task-id="' + task.id + '">' + task.name + '</p>');
+                                });
+
+                                setupDragAndDrop();
+                            },
+                            error: function (xhr, status, error) {
+                                console.error("Error loading tasks: " + error);
+                            }
+                        });
+                    }
+
+                    //var projectId = $(".projectSelect select").val();
+                    var sprintId = $(".sprintSelect select").val();
+
+                    //Load tasks in every single lane, depending on its state
+                    loadTasksInLane(sprintId, 1, "#sprint-backlog-lane");
+                    loadTasksInLane(sprintId, 2, "#in-progress-lane");
+                    loadTasksInLane(sprintId, 3, "#for-testing-lane");
+                    loadTasksInLane(sprintId, 4, "#completed-lane");
+
+                    //In order to change the displayed tasks when changing selected project or sprint
+                    $(".sprintSelect select").change(function () {
+                        //var newProjectId = $(".projectSelect select").val();
+                        var newSprintId = $(".sprintSelect select").val();
+
+                        //Load tasks in each lane with the new selected sprint and project
+                        loadTasksInLane(newSprintId, 1, "#sprint-backlog-lane");
+                        loadTasksInLane(newSprintId, 2, "#in-progress-lane");
+                        loadTasksInLane(newSprintId, 3, "#for-testing-lane");
+                        loadTasksInLane(newSprintId, 4, "#completed-lane");
+                    });
+                    // Función setupDragAndDrop
+                    function setupDragAndDrop() {
+                        const draggables = document.querySelectorAll(".task");
+                        const droppables = document.querySelectorAll(".swim-lane");
+
+                        draggables.forEach((task) => {
+                            task.addEventListener("dragstart", () => {
+                                task.classList.add("is-dragging");
+                            });
+                            task.addEventListener("dragend", () => {
+                                task.classList.remove("is-dragging");
+                            });
+                        });
+
+                        droppables.forEach((zone) => {
+                            zone.addEventListener("dragover", (e) => {
+                                e.preventDefault();
+                                const bottomTask = insertAboveTask(zone, e.clientY);
+                                const curTask = document.querySelector(".is-dragging");
+
+                                if (!bottomTask) {
+                                    zone.appendChild(curTask);
+                                } else {
+                                    zone.insertBefore(curTask, bottomTask);
+                                }
+                            });
+
+                            zone.addEventListener("drop", (e) => {
+                                e.preventDefault();
+                                const currTask = document.querySelector(".is-dragging");
+                                const taskId = currTask.dataset.taskId;
+                                const stateId = zone.dataset.stateId;
+
+                                console.log("ID de la tarea a la que le cambiamos el estado: " + taskId);
+                                console.log("ID del estado que le vamos a poner a la tarea: " + stateId);
+                                var reqData = {
+                                    action: "modifyTaskState",
+                                    taskId: taskId,
+                                    stateId: stateId
+                                }
+                                //We do the AJAX request
+                                $.ajax({
+                                    url: "sprintTasks",
+                                    type: "POST",
+                                    data: reqData,
+                                    success: function (response) {
+                                        alert("Task State Correctly Modified!");
+                                    },
+                                    error: function (xhr, status, error) {
+                                        console.error("ERROR while trying to change Task State: " + error);
+                                    }
+                                });
+                            });
+                        });
+                    }
+//                    droppables.forEach((zone) => {
+//                        zone.addEventListener("drop", (e) => {
+//                            e.preventDefault();
+//                        });
+//
+//                        zone.addEventListener("drop", (e) => {
+//                            e.preventDefault();
+//                            const currTask = document.querySelector(".is-dragging");
+//                            const taskId = currTask.dataset.taskId;
+//                            const stateId = zone.dataset.stateId;
+//
+//                            var reqData = {
+//                                action: "modifyTaskState",
+//                                taskId: taskId,
+//                                stateId: stateId
+//                            }
+//                            //We do the AJAX request
+//                            $.ajax({
+//                                url: "sprintTasks",
+//                                type: "POST",
+//                                data: reqData,
+//                                success: function(response){
+//                                    alert("Task State Correctly Modified!");
+//                                },
+//                                error: function(xhr, status, error){
+//                                    console.error("ERROR while trying to change Task State: " + error);
+//                                }
+//                            });
+//                        });
+//                    });
+                });
+
+                // Función setupDragAndDrop
+                function setupDragAndDrop() {
+                    const draggables = document.querySelectorAll(".task");
+                    const droppables = document.querySelectorAll(".swim-lane");
+
+                    draggables.forEach((task) => {
+                        task.addEventListener("dragstart", () => {
+                            task.classList.add("is-dragging");
+                        });
+                        task.addEventListener("dragend", () => {
+                            task.classList.remove("is-dragging");
+                        });
+                    });
+
+                    droppables.forEach((zone) => {
+                        zone.addEventListener("dragover", (e) => {
+                            e.preventDefault();
+                            const bottomTask = insertAboveTask(zone, e.clientY);
+                            const curTask = document.querySelector(".is-dragging");
+
+                            if (!bottomTask) {
+                                zone.appendChild(curTask);
+                            } else {
+                                zone.insertBefore(curTask, bottomTask);
+                            }
+                        });
+                    });
+                }
+            </script>
         </div>
     </body>
 

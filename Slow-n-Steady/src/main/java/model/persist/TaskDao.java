@@ -46,14 +46,18 @@ public class TaskDao {
         queries.put("selectTasksByState", "SELECT * FROM task WHERE project_id = ? AND state_id = ?;");
         //Select All Tasks of a Sprint of a Project by State
         queries.put("selectTasksBySprintByProject", "SELECT * FROM task WHERE project_id = ? AND sprint_id = ? AND state_id = ?;");
+        //Select All Tasks of a Sprint by State
+        queries.put("selectSprintTasksByState", "SELECT * FROM task WHERE sprint_id = ? AND state_id = ?;");
         //Create Task
         queries.put("addTask", "INSERT INTO task VALUES (null, ?, ?, ?, ?, ?, ?, ?);");
         //Delete Task by ID
         queries.put("deleteTask", "DELETE FROM task WHERE id = ?;");
         //Modify Task
         queries.put("modifyTask", "UPDATE task SET name = ?, description = ?, timeEstimacy = ?, prioity = ?, projectId = ?, sprintId = ?, stateId = ? WHERE id = ?;");
+        //Modify Task State
+        queries.put("modifyTaskState", "UPDATE task SET state_id = ? WHERE id = ?;");
         //Set Task Sprint
-        queries.put("setTaskSprint", "UPDATE task SET sprint_id = ? WHERE id = ?;");
+        queries.put("setTaskSprint", "UPDATE task SET sprint_id = ?, state_id = 1 WHERE id = ?;");
     }
 
     /**
@@ -285,6 +289,18 @@ public class TaskDao {
         return result;
     }
 
+    public int modifyTaskState(long taskId, long stateId) throws SQLException {
+        int result = 0;
+        try (Connection conn = dbConnect.getConnection()) {
+            String query = queries.get("modifyTaskState");
+            PreparedStatement st = conn.prepareStatement(query);
+            st.setLong(1, stateId);
+            st.setLong(2, taskId);
+            result = st.executeUpdate();
+        }
+        return result;
+    }
+
     public int setTaskSprint(long sprintId, long taskId) throws SQLException {
         int result = 0;
         try (Connection conn = dbConnect.getConnection()) {
@@ -294,6 +310,26 @@ public class TaskDao {
                 st.setLong(1, sprintId);
                 st.setLong(2, taskId);
                 result = st.executeUpdate();
+            }
+        }
+        return result;
+    }
+
+    public List<Task> selectSprintTasksByState(long sprintId, long stateId) throws SQLException {
+        List<Task> result = new ArrayList<>();
+        try (Connection conn = dbConnect.getConnection()) {
+            if (conn != null) {
+                String query = queries.get("selectSprintTasksByState");
+                PreparedStatement st = conn.prepareStatement(query);
+                st.setLong(1, sprintId);
+                st.setLong(2, stateId);
+                ResultSet rs = st.executeQuery();
+                while (rs.next()) {
+                    Task task = taskFromResultSet(rs);
+                    if (task != null) {
+                        result.add(task);
+                    }
+                }
             }
         }
         return result;

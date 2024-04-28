@@ -73,6 +73,36 @@ public class SprintTasksAPI extends HttpServlet {
                 response.setContentType("text/plain");
                 response.getWriter().write("Error occurred while loading untracked tasks");
             }
+        } else if (action.equals("loadTasks")) {
+            try {
+                long sprintId = Long.parseLong(request.getParameter("sprintId"));
+                System.out.println("ID del Sprint cuyas tareas vamos a cargar: " + sprintId);
+                long stateId = Long.parseLong(request.getParameter("stateId"));
+                System.out.println("ID del Estado de las tareas que vamos a cargar: " + stateId);
+                //We check the parameter names
+                Enumeration<String> parameterNames = request.getParameterNames();
+                while (parameterNames.hasMoreElements()) {
+                    String paramName = parameterNames.nextElement();
+                    String[] paramValues = request.getParameterValues(paramName);
+                    System.out.println("Parameter: " + paramName);
+                    System.out.println("Values: " + Arrays.toString(paramValues));
+                }
+                //We instantiate TaskDao in order to fetch the tasks depending on sprint and state ids
+                TaskDao taskDao = new TaskDao();
+                List<Task> tasks = taskDao.selectSprintTasksByState(sprintId, stateId);
+                for (Task task : tasks) {
+                    System.out.println(task.toString());
+                }
+                //We parse the task into JSON
+                Gson gson = new Gson();
+                String tasksJson = gson.toJson(tasks);
+                //Set response type and send it back
+                response.setContentType("application/json");
+                response.getWriter().write(tasksJson);
+            } catch (SQLException ex) {
+                response.setContentType("text/plain");
+                response.getWriter().write("Error occurred while loading sprint tasks by state: " + ex.getMessage());
+            }
         }
     }
 
@@ -88,7 +118,7 @@ public class SprintTasksAPI extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String action = request.getParameter("action");
-        if ("addTasksToSprint".equals(action)) {
+        if (action.equals("addTasksToSprint")) {
             long sprintId = Long.parseLong(request.getParameter("sprintId"));
             System.out.println("Sprint seleccionado " + sprintId);
             String[] selectedTasksIds = request.getParameterValues("selectedTasksIds[]");
@@ -122,13 +152,40 @@ public class SprintTasksAPI extends HttpServlet {
                         }
                     } catch (SQLException ex) {
                         response.setContentType("text/plain");
-                        response.getWriter().write("Error occurred while adding tasks to sprint" + ex.getMessage());
+                        response.getWriter().write("Error occurred while adding tasks to sprint: " + ex.getMessage());
                         return;
                     }
                 }
             }
             response.setContentType("text/plain");
             response.getWriter().write("Tasks added successfully to sprint");
+        } else if (action.equals("modifyTaskState")) {
+            try {
+                long taskId = Long.parseLong(request.getParameter("taskId"));
+                long stateId = Long.parseLong(request.getParameter("stateId"));
+
+                Enumeration<String> parameterNames = request.getParameterNames();
+                while (parameterNames.hasMoreElements()) {
+                    String paramName = parameterNames.nextElement();
+                    String[] paramValues = request.getParameterValues(paramName);
+                    System.out.println("Parameter: " + paramName);
+                    System.out.println("Values: " + Arrays.toString(paramValues));
+                }
+                //We instantiate the TaskDao in order to perform the operation
+                TaskDao taskDao = new TaskDao();
+                int result = taskDao.modifyTaskState(taskId, stateId);
+                if (result == 1) {
+                    //We set the response type and send it back
+                    response.setContentType("text/plain");
+                    response.getWriter().write("Task State updated successfully!");
+                } else {
+                    response.setContentType("text/plain");
+                    response.getWriter().write("Task State not updated!");
+                }
+            } catch (SQLException ex) {
+                response.setContentType("text/plain");
+                response.getWriter().write("Error occurred changing Task state: " + ex.getMessage());
+            }
         }
     }
 
