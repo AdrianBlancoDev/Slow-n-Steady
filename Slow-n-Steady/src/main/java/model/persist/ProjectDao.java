@@ -40,7 +40,7 @@ public class ProjectDao {
         //Deletes a Project by Id
         queries.put("deleteProject", "DELETE FROM project WHERE id = ?;");
         //Updates existing Project by ID, given a new Project Object
-        queries.put("updateProject", "UPDATE project SET name = ?, description = ?, start_date = ? WHERE id = ?");
+        queries.put("updateProject", "UPDATE project SET name = ?, description = ?, starting_date = ? WHERE id = ?");
     }
 
     /**
@@ -134,15 +134,21 @@ public class ProjectDao {
      * @throws java.sql.SQLException 
      */
     public int modifyProject(long projectId, Project updatedProject) throws SQLException {
-        int result = 0;
-        try (Connection conn = dbConnect.getConnection()) {
-            String query = queries.get("updateProject");
-            PreparedStatement st = conn.prepareStatement(query);
-            st.setString(1, updatedProject.getName());
-            st.setString(2, updatedProject.getDescription());
-            st.setDate(3, (java.sql.Date) updatedProject.getStartDate());
-            st.setLong(4, projectId);
-        }
-        return result;
+       int result = 0;
+    try (Connection conn = dbConnect.getConnection()) {
+        String query = queries.get("updateProject");
+        PreparedStatement st = conn.prepareStatement(query);
+        st.setString(1, updatedProject.getName());
+        st.setString(2, updatedProject.getDescription());
+st.setDate(3, new java.sql.Date(updatedProject.getStartDate().getTime()));
+        st.setLong(4, projectId);
+        
+        // Ejecutar la actualización y obtener el resultado
+        result = st.executeUpdate();
+    } catch (SQLException e) {
+        // Manejar la excepción SQLException aquí
+        e.printStackTrace(); // Imprimir el stack trace para identificar el error
+    }
+    return result;
     }
 }

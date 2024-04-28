@@ -12,6 +12,9 @@
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
         <script src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
+        <script
+        src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>
+
         <script>
             $(function () {
                 $("#includeHtml").load("views/components/Navbar_View.jsp");
@@ -29,8 +32,8 @@
                 </div>
                 <div class="container-sm --bs-warning bg-gradient p-2 rounded-end-4 rounded-bottom-4">
                     <div class="container-sm p-4">
-                            <c:forEach items="${projectAdmin}" var="projectAdmin">
-                        <div class="row none-margin container-sm border border-dark my-2 py-3 shadow --bs-info-bg-subtle bg-gradient">
+                        <c:forEach items="${projectAdmin}" var="projectAdmin">
+                            <div class="row none-margin container-sm border border-dark my-2 py-3 shadow --bs-info-bg-subtle bg-gradient">
                                 <div class="col-md-6">
                                     <a>${projectAdmin.getName()}</a>
                                 </div>
@@ -55,8 +58,8 @@
                                 </div>                            
                             </div>
                         </c:forEach>
-                            <c:forEach items="${projectCollaborator}" var="project">
-                        <div class="row none-margin container-sm border border-dark my-2 py-3 shadow --bs-info-bg-subtle bg-gradient">
+                        <c:forEach items="${projectCollaborator}" var="project">
+                            <div class="row none-margin container-sm border border-dark my-2 py-3 shadow --bs-info-bg-subtle bg-gradient">
                                 <div class="col-md-6">
                                     <a>${project.getName()}</a>
                                 </div>
@@ -73,8 +76,8 @@
                                         </div>
                                     </div>
                                 </div>                            
-                        </div>
-                            </c:forEach>
+                            </div>
+                        </c:forEach>
                         <div class="container-sm d-grid gap-1 none-padding">
                             <button class="btn btn-dark shadow bg-gradient" type="button" data-bs-toggle="modal" data-bs-target="#addTaskModal">
                                 Add Project
@@ -221,6 +224,38 @@
                                 <button id="modifyProjectBtn" class="btn btn-dark" type="button">
                                     Modify
                                 </button>
+                                <script>
+                                    $(document).ready(function () {
+                                        $("#modifyProjectBtn").click(function () {
+                                            // Obtener los valores del modal
+                                            var projectId = $("#modifyProjectBtn").data("project-id");
+                                            var projectName = $("#modal_body").val();
+                                            var projectDescription = $("#modal_description").val();
+                                            var projectStartDate = $("#modal_startDate").val();
+
+                                            // Crear un objeto con los parámetros a enviar al servlet
+                                            var requestData = {
+                                                projectId: projectId,
+                                                projectName: projectName,
+                                                projectDescription: projectDescription,
+                                                projectStartDate: projectStartDate
+                                            };
+
+                                            $.ajax({
+                                                url: "ProjectsAPI",
+                                                type: "POST", // O cambia a "GET" si prefieres
+                                                data: requestData,
+                                                success: function () {
+                                                    console.log("¡Datos enviados al servidor con éxito!");
+    location.reload();                                            
+    },
+                                                error: function (xhr, status, error) {
+                                                    console.error("ERROR al enviar datos al servidor: " + error);
+                                                }
+                                            });
+                                        });
+                                    });
+                                </script>
                                 <button type="button" class="btn btn-dark" data-bs-dismiss="modal">Close</button>
                             </div>
                         </div>
@@ -262,7 +297,7 @@
             $("#modal_body").attr("value", projectName);
             $("#modal_description").val(projectDescription);
             $("#modal_startDate").attr("value", projectStartdate);
-            
+
             $("#modifyProjectBtn").data("project-id", projectId);
         });
     </script>
@@ -270,43 +305,4 @@
 
 </html>
 
-<script type="text/javascript">
- $(document).ready(function() {
-    $("#modifyProjectBtn").click(function() {
-        // Obtener el ID del proyecto del modal
-        var projectId = $("#modifyModal").data("project-id");
-        
-        // Obtener los valores del modal
-        var projectName = $("#modal_body").val();
-        var projectDescription = $("#modal_description").val();
-        var projectStartDate = $("#modal_startDate").val();
 
-        // Crear un objeto Project
-        var projectData = {
-            id: projectId,
-            name: projectName,
-            description: projectDescription,
-            startDate: projectStartDate
-        };
-
-        // Realizar la solicitud de modificación al servidor
-        $.ajax({
-            type: "POST",
-            url: "http://localhost:8080/model.persist/Project/modify",
-            data: JSON.stringify(projectData),
-            contentType: "application/json; charset=utf-8",
-            dataType: "json",
-            success: function(response) {
-                // Manejar la respuesta del servidor
-                console.log("Modificación exitosa:", response);
-                // Otra lógica de actualización de la interfaz de usuario si es necesario
-            },
-            error: function(error) {
-                console.error("Error al modificar el proyecto:", error);
-                // Lógica para manejar errores si es necesario
-            }
-        });
-    });
-});
-
-</script>

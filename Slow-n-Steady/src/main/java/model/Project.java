@@ -26,6 +26,11 @@ public class Project {
         this.creationDate = creationDate;
         this.startDate = startDate;
     }
+    public Project(String name, String description, Date startDate) {
+        this.name = name;
+        this.description = description;
+        this.startDate = startDate;
+    }
     public Project(long id, String name, String description) {
         this.id = id;
         this.name = name;
