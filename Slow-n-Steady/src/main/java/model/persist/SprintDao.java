@@ -40,8 +40,8 @@ public class SprintDao {
         queries.put("selectSprintsByProject", "SELECT * FROM sprint WHERE project_id = ?;");
         //Crear un Sprint para un Proyecto
         queries.put("createSprint", "INSERT INTO sprint VALUES (null, ?, ?, ?, ?, ?);");
-        //Eliminar un Sprint
-        queries.put("deleteSprintByProjectId", "DELETE FROM sprint WHERE id = ?;");
+        //Eliminar un Sprint por id de Proyecto
+        queries.put("deleteSprint", "DELETE FROM sprint WHERE id = ?;");
         //Modificar un Sprint
         queries.put("modifySprint", "UPDATE sprint SET name = ?, description = ?, start_date = ?, end_date = ?, project_id = ?;");
     }
@@ -136,6 +136,17 @@ public class SprintDao {
             st.setDate(3, (java.sql.Date) updatedSprint.getStartDate());
             st.setDate(4, (java.sql.Date) updatedSprint.getEndDate());
             st.setLong(5, sprintId);
+            result = st.executeUpdate();
+        }
+        return result;
+    }
+    
+    public int deleteSprint(long sprintId) throws SQLException{
+        int result = 0;
+        try(Connection conn = dbConnect.getConnection()) {
+            String query = queries.get("deleteSprint");
+            PreparedStatement st = conn.prepareStatement(query);
+            st.setLong(1, sprintId);
             result = st.executeUpdate();
         }
         return result;

@@ -33,7 +33,7 @@
             <div class="project-sprint-select-create">
                 <div class="projectSelect">
                     <select  class="form-select" aria-label="Default Select Example">
-
+                        <option value=""></option>
                         <c:forEach items="${userProjects}" var="userProject">
                             <option value="${userProject.getId()}">${userProject.getName()}</option>
                         </c:forEach>
@@ -102,7 +102,7 @@
                                             <script type="text/javascript">
                                                 $(function () {
                                                     $("#startDatePicker").datepicker();
-                                                })
+                                                });
                                             </script>
                                         </div>
                                         <div class="mb-3">
@@ -114,7 +114,7 @@
                                             <script type="text/javascript">
                                                 $(function () {
                                                     $("#endDatePicker").datepicker();
-                                                })
+                                                });
                                             </script>
                                         </div>
                                     </form>
@@ -135,7 +135,7 @@
                                 var sprintDescription = $("#sprintDescription").val();
                                 var startDate = $("#startDate").val();
                                 var endDate = $("#endDate").val();
-                                
+
                                 if (sprintName.trim() === '') {
                                     alert("Please, enter at least a name for the new Sprint");
                                     return;
@@ -165,6 +165,55 @@
                                         console.error("ERROR while creating new sprint: ", error);
                                         console.log(data);
                                         console.log(error);
+                                    }
+                                });
+                            });
+                        });
+                    </script>
+                </form>
+                <form action="ProjectSprintsAPI" method="delete">
+                    <button class="deleteSprintButton" type="button" data-bs-toggle="modal"
+                            data-bs-target="#deleteSprintModal">Delete Sprint</button>
+                    <!-- Delete Sprint Modal -->
+                    <div class="modal fade" id="deleteSprintModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h1 class="modal-title fs-5" id="staticBackdropLabel">Deleting Sprint</h1>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <form>
+                                        <div class="mb-3">
+                                            <label for="are-you-sure" class="col-form-label">Are you sure you want to delete this sprint?</label>
+                                        </div>
+                                    </form>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                    <button id="confirmDeleteSprintButton" type="button" class="btn btn-primary">DELETE</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <script>
+                        $(document).ready(function () {
+                            $("#confirmDeleteSprintButton").click(function () {
+                                var sprintId = $(".sprintSelect select").val();
+                                if (!sprintId) {
+                                    alert("Please select a sprint to delete.");
+                                    return;
+                                }
+                                console.log(sprintId);
+                                $.ajax({
+                                    url: "projectSprints?id=" + sprintId,
+                                    type: "DELETE",
+                                    success: function (response) {
+                                        //If sprint deletion is successfull, we reload the page
+                                        location.reload();
+                                    },
+                                    error: function (xhr, status, error) {
+                                        console.error("ERROR deleting sprint: ", error);
                                     }
                                 });
                             });

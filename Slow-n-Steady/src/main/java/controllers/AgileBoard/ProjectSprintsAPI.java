@@ -15,11 +15,10 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.BufferedReader;
+import java.io.PrintWriter;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import model.Sprint;
 import model.persist.SprintDao;
 
@@ -118,7 +117,7 @@ public class ProjectSprintsAPI extends HttpServlet {
             JsonObject jsonResponse = new JsonObject();
             jsonResponse.addProperty("id", sprint.getId());
             jsonResponse.addProperty("name", sprint.getName());
-            
+
             //We send the response
             response.getWriter().write(jsonResponse.toString());
             response.setStatus(HttpServletResponse.SC_OK);
@@ -130,6 +129,37 @@ public class ProjectSprintsAPI extends HttpServlet {
         } catch (ParseException ex) {
             JsonObject errorResponse = new JsonObject();
             errorResponse.addProperty("error", "ERROR Parsing Dates!");
+            response.getWriter().write(errorResponse.toString());
+            response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @Override
+    protected void doDelete(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        System.out.println("SI QUE ESTA LLEGANDO AL DO DELETE!");
+        try {
+            long sprintIdToDelete = Long.parseLong(request.getParameter("id"));
+            System.out.println("EL id del Sprint a borrar es: " + sprintIdToDelete);
+            SprintDao sprintDao = new SprintDao();
+            int result = sprintDao.deleteSprint(sprintIdToDelete);
+            System.out.println("Lineas modificadas: " + result);
+            // Crear un objeto JSON para representar la respuesta
+            JsonObject jsonResponse = new JsonObject();
+            if (result > 0) {
+                jsonResponse.addProperty("success", true);
+                jsonResponse.addProperty("message", "Sprint deleted successfully");
+            } else {
+                jsonResponse.addProperty("success", false);
+                jsonResponse.addProperty("message", "Failed to delete sprint");
+            }
+
+            // Enviar la respuesta JSON al cliente
+            PrintWriter out = response.getWriter();
+            out.print(jsonResponse.toString());
+            out.flush();
+        } catch (SQLException ex) {
+            JsonObject errorResponse = new JsonObject();
+            errorResponse.addProperty("error", "ERROR SQL Exception");
             response.getWriter().write(errorResponse.toString());
             response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
         }
