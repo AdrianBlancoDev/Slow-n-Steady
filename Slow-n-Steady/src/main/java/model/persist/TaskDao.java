@@ -38,6 +38,8 @@ public class TaskDao {
         queries.put("selectTasksByProject", "SELECT * FROM task WHERE project_id = ?;");
         //Select all Tasks of a Sprint of a Project
         queries.put("selectTaskBySprintByProject", "SELECT * FROM task WHERE project_id = ? AND sprint_id = ?;");
+        //Select all Tasks of a Project Without Sprint and State
+        queries.put("selectTasksByProjectNoSprintNoState", "SELECT * FROM task WHERE project_id = ? AND sprint_id IS NULL AND state_id IS NULL;");
         //Select All Project Tasks by State
         queries.put("selectTasksByState", "SELECT * FROM task WHERE project_id = ? AND state_id = ?;");
         //Select All Tasks of a Sprint of a Project by State
@@ -86,7 +88,7 @@ public class TaskDao {
             String query = queries.get("selectTasksByProject");
             PreparedStatement st = conn.prepareStatement(query);
             st.setLong(1, projectId);
-            ResultSet rs = st.executeQuery(query);
+            ResultSet rs = st.executeQuery();
             while (rs.next()) {
                 Task task = taskFromResultSet(rs);
                 if (task != null) {
@@ -114,7 +116,24 @@ public class TaskDao {
             PreparedStatement st = conn.prepareStatement(query);
             st.setLong(1, projectId);
             st.setLong(2, sprintId);
-            ResultSet rs = st.executeQuery(query);
+            ResultSet rs = st.executeQuery();
+            while (rs.next()) {
+                Task task = taskFromResultSet(rs);
+                if (task != null) {
+                    result.add(task);
+                }
+            }
+        }
+        return result;
+    }
+    
+    public List<Task> selectProjectTasksNoSprintNoState(long projectId) throws SQLException{
+        List<Task> result = new ArrayList<>();
+        try(Connection conn = dbConnect.getConnection()) {
+            String query = queries.get("selectTasksByProjectNoSprintNoState");
+            PreparedStatement st = conn.prepareStatement(query);
+            st.setLong(1, projectId);
+            ResultSet rs = st.executeQuery();
             while (rs.next()) {
                 Task task = taskFromResultSet(rs);
                 if (task != null) {
@@ -140,7 +159,7 @@ public class TaskDao {
             PreparedStatement st = conn.prepareStatement(query);
             st.setLong(1, projectId);
             st.setLong(2, stateId);
-            ResultSet rs = st.executeQuery(query);
+            ResultSet rs = st.executeQuery();
             while (rs.next()) {
                 Task task = taskFromResultSet(rs);
                 if (task != null) {
@@ -168,7 +187,7 @@ public class TaskDao {
             st.setLong(1, projectId);
             st.setLong(2, sprintId);
             st.setLong(3, stateId);
-            ResultSet rs = st.executeQuery(query);
+            ResultSet rs = st.executeQuery();
             while (rs.next()) {
                 Task task = taskFromResultSet(rs);
                 if (task != null) {

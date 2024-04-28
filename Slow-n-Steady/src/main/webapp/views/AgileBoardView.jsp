@@ -305,6 +305,7 @@
             <div class="lanes">
                 <div id="sprint-backlog-lane" class="swim-lane">
                     <h3 class="heading">Sprint Backlog</h3>
+                    <!--ADDING TASK MODAL-->
                     <form>
                         <button id="addTaskButton" class="btn btn-secondary btn-lg" type="button" data-bs-toggle="modal"
                                 data-bs-target="#addTaskModal"> Add +</button>
@@ -319,7 +320,7 @@
                                                 aria-label="Close"></button>
                                     </div>
                                     <div class="modal-body">
-                                        <div class="input-group mb-3">
+                                        <!-- <div class="input-group mb-3">
                                             <div class="input-group-text">
                                                 <input class="form-check-input mt-0" type="checkbox" value=""
                                                        aria-label="Checkbox for following text input">
@@ -342,7 +343,7 @@
                                             </div>
                                             <input type="text" class="form-control"
                                                    aria-label="Text input with checkbox" value="User Story 3" readonly>
-                                        </div>
+                                        </div> -->
                                     </div>
                                     <div class="modal-footer">
                                         <button type="button" class="btn btn-secondary"
@@ -354,6 +355,44 @@
                         </div>
                     </form>
                 </div>
+                <script>
+                    $(document).ready(function(){
+                        $("#addTaskButton").click( function (){
+                            var projectId = $(".projectSelect select").val();
+                            if (!projectId) {
+                                alert("Please, select a Project first");
+                                return;
+                            }
+                            var requestData = {
+                                action: "getProjectUntrackedTasks",
+                                projectId: projectId
+                            };
+                            $.ajax({
+                                url: "sprintTasks",
+                                type: "GET",
+                                data: requestData,
+                                dataType: "json",
+                                success: function(data){
+                                    //First we clear the modal existing body
+                                    $(".modal-body").empty();
+                                    //Iteramos sobre las tareas recibidas para mostrar su contenido en el modal
+                                    $.each(data, function(index, task){
+                                        var taskInput = '<div class="input-group mb-3">' +
+                                                            '<div class="input-group-text">' +
+                                                                '<input class="form-check-input mt-0" type="checkbox" value="' + task.id + '" aria-label="Checkbox for following text input">' +
+                                                            '</div>' +
+                                                            '<input type="text" class="form-control" aria-label="Text input with checkbox" value="' + task.name + '" readonly>' +
+                                                        '</div>';
+                                        $(".modal-body").append(taskInput);
+                                    });
+                                },
+                                error: function(xhr, status, error){
+                                    console.error("Error retrieving tasks: " + error);
+                                }
+                            });
+                        });
+                    });
+                </script>
 
                 <div id="in-progress-lane" class="swim-lane">
                     <h3 class="heading">In Progress</h3>
