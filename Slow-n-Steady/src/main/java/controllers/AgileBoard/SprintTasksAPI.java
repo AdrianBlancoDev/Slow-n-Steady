@@ -12,6 +12,9 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Enumeration;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -67,7 +70,8 @@ public class SprintTasksAPI extends HttpServlet {
                 //Write the JSON response in the response bodu
                 response.getWriter().write(untrackedTasksJson);
             } catch (SQLException ex) {
-                
+                response.setContentType("text/plain");
+                response.getWriter().write("Error occurred while loading untracked tasks");
             }
         }
     }
@@ -83,8 +87,61 @@ public class SprintTasksAPI extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        String action = request.getParameter("action");
+        if ("addTasksToSprint".equals(action)) {
+            long sprintId = Long.parseLong(request.getParameter("sprintId"));
+            System.out.println("Sprint seleccionado " + sprintId);
+            String[] selectedTasksIds = request.getParameterValues("selectedTasksIds[]");
+            //We check the parameter names
+            Enumeration<String> parameterNames = request.getParameterNames();
+            while (parameterNames.hasMoreElements()) {
+                String paramName = parameterNames.nextElement();
+                String[] paramValues = request.getParameterValues(paramName);
+                System.out.println("Parameter: " + paramName);
+                System.out.println("Values: " + Arrays.toString(paramValues));
+            }
+
+            for (String selectedTasksId : selectedTasksIds) {
+                System.out.println("Task Seleccionada: " + selectedTasksId);
+            }
+            if (selectedTasksIds == null || selectedTasksIds.length == 0) {
+                response.setContentType("text/plain");
+                response.getWriter().write("BACKEND SAYS: No tasks selected to add to sprint");
+                return;
+            }
+
+            TaskDao taskDao = new TaskDao();
+            List<Long> taskIds = convertStringArrayToIdsList(selectedTasksIds);
+            for (Long taskId : taskIds) {
+                System.out.println("ID de Tarea a modificar: " + taskId);
+                if (taskId != null) {
+                    try {
+                        Task foundTask = taskDao.selectTaskById(taskId);
+                        if (foundTask != null) {
+                            int result = taskDao.setTaskSprint(sprintId, taskId);
+                        }
+                    } catch (SQLException ex) {
+                        response.setContentType("text/plain");
+                        response.getWriter().write("Error occurred while adding tasks to sprint" + ex.getMessage());
+                        return;
+                    }
+                }
+            }
+            response.setContentType("text/plain");
+            response.getWriter().write("Tasks added successfully to sprint");
+        }
     }
+
+    private List<Long> convertStringArrayToIdsList(String[] idsList) {
+        List<Long> result = new ArrayList<>();
+        for (String id : idsList) {
+            Long idLong = Long.valueOf(id);
+            result.add(idLong);
+        }
+        return result;
+    }
+
+    ;
 
     /**
      * Returns a short description of the servlet.

@@ -327,72 +327,95 @@
                                             </div>
                                             <input type="text" class="form-control"
                                                    aria-label="Text input with checkbox" value="User Story 1" readonly>
-                                        </div>
-                                        <div class="input-group mb-3">
-                                            <div class="input-group-text">
-                                                <input class="form-check-input mt-0" type="checkbox" value=""
-                                                       aria-label="Checkbox for following text input">
-                                            </div>
-                                            <input type="text" class="form-control"
-                                                   aria-label="Text input with checkbox" value="User Story 2" readonly>
-                                        </div>
-                                        <div class="input-group mb-3">
-                                            <div class="input-group-text">
-                                                <input class="form-check-input mt-0" type="checkbox" value=""
-                                                       aria-label="Checkbox for following text input">
-                                            </div>
-                                            <input type="text" class="form-control"
-                                                   aria-label="Text input with checkbox" value="User Story 3" readonly>
-                                        </div> -->
+                                        </div>-->
                                     </div>
                                     <div class="modal-footer">
                                         <button type="button" class="btn btn-secondary"
                                                 data-bs-dismiss="modal">Cancel</button>
-                                        <button type="button" class="btn btn-primary">Add Tasks</button>
+                                        <button id="confirmAddTasksButton" type="button" class="btn btn-primary">Add Tasks</button>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </form>
-                </div>
-                <script>
-                    $(document).ready(function(){
-                        $("#addTaskButton").click( function (){
-                            var projectId = $(".projectSelect select").val();
-                            if (!projectId) {
-                                alert("Please, select a Project first");
-                                return;
-                            }
-                            var requestData = {
-                                action: "getProjectUntrackedTasks",
-                                projectId: projectId
-                            };
-                            $.ajax({
-                                url: "sprintTasks",
-                                type: "GET",
-                                data: requestData,
-                                dataType: "json",
-                                success: function(data){
-                                    //First we clear the modal existing body
-                                    $(".modal-body").empty();
-                                    //Iteramos sobre las tareas recibidas para mostrar su contenido en el modal
-                                    $.each(data, function(index, task){
-                                        var taskInput = '<div class="input-group mb-3">' +
-                                                            '<div class="input-group-text">' +
-                                                                '<input class="form-check-input mt-0" type="checkbox" value="' + task.id + '" aria-label="Checkbox for following text input">' +
-                                                            '</div>' +
-                                                            '<input type="text" class="form-control" aria-label="Text input with checkbox" value="' + task.name + '" readonly>' +
-                                                        '</div>';
-                                        $(".modal-body").append(taskInput);
-                                    });
-                                },
-                                error: function(xhr, status, error){
-                                    console.error("Error retrieving tasks: " + error);
+                    <script>
+                        $(document).ready(function () {
+                            $("#addTaskButton").click(function () {
+                                var projectId = $(".projectSelect select").val();
+                                if (!projectId) {
+                                    alert("Please, select a Project first");
+                                    return;
                                 }
+                                var requestData = {
+                                    action: "getProjectUntrackedTasks",
+                                    projectId: projectId
+                                };
+                                $.ajax({
+                                    url: "sprintTasks",
+                                    type: "GET",
+                                    data: requestData,
+                                    dataType: "json",
+                                    success: function (data) {
+                                        //First we clear the modal existing body
+                                        $(".modal-body").empty();
+                                        //Iteramos sobre las tareas recibidas para mostrar su contenido en el modal
+                                        $.each(data, function (index, task) {
+                                            var taskInput = '<div class="input-group mb-3">' +
+                                                    '<div class="input-group-text">' +
+                                                    '<input class="form-check-input mt-0" type="checkbox" value="' + task.id + '" aria-label="Checkbox for following text input">' +
+                                                    '</div>' +
+                                                    '<input type="text" class="form-control" aria-label="Text input with checkbox" value="' + task.name + '" readonly>' +
+                                                    '</div>';
+                                            $(".modal-body").append(taskInput);
+                                        });
+                                    },
+                                    error: function (xhr, status, error) {
+                                        console.error("Error retrieving tasks: " + error);
+                                    }
+                                });
+                            });
+                            $("#confirmAddTasksButton").click(function () {
+                                var projectId = $(".projectSelect select").val();
+                                console.log(projectId);
+                                if (!projectId) {
+                                    alert("Please, select a Project first");
+                                    return;
+                                }
+                                var selectedTasksIds = [];
+                                $("input[type='checkbox']:checked").each(function () {
+                                    selectedTasksIds.push($(this).val());
+                                });
+                                
+                                console.log(selectedTasksIds);
+                                // Verificar si se han seleccionado tareas antes de enviar la solicitud
+                                if (selectedTasksIds.length === 0) {
+                                    alert("Please, select at least one task to add to the sprint");
+                                    return;
+                                }
+
+                                var requestData = {
+                                    action: "addTasksToSprint",
+                                    sprintId: $(".sprintSelect select").val(),
+                                    selectedTasksIds: selectedTasksIds
+                                };
+                                
+                                console.log(requestData);
+                                $.ajax({
+                                    url: "sprintTasks",
+                                    type: "POST",
+                                    data: requestData,
+                                    success: function (response) {
+                                        alert(response);
+                                    },
+                                    error: function (xhr, status, error) {
+                                        console.error("Error adding tasks to sprint: " + error);
+                                    }
+                                });
                             });
                         });
-                    });
-                </script>
+                    </script>
+                </div>
+
 
                 <div id="in-progress-lane" class="swim-lane">
                     <h3 class="heading">In Progress</h3>

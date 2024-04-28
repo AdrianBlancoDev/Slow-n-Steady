@@ -34,6 +34,8 @@ public class TaskDao {
      * Puts in the hasmap all needed queries for the DAO.
      */
     private void initQueries() {
+        //Select Task by Id
+        queries.put("selectTaskById", "SELECT * FROM task WHERE id = ?;");
         //Select all Tasks of a Project
         queries.put("selectTasksByProject", "SELECT * FROM task WHERE project_id = ?;");
         //Select all Tasks of a Sprint of a Project
@@ -50,6 +52,8 @@ public class TaskDao {
         queries.put("deleteTask", "DELETE FROM task WHERE id = ?;");
         //Modify Task
         queries.put("modifyTask", "UPDATE task SET name = ?, description = ?, timeEstimacy = ?, prioity = ?, projectId = ?, sprintId = ?, stateId = ? WHERE id = ?;");
+        //Set Task Sprint
+        queries.put("setTaskSprint", "UPDATE task SET sprint_id = ? WHERE id = ?;");
     }
 
     /**
@@ -72,6 +76,20 @@ public class TaskDao {
         long stateId = rs.getLong("state_id");
         task = new Task(id, name, description, timeEstimacy, priority, projectId, sprintId, stateId);
         return task;
+    }
+
+    public Task selectTaskById(long taskId) throws SQLException {
+        Task result = null;
+        try (Connection conn = dbConnect.getConnection()) {
+            String query = queries.get("selectTaskById");
+            PreparedStatement st = conn.prepareStatement(query);
+            st.setLong(1, taskId);
+            ResultSet rs = st.executeQuery();
+            if (rs.next()) {
+                result = taskFromResultSet(rs);
+            }
+        }
+        return result;
     }
 
     /**
@@ -126,10 +144,10 @@ public class TaskDao {
         }
         return result;
     }
-    
-    public List<Task> selectProjectTasksNoSprintNoState(long projectId) throws SQLException{
+
+    public List<Task> selectProjectTasksNoSprintNoState(long projectId) throws SQLException {
         List<Task> result = new ArrayList<>();
-        try(Connection conn = dbConnect.getConnection()) {
+        try (Connection conn = dbConnect.getConnection()) {
             String query = queries.get("selectTasksByProjectNoSprintNoState");
             PreparedStatement st = conn.prepareStatement(query);
             st.setLong(1, projectId);
@@ -239,9 +257,11 @@ public class TaskDao {
         }
         return result;
     }
+
     /**
      * Modifies an existant task, given its id and a new Task Object with the
      * updated data
+     *
      * @param taskId id of the task we want to modify
      * @param updatedTask task object with new data
      * @return 1 if successfull, 0 in case any error takes place.
@@ -261,6 +281,20 @@ public class TaskDao {
             st.setLong(7, updatedTask.getStateId());
             st.setLong(8, taskId);
             result = st.executeUpdate();
+        }
+        return result;
+    }
+
+    public int setTaskSprint(long sprintId, long taskId) throws SQLException {
+        int result = 0;
+        try (Connection conn = dbConnect.getConnection()) {
+            if (conn != null) {
+                String query = queries.get("setTaskSprint");
+                PreparedStatement st = conn.prepareStatement(query);
+                st.setLong(1, sprintId);
+                st.setLong(2, taskId);
+                result = st.executeUpdate();
+            }
         }
         return result;
     }
