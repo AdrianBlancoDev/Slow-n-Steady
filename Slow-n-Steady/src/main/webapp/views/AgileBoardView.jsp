@@ -6,15 +6,11 @@
         <title>Agile Board</title>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <link rel="stylesheet" href="styles/AgileBoardStyles.css" />
-        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
-              integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
-                integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
-        crossorigin="anonymous"></script>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+        <script defer src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
         <script src="https://code.jquery.com/jquery-3.7.1.js"
         integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
-        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
-              integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
         <script
         src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>
         <script src="scripts/drag.js" defer></script>
@@ -31,45 +27,48 @@
         <div class="board">
             <!-- SPRINT SELECT -->
             <div class="project-sprint-select-create">
-                <div class="projectSelect">
-                    <select  class="form-select" aria-label="Default Select Example">
-                        <option value=""></option>
-                        <c:forEach items="${userProjects}" var="userProject">
-                            <option value="${userProject.getId()}">${userProject.getName()}</option>
-                        </c:forEach>
-                    </select>
-                    <input type="hidden" id="projectId" name="project-id">
-                </div>
-                <div class="sprintSelect">
-                    <select class="form-select" aria-label="Default select example">
-                    </select>
-                </div>
-                <script>
-                    $(document).ready(function () {
-                        $(".projectSelect").change(function () {
-                            // var projectId = $(this).val();
-                            var projectId = $(this).find("option:selected").val();
-                            $("#projectId").val(projectId);
-                            var $sprintSelect = $(this).closest(".project-sprint-select-create").find(".sprintSelect select");
-                            $sprintSelect.empty();
-                            $.ajax({
-                                url: "projectSprints",
-                                type: "GET",
-                                data: {projectId: projectId},
-                                dataType: "json",
-                                success: function (data) {
-                                    //Now we list the existing sprints for the selected project
-                                    $.each(data, function (index, sprint) {
-                                        $sprintSelect.append('<option value="' + sprint.id + '">' + sprint.name + '</option>');
-                                    });
-                                },
-                                error: function (xhr, status, error) {
-                                    console.error("ERROR getting Project Sprints: " + error);
-                                }
+                <form action="getProjectSprints" method="get">
+                    <div class="projectSelect">
+                        <select  class="form-select" aria-label="Default Select Example">
+                            <option value=""></option>
+                            <c:forEach items="${userProjects}" var="userProject">
+                                <option value="${userProject.getId()}">${userProject.getName()}</option>
+                            </c:forEach>
+                        </select>
+                        <input type="hidden" id="projectId" name="project-id">
+                    </div>
+                    <div class="sprintSelect">
+                        <select class="form-select" aria-label="Default select example">
+                        </select>
+                    </div>
+                    <script>
+                        $(document).ready(function () {
+                            $(".projectSelect").change(function () {
+                                // var projectId = $(this).val();
+                                var projectId = $(this).find("option:selected").val();
+                                $("#projectId").val(projectId);
+                                var $sprintSelect = $(this).closest(".project-sprint-select-create").find(".sprintSelect select");
+                                $sprintSelect.empty();
+                                $.ajax({
+                                    url: "projectSprints",
+                                    type: "GET",
+                                    data: {action: "getProjectSprints", projectId: projectId},
+                                    dataType: "json",
+                                    success: function (data) {
+                                        //Now we list the existing sprints for the selected project
+                                        $.each(data, function (index, sprint) {
+                                            $sprintSelect.append('<option value="' + sprint.id + '">' + sprint.name + '</option>');
+                                        });
+                                    },
+                                    error: function (xhr, status, error) {
+                                        console.error("ERROR getting Project Sprints: " + error);
+                                    }
+                                });
                             });
                         });
-                    });
-                </script>
+                    </script>
+                </form>
+
                 <form action="ProjectSprintsAPI" method="post">
                     <button class="createSprintButton" type="button" data-bs-toggle="modal"
                             data-bs-target="#createSprintModal">Create Sprint +</button>
@@ -158,8 +157,7 @@
                                     success: function (response) {
                                         //Handle server answer
                                         $(".sprintSelect select").append('option value="' + response.id + '">' + response.name + '</option>');
-                                        $("#createSprintModal").modal("hide");
-                                        console.log(response);
+                                        location.reload();
                                     },
                                     error: function (xhr, status, error) {
                                         console.error("ERROR while creating new sprint: ", error);
@@ -220,6 +218,89 @@
                         });
                     </script>
                 </form>
+                <form action="getSprintInfo" method="get">
+                    <button class="sprintInfoButton" type="button" data-bs-toggle="modal"
+                            data-bs-target="#sprintInfoModal">Sprint Info</button>
+                    <!-- <button class="sprintInfoButton" type="button" data-bs-toggle="modal"
+                    data-bs-target="#sprintInfoModal">Sprint Info</button> -->
+                    <!-- CREATE SPRINT MODAL -->
+                    <div class="modal fade" id="sprintInfoModal" tabindex="-1"
+                         aria-labelledby="sprintInfoModalLabel" aria-hidden="true">
+                        <div id="sprintInfo" class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="sprintInfoModalLabel">Sprint Information</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                            aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <form>
+                                        <div class="mb-3">
+                                            <label for="sprint-name" class="col-form-label">Name:</label>
+                                            <input id="sprintName" name="sprint-name" type="text" class="form-control" readonly>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="sprint-description" class="col-form-label">Description:</label>
+                                            <textarea id="sprintDescription" name="sprint-description" class="form-control" readonly></textarea>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="start-date-picker" class="col-form-label">Start Date:</label>
+                                            <div class="input-group date" id="startDatePicker">
+                                                <input id="startDate" name="start-date-picker" type="text" class="form-control" readonly>
+                                                <span class="input-group-append">
+                                            </div>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="end-date-picker" class="col-form-label">End Date:</label>
+                                            <div class="input-group date" id="endDatePicker">
+                                                <input id="endDate" name="end-date-picker" type="text" class="form-control" readonly>
+                                                <span class="input-group-append">
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                                <div class="modal-footer">
+                                    <button id="closeSprintInfoButton" type="button" class="btn btn-secondary"
+                                            data-bs-dismiss="modal">Close</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+                <script type="text/javascript">
+                    $(document).ready(function () {
+                        $(".sprintInfoButton").click(function () {
+                            const infoModal = bootstrap.Modal.getOrCreateInstance('#sprintInfoModal');
+                            console.log(infoModal);
+                            var sprintId = $(".sprintSelect select").val();
+                            if (!sprintId) {
+                                alert("Please, select a sprint first.");
+                                return;
+                            }
+                            var requestData = {
+                                action: "getSprintInfo",
+                                sprintId: sprintId
+                            };
+                            $.ajax({
+                                url: "projectSprints",
+                                type: "GET",
+                                data: requestData,
+                                dataType: "json",
+                                success: function (data) {
+                                    $("#sprintName").val(data.name);
+                                    $("#sprintDescription").val(data.description);
+                                    $("#startDate").val(data.startDate);
+                                    $("#endDate").val(data.endDate);
+                                    console.log(data);
+                                    infoModal.show();
+                                },
+                                error: function (xhr, status, error) {
+                                    console.error("ERROR Getting Sprint Info: " + error);
+                                }
+                            });
+                        });
+                    });
+                </script>
             </div>
             <div class="lanes">
                 <div id="sprint-backlog-lane" class="swim-lane">

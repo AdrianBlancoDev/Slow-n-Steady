@@ -19,6 +19,8 @@ import java.io.PrintWriter;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import model.Sprint;
 import model.persist.SprintDao;
 
@@ -53,12 +55,31 @@ public class ProjectSprintsAPI extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        long projectId = Long.parseLong(request.getParameter("projectId"));
-        List<Sprint> projectSprints = getProjectSprints(projectId);
-        //We parse the sprint list to JSON
-        Gson gsonParser = new Gson();
-        String sprintsToJson = gsonParser.toJson(projectSprints);
-        response.getWriter().write(sprintsToJson);
+        String action = request.getParameter("action");
+        if ("getProjectSprints".equals(action)) {
+            long projectId = Long.parseLong(request.getParameter("projectId"));
+            List<Sprint> projectSprints = getProjectSprints(projectId);
+            //We parse the sprint list to JSON
+            Gson gsonParser = new Gson();
+            String sprintsToJson = gsonParser.toJson(projectSprints);
+            response.getWriter().write(sprintsToJson);
+        } else if ("getSprintInfo".equals(action)) {
+            try {
+                //In order to get an specific sprint info
+                long sprintId = Long.parseLong(request.getParameter("sprintId"));
+                SprintDao sprintDao = new SprintDao();
+                Sprint sprint = sprintDao.selectSprintById(sprintId);
+                System.out.println(sprint.toString());
+                //We parse the data to JSON in order to send it as a response
+                Gson gson = new Gson();
+                String sprintJson = gson.toJson(sprint);
+                //Set the response type and send it back
+                response.setContentType("application/json");
+                response.getWriter().write(sprintJson);
+            } catch (SQLException ex) {
+                Logger.getLogger(ProjectSprintsAPI.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
     }
 
     /**

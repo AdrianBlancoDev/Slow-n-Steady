@@ -38,6 +38,8 @@ public class SprintDao {
     private void initQueries() {
         //Listar los Sprints de un Proyecto
         queries.put("selectSprintsByProject", "SELECT * FROM sprint WHERE project_id = ?;");
+        //Seleccionar un Sprint dado el id
+        queries.put("selectSprintWhereID", "SELECT * FROM sprint WHERE id = ?");
         //Crear un Sprint para un Proyecto
         queries.put("createSprint", "INSERT INTO sprint VALUES (null, ?, ?, ?, ?, ?);");
         //Eliminar un Sprint por id de Proyecto
@@ -93,7 +95,28 @@ public class SprintDao {
         }
         return result;
     }
-
+    
+    /**
+     * Fetches a Sprint from database, given its ID:
+     * @param sprintId id of the sprint we want to fetch
+     * @return found sprint or null in case any error takes place
+     * @throws SQLException in case of error
+     */
+    public Sprint selectSprintById(long sprintId) throws SQLException{
+        Sprint result = null;
+        try(Connection conn = dbConnect.getConnection()) {
+            if (conn != null) {
+                String query = queries.get("selectSprintWhereID");
+                PreparedStatement st = conn.prepareStatement(query);
+                st.setLong(1, sprintId);
+                ResultSet rs = st.executeQuery();
+                if (rs.next()) {
+                    result = sprintFromResultSet(rs);
+                }
+            }
+        }
+        return result;
+    }
     /**
      * Creates a new Sprint, given a Sprint Object with all its data
      *
