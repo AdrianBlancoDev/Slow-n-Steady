@@ -12,13 +12,16 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import model.Project;
 import model.persist.ProjectDao;
+import model.persist.UserProjectDao;
 
 /**
  *
@@ -30,28 +33,62 @@ public class ProjectsAPI extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         try {
-            long projectId = Long.parseLong(request.getParameter("projectId"));
-            String projectName = request.getParameter("projectName");
-            String projectDescription = request.getParameter("projectDescription");
-            String projectStartDateStr = request.getParameter("projectStartDate");
-            
-            Date projectStartDate = null;
-            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-            try {
-                projectStartDate = (Date) dateFormat.parse(projectStartDateStr);
-            }catch (java.text.ParseException ex) {
-                Logger.getLogger(ProjectsAPI.class.getName()).log(Level.SEVERE, null, ex);
+            String projectDaoFunction = request.getParameter("projectDAO");
+            switch (projectDaoFunction) {
+                case "modify":
+                    long projectIdM = Long.parseLong(request.getParameter("projectId"));
+                    String projectNameM = request.getParameter("projectName");
+                    String projectDescriptionM = request.getParameter("projectDescription");
+                    String projectStartDateStrM = request.getParameter("projectStartDate");
+
+                    Date projectStartDateM = null;
+                    SimpleDateFormat dateFormatM = new SimpleDateFormat("yyyy-MM-dd");
+                    try {
+                        projectStartDateM = (Date) dateFormatM.parse(projectStartDateStrM);
+                    } catch (java.text.ParseException ex) {
+                        Logger.getLogger(ProjectsAPI.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+
+                    ProjectDao projectDaoM = new ProjectDao();
+                    Project newProjectM = new Project(projectNameM, projectDescriptionM, projectStartDateM);
+                    projectDaoM.modifyProject(projectIdM, newProjectM);
+                    break;
+                case "delete":
+                    long projectIdD = Long.parseLong(request.getParameter("projectId"));
+
+                    ProjectDao projectDaoD = new ProjectDao();
+                    projectDaoD.deleteProject(projectIdD);
+                    break;
+                case "create":
+                    String projectNameC = request.getParameter("projectName");
+                    String projectDescriptionC = request.getParameter("projectDescription");
+                    String projectStartDateStrC = request.getParameter("projectStartDate");
+
+                    Date projectStartDateC = null;
+                    SimpleDateFormat dateFormatC = new SimpleDateFormat("yyyy-MM-dd");
+                    try {
+                        projectStartDateC = (Date) dateFormatC.parse(projectStartDateStrC);
+                    } catch (java.text.ParseException ex) {
+                        Logger.getLogger(ProjectsAPI.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+
+                    Date projectCreationDateC = new Date();
+
+                    ProjectDao projectDaoC = new ProjectDao();
+                    Project newProjectC = new Project(projectNameC, projectDescriptionC, projectStartDateC, projectCreationDateC);
+                    projectDaoC.createProject(newProjectC);
+                    long idProjectC = projectDaoC.selectProjectIdByName(projectNameC);
+                    HttpSession session = request.getSession(false);
+                    long idUserC = (long) session.getAttribute("userId");
+                    
+                    UserProjectDao userProjectDaoC = new UserProjectDao();
+
+
+                    userProjectDaoC.setProjectAdmin(idProjectC, idUserC);
+                    break;
             }
-            
-            ProjectDao projectDao = new ProjectDao();
-            Project newProject = new Project(projectName, projectDescription, projectStartDate);
-            projectDao.modifyProject(projectId, newProject);
-            
-            System.out.println("ID del proyecto: " + projectId);
-            System.out.println("Nombre del proyecto: " + projectName);
-            System.out.println("Descripción del proyecto: " + projectDescription);
-            System.out.println("Fecha de inicio del proyecto: " + projectStartDate);
-        }catch (SQLException ex) {
+
+        } catch (SQLException ex) {
             Logger.getLogger(ProjectsAPI.class.getName()).log(Level.SEVERE, null, ex);
         }
     }

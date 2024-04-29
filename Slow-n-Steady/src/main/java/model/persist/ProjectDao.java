@@ -35,6 +35,8 @@ public class ProjectDao {
     private void initQueries() {
         //Selects all existing projects
         queries.put("selectProjects", "SELECT * FROM project;");
+        //Selects all existing projects 
+        queries.put("selectIdProjectsByName", "SELECT p.id FROM project AS p WHERE p.name = ?;");
         //Creates a Project
         queries.put("addProject", "INSERT INTO project VALUES(null, ?, ?, ?, ?)");
         //Deletes a Project by Id
@@ -82,8 +84,22 @@ public class ProjectDao {
                     result.add(project);
                 }
             }
-        } 
+        }
         return result;
+    }
+
+    public long selectProjectIdByName(String name) throws SQLException {
+        long projectId = 0;
+        try (Connection conn = dbConnect.getConnection()) {
+            String query = queries.get("selectIdProjectsByName");
+            PreparedStatement st = conn.prepareStatement(query);
+            st.setString(1, name);
+            ResultSet rs = st.executeQuery();
+            if (rs.next()) {
+                projectId = rs.getLong("id");
+            }
+        }
+        return projectId;
     }
 
     /**
@@ -101,8 +117,8 @@ public class ProjectDao {
             PreparedStatement st = conn.prepareStatement(query);
             st.setString(1, project.getName());
             st.setString(2, project.getDescription());
-            st.setDate(3, (java.sql.Date) project.getCreationDate());
-            st.setDate(4, (java.sql.Date) project.getStartDate());
+            st.setDate(3, new java.sql.Date(project.getCreationDate().getTime()));
+            st.setDate(4, new java.sql.Date(project.getStartDate().getTime()));
             result = st.executeUpdate();
         }
         return result;
@@ -125,30 +141,30 @@ public class ProjectDao {
         }
         return result;
     }
+
     /**
      * Modifies a project given its id and a new Project object with the updated
      * data, except the creation_date, which will never be changed.
+     *
      * @param projectId
      * @param updatedProject
-     * @return 
-     * @throws java.sql.SQLException 
+     * @return
+     * @throws java.sql.SQLException
      */
     public int modifyProject(long projectId, Project updatedProject) throws SQLException {
-       int result = 0;
-    try (Connection conn = dbConnect.getConnection()) {
-        String query = queries.get("updateProject");
-        PreparedStatement st = conn.prepareStatement(query);
-        st.setString(1, updatedProject.getName());
-        st.setString(2, updatedProject.getDescription());
-st.setDate(3, new java.sql.Date(updatedProject.getStartDate().getTime()));
-        st.setLong(4, projectId);
-        
-        // Ejecutar la actualización y obtener el resultado
-        result = st.executeUpdate();
-    } catch (SQLException e) {
-        // Manejar la excepción SQLException aquí
-        e.printStackTrace(); // Imprimir el stack trace para identificar el error
-    }
-    return result;
+        int result = 0;
+        try (Connection conn = dbConnect.getConnection()) {
+            String query = queries.get("updateProject");
+            PreparedStatement st = conn.prepareStatement(query);
+            st.setString(1, updatedProject.getName());
+            st.setString(2, updatedProject.getDescription());
+            st.setDate(3, new java.sql.Date(updatedProject.getStartDate().getTime()));
+            st.setLong(4, projectId);
+
+            result = st.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return result;
     }
 }

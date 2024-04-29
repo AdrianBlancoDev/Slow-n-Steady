@@ -47,7 +47,7 @@
                                             <a class="btn btn-outline-* p-0 fw-bold text-decoration-underline modify-btn" data-bs-toggle="modal" data-bs-target="#modifyModal" data-project-id="${projectAdmin.getId()}"  data-project-name="${projectAdmin.getName()}" data-project-description="${projectAdmin.getDescription()}" data-project-startdate="${projectAdmin.getStartDate()}" >Modify</a>
                                         </div>
                                         <div class="col-md">
-                                            <a type="button" class="btn btn-outline-* p-0 fw-bold text-decoration-underline" data-bs-toggle="modal" data-bs-target="#deleteModal">Delete</a>
+                                            <a class="btn btn-outline-* p-0 fw-bold text-decoration-underline delete-btn" data-bs-toggle="modal" data-bs-target="#deleteModal" data-project-id="${projectAdmin.getId()}">Delete</a>
                                         </div>
                                         <div class="col-md">
                                             <icon>
@@ -91,7 +91,7 @@
                         <div class="modal-content bg-image-modal">
                             <!-- Modal Header -->
                             <div class="modal-header">
-                                <h4 class="modal-title col-12 text-center">New Task</h4>
+                                <h4 class="modal-title col-12 text-center">New Project</h4>
                             </div>
                             <!-- Modal body -->
                             <div class="modal-body">
@@ -99,7 +99,7 @@
                                     <div class="mb-3">
                                         <label for="basic-url" class="form-label">New Project:</label>
                                         <div class="input-group">
-                                            <input type="text" class="form-control" id="name" name="name" required/>
+                                            <input type="text" class="form-control" id="modal_name_add" name="name" required/>
                                         </div>
                                     </div>
                                     <div class="mb-3">
@@ -118,23 +118,54 @@
                                     <div class="mb-3">
                                         <label for="basic-url" class="form-label">Description:</label>
                                         <div class="input-group">
-                                            <textarea class="form-control" aria-label="With textarea" id="description" name="description" required></textarea>
+                                            <textarea class="form-control" aria-label="With textarea" id="modal_description_add" name="description" required></textarea>
                                         </div>
                                     </div>
                                     <div class="mb-3">
                                         <label for="basic-url" class="form-label">Start Date:</label>
                                         <div class="input-group">
-                                            <input type="text" class="form-control" id="basic-url" aria-describedby="basic-addon3 basic-addon4">
+                                            <input type="text" class="form-control" id="modal_startDate_add" aria-describedby="basic-addon3 basic-addon4">
                                         </div>
                                     </div>
                                 </form>
                             </div>
                             <!-- Modal footer -->
                             <div class="modal-footer">
-                                <button type="button" class="btn btn-dark" data-bs-dismiss="modal">Close</button>
-                                <button class="btn btn-dark" type="submit" data-bs-toggle="modal" data-bs-target="#addTaskModal">
+                                <button class="btn btn-dark" type="submit" id="addProjectBtn" data-bs-toggle="modal">
                                     Add Task
                                 </button>
+                                <script>
+                                    $(document).ready(function () {
+                                        $("#addProjectBtn").click(function () {
+                                            // Obtener los valores del modal
+                                            var projectName = $("#modal_name_add").val();
+                                            var projectDescription = $("#modal_description_add").val();
+                                            var projectStartDate = $("#modal_startDate_add").val();
+                                            var projectDao = "create"
+                                            // Crear un objeto con los parámetros a enviar al servlet
+                                            var requestData = {
+                                                projectName: projectName,
+                                                projectDescription: projectDescription,
+                                                projectStartDate: projectStartDate,
+                                                projectDAO: projectDao
+                                            };
+
+                                            $.ajax({
+                                                url: "ProjectsAPI",
+                                                type: "POST",
+                                                data: requestData,
+                                                success: function () {
+                                                    console.log("¡Datos enviados al servidor con éxito!");
+                                                    location.reload();
+                                                },
+                                                error: function (xhr, status, error) {
+                                                    console.error("ERROR al enviar datos al servidor: " + error);
+                                                }
+                                            });
+                                        });
+                                    });
+                                </script>
+                                <button type="button" class="btn btn-dark" data-bs-dismiss="modal">Close</button>
                             </div>
                         </div>
                     </div>
@@ -232,23 +263,24 @@
                                             var projectName = $("#modal_body").val();
                                             var projectDescription = $("#modal_description").val();
                                             var projectStartDate = $("#modal_startDate").val();
-
+                                            var projectDao = "modify"
                                             // Crear un objeto con los parámetros a enviar al servlet
                                             var requestData = {
                                                 projectId: projectId,
                                                 projectName: projectName,
                                                 projectDescription: projectDescription,
-                                                projectStartDate: projectStartDate
+                                                projectStartDate: projectStartDate,
+                                                projectDAO: projectDao
                                             };
 
                                             $.ajax({
                                                 url: "ProjectsAPI",
-                                                type: "POST", // O cambia a "GET" si prefieres
+                                                type: "POST",
                                                 data: requestData,
                                                 success: function () {
                                                     console.log("¡Datos enviados al servidor con éxito!");
-    location.reload();                                            
-    },
+                                                    location.reload();
+                                                },
                                                 error: function (xhr, status, error) {
                                                     console.error("ERROR al enviar datos al servidor: " + error);
                                                 }
@@ -277,8 +309,37 @@
                             </div>
                             <!-- Modal footer -->
                             <div class="modal-footer d-grid gap-2 d-md-flex justify-content-center">
+                                <button  id="deleteProjectBtn" type="button" class="btn btn-danger">Delete</button>
+                                <script>
+                                    $(document).ready(function () {
+                                        // Manejar clic en botón de eliminar proyecto
+                                        $("#deleteProjectBtn").click(function () {
+                                            // Obtener el ID del proyecto a eliminar desde el atributo de datos
+                                             var projectId = $("#deleteProjectBtn").data("project-id");
+                                             var projectDao = "delete";
+                                             console.log(projectId);
+                                            // Crear un objeto con los parámetros a enviar al servlet
+                                            var requestData = {
+                                                projectId: projectId,
+                                                projectDAO: projectDao
+                                            };
+                                            $.ajax({
+                                                url: "ProjectsAPI", // URL del servlet o endpoint API
+                                                type: "POST",
+                                                data: requestData,
+                                                success: function () {
+                                                    console.log("¡Proyecto eliminado con éxito!");
+                                                    location.reload(); // Recargar la página para actualizar la tabla
+                                                },
+                                                error: function (xhr, status, error) {
+console.error("ERROR al eliminar el proyecto: " + error.toString() + " Status: " + status + " XMLHttpRequest: " + xhr);
+                                                }
+                                            });
+
+                                        });
+                                    });
+                                </script>
                                 <button type="button" class="btn btn-light" data-bs-dismiss="modal">Cancel</button>
-                                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Delete</button>
                             </div>
                         </div>
                     </div>
@@ -301,7 +362,12 @@
             $("#modifyProjectBtn").data("project-id", projectId);
         });
     </script>
-
+    <script type="text/javascript">
+        $(".delete-btn").click(function () {
+    var projectId = $(this).data("project-id");
+    $("#deleteProjectBtn").data("project-id", projectId);
+});
+    </script>
 
 </html>
 
