@@ -263,7 +263,7 @@
                                             var projectName = $("#modal_body").val();
                                             var projectDescription = $("#modal_description").val();
                                             var projectStartDate = $("#modal_startDate").val();
-                                            var projectDao = "modify"
+                                            var projectDao = "modify";
                                             // Crear un objeto con los parámetros a enviar al servlet
                                             var requestData = {
                                                 projectId: projectId,
