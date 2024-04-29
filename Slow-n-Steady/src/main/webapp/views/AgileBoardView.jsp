@@ -5,7 +5,8 @@
     <head>
         <title>Agile Board</title>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <link rel="stylesheet" href="styles/AgileBoardStyles.css" />
+        <link rel="stylesheet" href="styles/AgileBoardStyles.css"/>
+        <link rel="stylesheet" href="styles/tasks/tasks_Css.css"/>
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
         <script defer src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
         <script src="https://code.jquery.com/jquery-3.7.1.js"
@@ -76,7 +77,7 @@
                     <div class="modal fade" id="createSprintModal" tabindex="-1"
                          aria-labelledby="createSprintModalLabel" aria-hidden="true">
                         <div class="modal-dialog">
-                            <div class="modal-content">
+                            <div class="modal-content bg-image-modal">
                                 <div class="modal-header">
                                     <h5 class="modal-title" id="createSprintModalLabel">Creating a Sprint</h5>
                                     <button type="button" class="btn-close" data-bs-dismiss="modal"
@@ -175,7 +176,7 @@
                     <!-- Delete Sprint Modal -->
                     <div class="modal fade" id="deleteSprintModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
                         <div class="modal-dialog">
-                            <div class="modal-content">
+                            <div class="modal-content bg-image-modal">
                                 <div class="modal-header">
                                     <h1 class="modal-title fs-5" id="staticBackdropLabel">Deleting Sprint</h1>
                                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -221,13 +222,11 @@
                 <form action="getSprintInfo" method="get">
                     <button class="sprintInfoButton" type="button" data-bs-toggle="modal"
                             data-bs-target="#sprintInfoModal">Sprint Info</button>
-                    <!-- <button class="sprintInfoButton" type="button" data-bs-toggle="modal"
-                    data-bs-target="#sprintInfoModal">Sprint Info</button> -->
                     <!-- CREATE SPRINT MODAL -->
                     <div class="modal fade" id="sprintInfoModal" tabindex="-1"
                          aria-labelledby="sprintInfoModalLabel" aria-hidden="true">
                         <div id="sprintInfo" class="modal-dialog">
-                            <div class="modal-content">
+                            <div class="modal-content bg-image-modal">
                                 <div class="modal-header">
                                     <h5 class="modal-title" id="sprintInfoModalLabel">Sprint Information</h5>
                                     <button type="button" class="btn-close" data-bs-dismiss="modal"
@@ -237,23 +236,23 @@
                                     <form>
                                         <div class="mb-3">
                                             <label for="sprint-name" class="col-form-label">Name:</label>
-                                            <input id="sprintName" name="sprint-name" type="text" class="form-control" readonly>
+                                            <input id="sprintNameInfo" name="sprint-name" type="text" class="form-control" readonly>
                                         </div>
                                         <div class="mb-3">
                                             <label for="sprint-description" class="col-form-label">Description:</label>
-                                            <textarea id="sprintDescription" name="sprint-description" class="form-control" readonly></textarea>
+                                            <textarea id="sprintDescriptionInfo" name="sprint-description" class="form-control" readonly></textarea>
                                         </div>
                                         <div class="mb-3">
                                             <label for="start-date-picker" class="col-form-label">Start Date:</label>
                                             <div class="input-group date" id="startDatePicker">
-                                                <input id="startDate" name="start-date-picker" type="text" class="form-control" readonly>
+                                                <input id="startDateInfo" name="start-date-picker" type="text" class="form-control" readonly>
                                                 <span class="input-group-append">
                                             </div>
                                         </div>
                                         <div class="mb-3">
                                             <label for="end-date-picker" class="col-form-label">End Date:</label>
                                             <div class="input-group date" id="endDatePicker">
-                                                <input id="endDate" name="end-date-picker" type="text" class="form-control" readonly>
+                                                <input id="endDateInfo" name="end-date-picker" type="text" class="form-control" readonly>
                                                 <span class="input-group-append">
                                             </div>
                                         </div>
@@ -287,12 +286,14 @@
                                 data: requestData,
                                 dataType: "json",
                                 success: function (data) {
-                                    $("#sprintName").val(data.name);
-                                    $("#sprintDescription").val(data.description);
-                                    $("#startDate").val(data.startDate);
-                                    $("#endDate").val(data.endDate);
-                                    console.log(data);
-                                    infoModal.show();
+                                    var sprintName = data.name;
+                                    var sprintDescription = data.description;
+                                    var startDate = data.startDate;
+                                    var endDate = data.endDate;
+                                    $("#sprintNameInfo").val(sprintName);
+                                    $("#sprintDescriptionInfo").val(sprintDescription);
+                                    $("#startDateInfo").val(startDate);
+                                    $("#endDateInfo").val(endDate);
                                 },
                                 error: function (xhr, status, error) {
                                     console.error("ERROR Getting Sprint Info: " + error);
@@ -456,7 +457,9 @@
                                 var tasksContainer = $(laneSelector + " .tasks-container");
                                 tasksContainer.empty();//We clear the existing tasks
                                 $.each(data, function (index, task) {
-                                    tasksContainer.append('<p class="task" draggable="true" data-task-id="' + task.id + '">' + task.name + '</p>');
+                                    // Agregar un identificador único a cada tarea
+                                    var taskId = sprintId + "_" + task.id;
+                                    tasksContainer.append('<p id="' + taskId + '" class="task" draggable="true" data-task-id="' + task.id + '">' + task.name + '</p>');
                                 });
 
                                 setupDragAndDrop();
@@ -480,6 +483,16 @@
                     $(".sprintSelect select").change(function () {
                         //var newProjectId = $(".projectSelect select").val();
                         var newSprintId = $(".sprintSelect select").val();
+
+                        // Eliminar las tareas del sprint anterior del DOM
+                        $(".task").each(function () {
+                            if (!$(this).attr("id").startsWith(newSprintId + "_")) {
+                                $(this).remove();
+                            }
+                        });
+                        
+                        // Limpiar las columnas de tareas antes de cargar las tareas del nuevo sprint
+                        $(".swim-lane .tasks-container").empty();
 
                         //Load tasks in each lane with the new selected sprint and project
                         loadTasksInLane(newSprintId, 1, "#sprint-backlog-lane");
@@ -507,10 +520,9 @@
                                 const bottomTask = insertAboveTask(zone, e.clientY);
                                 const curTask = document.querySelector(".is-dragging");
 
-                                if (!bottomTask) {
+                                if (curTask && !zone.contains(curTask)) {
+                                    // Solo si la tarea arrastrada no es hija de esta columna
                                     zone.appendChild(curTask);
-                                } else {
-                                    zone.insertBefore(curTask, bottomTask);
                                 }
                             });
 
@@ -542,35 +554,35 @@
                         });
                     }
                 });
-
-                // Función setupDragAndDrop
-                function setupDragAndDrop() {
-                    const draggables = document.querySelectorAll(".task");
-                    const droppables = document.querySelectorAll(".swim-lane");
-
-                    draggables.forEach((task) => {
-                        task.addEventListener("dragstart", () => {
-                            task.classList.add("is-dragging");
-                        });
-                        task.addEventListener("dragend", () => {
-                            task.classList.remove("is-dragging");
-                        });
-                    });
-
-                    droppables.forEach((zone) => {
-                        zone.addEventListener("dragover", (e) => {
-                            e.preventDefault();
-                            const bottomTask = insertAboveTask(zone, e.clientY);
-                            const curTask = document.querySelector(".is-dragging");
-
-                            if (!bottomTask) {
-                                zone.appendChild(curTask);
-                            } else {
-                                zone.insertBefore(curTask, bottomTask);
-                            }
-                        });
-                    });
-                }
+//
+//                // Función setupDragAndDrop
+//                function setupDragAndDrop() {
+//                    const draggables = document.querySelectorAll(".task");
+//                    const droppables = document.querySelectorAll(".swim-lane");
+//
+//                    draggables.forEach((task) => {
+//                        task.addEventListener("dragstart", () => {
+//                            task.classList.add("is-dragging");
+//                        });
+//                        task.addEventListener("dragend", () => {
+//                            task.classList.remove("is-dragging");
+//                        });
+//                    });
+//
+//                    droppables.forEach((zone) => {
+//                        zone.addEventListener("dragover", (e) => {
+//                            e.preventDefault();
+//                            const bottomTask = insertAboveTask(zone, e.clientY);
+//                            const curTask = document.querySelector(".is-dragging");
+//
+//                            if (!bottomTask) {
+//                                zone.appendChild(curTask);
+//                            } else {
+//                                zone.insertBefore(curTask, bottomTask);
+//                            }
+//                        });
+//                    });
+//                }
             </script>
         </div>
     </body>
