@@ -24,12 +24,18 @@
 
                 /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
                 /*background: linear-gradient(to right, #ee7724, #d8363a, #dd3675, #b44593);*/
-                
+
                 background: rgb(15,15,17);
                 background: linear-gradient(90deg, rgba(15,15,17,1) 0%, rgba(147,49,189,1) 33%, rgba(26,29,189,1) 100%);
             }
-            
-            
+
+            .purple-background{
+                background: url("https://cdn.discordapp.com/attachments/1229455660035342397/1232234911889621013/bg3.png?ex=6630a0b0&is=662f4f30&hm=658594aeea72b9cf7e989231bbfbc8276576a9ee2321e7fde30a40deda07be8d&");
+                background-repeat: no-repeat;
+                background-size: cover;
+                background-position: center;
+            }
+
 
 
             @media (min-width: 768px) {
@@ -43,6 +49,10 @@
                     border-bottom-right-radius: .3rem;
                 }
             }
+
+            .logo{
+                border-radius: 50%;
+            }
         </style>
     </head>
     <body>
@@ -52,17 +62,17 @@
                     <div class="col-xl-10">
                         <div class="card rounded-3 text-black">
                             <div class="row g-0">
-                                <div class="col-lg-6 d-flex align-items-center gradient-custom-2">
+                                <div class="col-lg-6 d-flex align-items-center purple-background">
                                     <div class="text-white px-3 py-4 p-md-5 mx-md-4">
-                                        <h4 class="mb-4">[Eslogan]></h4>
-                                        <p class="small mb-0">[Descripcion de la aplicacion]</p>
+                                        <p class="small mb-0">An application to manage little teams with Scrum methodologies</p>
+                                        <h4 class="mb-4">Win the race. Together</h4>
                                     </div>
                                 </div>
                                 <div class="col-lg-6">
                                     <div class="card-body p-md-5 mx-md-4">
 
                                         <div class="text-center">
-                                            <img src="./img/Logo4.jpg"
+                                            <img class="logo" src="views/img/Logo4.jpg"
                                                  style="width: 185px;" alt="logo">
                                             <h4 class="mt-1 mb-5 pb-1">Slow and Steady</h4>
                                         </div>
@@ -70,22 +80,22 @@
                                         <form method="POST" action="./">
                                             <div data-mdb-input-init class="form-outline mb-4">
                                                 <input id="user" class="form-control" name="user"
-                                                       placeholder="User name or email address" />
+                                                       placeholder="User name" />
                                             </div>
 
                                             <div data-mdb-input-init class="form-outline mb-4">
-                                                <input type="password" id="password" class="form-control" name="password" />
+                                                <input type="password" id="password" class="form-control" name="password" placeholder="Password"/>
                                             </div>
 
                                             <div class="text-center pt-1 mb-5 pb-1 container row">
                                                 <button  class="btn btn-primary btn-block border border-0 gradient-custom-2 col" type="submit">Log
                                                     in</button>
-                                                <a class="text-muted text-end col" href="#!">Forgot password?</a>
+                                                <!--<a class="text-muted text-end col" href="#!">Forgot password?</a>-->
                                             </div>
 
                                             <div class="d-flex align-items-center justify-content-center pb-4">
                                                 <p class="mb-0 me-2">Don't have an account?</p>
-                                                <button type="submit" formaction="./register" formmethod="GET" class="btn">Create new</button>
+                                                <button type="submit" formaction="./register" formmethod="GET" class="btn btn-primary btn-block border border-0 btn gradient-custom-2">Create new</button>
                                             </div>
 
                                         </form>
