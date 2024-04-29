@@ -99,14 +99,18 @@ public class Tasks_Controller extends HttpServlet {
         String selection = request.getParameter("selection");
 
         if (selection.equals("delete")) {
-long id = 0;
+            long id = 0;
             try {
                 taskDao.deleteTask(id);
             } catch (SQLException ex) {
                 Logger.getLogger(Tasks_Controller.class.getName()).log(Level.SEVERE, null, ex);
             }
         }else if(selection.equals("create")) {
+
+            task.setProjectId(Long.parseLong(request.getParameter("projectId")));
+
             task.setProjectId(1);
+
             task.setName(request.getParameter("name"));
             task.setDescription(request.getParameter("description"));
             task.setPriority(Integer.parseInt(request.getParameter("priority")));
