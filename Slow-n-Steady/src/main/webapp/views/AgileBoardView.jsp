@@ -27,7 +27,7 @@
         <div class="board">
             <!-- SPRINT SELECT -->
             <div class="project-sprint-select-create">
-                <form action="getProjectSprints" method="get">
+                <form id="selectors" action="getProjectSprints" method="get">
                     <div class="projectSelect">
                         <select  class="form-select" aria-label="Default Select Example">
                             <option value=""></option>
@@ -69,7 +69,6 @@
                         });
                     </script>
                 </form>
-
                 <form action="ProjectSprintsAPI" method="post">
                     <button class="createSprintButton" type="button" data-bs-toggle="modal"
                             data-bs-target="#createSprintModal">Create Sprint +</button>
@@ -425,7 +424,6 @@
                     <p class="task" draggable="true">Design Login View</p>
                     <p class="task" draggable="true">Implement Login Backend with Login Views</p> -->
                 </div>
-
                 <div id="for-testing-lane" class="swim-lane" data-state-id="3">
                     <h3 class="heading">Ready for Testing</h3>
                     <div class="tasks-container"></div>
@@ -535,7 +533,6 @@
                                     type: "POST",
                                     data: reqData,
                                     success: function (response) {
-                                        alert("Task State Correctly Modified!");
                                     },
                                     error: function (xhr, status, error) {
                                         console.error("ERROR while trying to change Task State: " + error);
@@ -544,36 +541,6 @@
                             });
                         });
                     }
-//                    droppables.forEach((zone) => {
-//                        zone.addEventListener("drop", (e) => {
-//                            e.preventDefault();
-//                        });
-//
-//                        zone.addEventListener("drop", (e) => {
-//                            e.preventDefault();
-//                            const currTask = document.querySelector(".is-dragging");
-//                            const taskId = currTask.dataset.taskId;
-//                            const stateId = zone.dataset.stateId;
-//
-//                            var reqData = {
-//                                action: "modifyTaskState",
-//                                taskId: taskId,
-//                                stateId: stateId
-//                            }
-//                            //We do the AJAX request
-//                            $.ajax({
-//                                url: "sprintTasks",
-//                                type: "POST",
-//                                data: reqData,
-//                                success: function(response){
-//                                    alert("Task State Correctly Modified!");
-//                                },
-//                                error: function(xhr, status, error){
-//                                    console.error("ERROR while trying to change Task State: " + error);
-//                                }
-//                            });
-//                        });
-//                    });
                 });
 
                 // Función setupDragAndDrop
