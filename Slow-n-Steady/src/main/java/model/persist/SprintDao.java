@@ -38,10 +38,12 @@ public class SprintDao {
     private void initQueries() {
         //Listar los Sprints de un Proyecto
         queries.put("selectSprintsByProject", "SELECT * FROM sprint WHERE project_id = ?;");
+        //Seleccionar un Sprint dado el id
+        queries.put("selectSprintWhereID", "SELECT * FROM sprint WHERE id = ?");
         //Crear un Sprint para un Proyecto
         queries.put("createSprint", "INSERT INTO sprint VALUES (null, ?, ?, ?, ?, ?);");
-        //Eliminar un Sprint
-        queries.put("deleteSprintByProjectId", "DELETE FROM sprint WHERE id = ?;");
+        //Eliminar un Sprint por id de Proyecto
+        queries.put("deleteSprint", "DELETE FROM sprint WHERE id = ?;");
         //Modificar un Sprint
         queries.put("modifySprint", "UPDATE sprint SET name = ?, description = ?, start_date = ?, end_date = ?, project_id = ?;");
     }
@@ -93,7 +95,28 @@ public class SprintDao {
         }
         return result;
     }
-
+    
+    /**
+     * Fetches a Sprint from database, given its ID:
+     * @param sprintId id of the sprint we want to fetch
+     * @return found sprint or null in case any error takes place
+     * @throws SQLException in case of error
+     */
+    public Sprint selectSprintById(long sprintId) throws SQLException{
+        Sprint result = null;
+        try(Connection conn = dbConnect.getConnection()) {
+            if (conn != null) {
+                String query = queries.get("selectSprintWhereID");
+                PreparedStatement st = conn.prepareStatement(query);
+                st.setLong(1, sprintId);
+                ResultSet rs = st.executeQuery();
+                if (rs.next()) {
+                    result = sprintFromResultSet(rs);
+                }
+            }
+        }
+        return result;
+    }
     /**
      * Creates a new Sprint, given a Sprint Object with all its data
      *
@@ -109,8 +132,8 @@ public class SprintDao {
                 PreparedStatement st = conn.prepareStatement(query);
                 st.setString(1, sprint.getName());
                 st.setString(2, sprint.getDescription());
-                st.setDate(3, (java.sql.Date) sprint.getStartDate());
-                st.setDate(4, (java.sql.Date) sprint.getEndDate());
+                st.setDate(3, new java.sql.Date(sprint.getStartDate().getTime()));
+                st.setDate(4, new java.sql.Date(sprint.getEndDate().getTime()));
                 st.setLong(5, sprint.getProjectId());
                 result = st.executeUpdate();
             }
@@ -136,6 +159,17 @@ public class SprintDao {
             st.setDate(3, (java.sql.Date) updatedSprint.getStartDate());
             st.setDate(4, (java.sql.Date) updatedSprint.getEndDate());
             st.setLong(5, sprintId);
+            result = st.executeUpdate();
+        }
+        return result;
+    }
+    
+    public int deleteSprint(long sprintId) throws SQLException{
+        int result = 0;
+        try(Connection conn = dbConnect.getConnection()) {
+            String query = queries.get("deleteSprint");
+            PreparedStatement st = conn.prepareStatement(query);
+            st.setLong(1, sprintId);
             result = st.executeUpdate();
         }
         return result;

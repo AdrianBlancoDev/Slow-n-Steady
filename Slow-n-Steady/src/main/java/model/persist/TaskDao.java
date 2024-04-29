@@ -1,3 +1,4 @@
+
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
@@ -34,20 +35,32 @@ public class TaskDao {
      * Puts in the hasmap all needed queries for the DAO.
      */
     private void initQueries() {
+        //Select Task by Id
+        queries.put("selectTaskById", "SELECT * FROM task WHERE id = ?;");
         //Select all Tasks of a Project
         queries.put("selectTasksByProject", "SELECT * FROM task WHERE project_id = ?;");
         //Select all Tasks of a Sprint of a Project
         queries.put("selectTaskBySprintByProject", "SELECT * FROM task WHERE project_id = ? AND sprint_id = ?;");
+        //Select all Tasks of a Project Without Sprint and State
+        queries.put("selectTasksByProjectNoSprintNoState", "SELECT * FROM task WHERE project_id = ? AND sprint_id IS NULL AND state_id IS NULL;");
         //Select All Project Tasks by State
         queries.put("selectTasksByState", "SELECT * FROM task WHERE project_id = ? AND state_id = ?;");
         //Select All Tasks of a Sprint of a Project by State
         queries.put("selectTasksBySprintByProject", "SELECT * FROM task WHERE project_id = ? AND sprint_id = ? AND state_id = ?;");
+        //Select All Tasks of a Sprint by State
+        queries.put("selectSprintTasksByState", "SELECT * FROM task WHERE sprint_id = ? AND state_id = ?;");
         //Create Task
-        queries.put("addTask", "INSERT INTO task VALUES (null, ?, ?, ?, ?, ?, ?, ?);");
+        queries.put("addTask", "INSERT INTO `sns_db`.`task` (`description`, `priority`, `name`, `project_id`) VALUES (?, ?, ?, ?);");
         //Delete Task by ID
         queries.put("deleteTask", "DELETE FROM task WHERE id = ?;");
         //Modify Task
-        queries.put("modifyTask", "UPDATE task SET name = ?, description = ?, timeEstimacy = ?, prioity = ?, projectId = ?, sprintId = ?, stateId = ? WHERE id = ?;");
+        queries.put("modifyTask", "UPDATE task SET name = ?, description = ?, prioity = ?, projectId = ?, sprintId = ?, stateId = ? WHERE id = ?;");
+
+        //Modify Task State
+        queries.put("modifyTaskState", "UPDATE task SET state_id = ? WHERE id = ?;");
+        //Set Task Sprint
+        queries.put("setTaskSprint", "UPDATE task SET sprint_id = ?, state_id = 1 WHERE id = ?;");
+
     }
 
     /**
@@ -63,13 +76,26 @@ public class TaskDao {
         long id = rs.getLong("id");
         String name = rs.getString("name");
         String description = rs.getString("description");
-        String timeEstimacy = rs.getString("time_estimacy");
-        int priority = rs.getInt("weight");
+        int priority = rs.getInt("priority");
         long projectId = rs.getLong("project_id");
         long sprintId = rs.getLong("sprint_id");
         long stateId = rs.getLong("state_id");
-        task = new Task(id, name, description, timeEstimacy, priority, projectId, sprintId, stateId);
+        task = new Task(id, name, description, priority, projectId, sprintId, stateId);
         return task;
+    }
+
+    public Task selectTaskById(long taskId) throws SQLException {
+        Task result = null;
+        try (Connection conn = dbConnect.getConnection()) {
+            String query = queries.get("selectTaskById");
+            PreparedStatement st = conn.prepareStatement(query);
+            st.setLong(1, taskId);
+            ResultSet rs = st.executeQuery();
+            if (rs.next()) {
+                result = taskFromResultSet(rs);
+            }
+        }
+        return result;
     }
 
     /**
@@ -86,7 +112,7 @@ public class TaskDao {
             String query = queries.get("selectTasksByProject");
             PreparedStatement st = conn.prepareStatement(query);
             st.setLong(1, projectId);
-            ResultSet rs = st.executeQuery(query);
+            ResultSet rs = st.executeQuery();
             while (rs.next()) {
                 Task task = taskFromResultSet(rs);
                 if (task != null) {
@@ -114,7 +140,24 @@ public class TaskDao {
             PreparedStatement st = conn.prepareStatement(query);
             st.setLong(1, projectId);
             st.setLong(2, sprintId);
-            ResultSet rs = st.executeQuery(query);
+            ResultSet rs = st.executeQuery();
+            while (rs.next()) {
+                Task task = taskFromResultSet(rs);
+                if (task != null) {
+                    result.add(task);
+                }
+            }
+        }
+        return result;
+    }
+
+    public List<Task> selectProjectTasksNoSprintNoState(long projectId) throws SQLException {
+        List<Task> result = new ArrayList<>();
+        try (Connection conn = dbConnect.getConnection()) {
+            String query = queries.get("selectTasksByProjectNoSprintNoState");
+            PreparedStatement st = conn.prepareStatement(query);
+            st.setLong(1, projectId);
+            ResultSet rs = st.executeQuery();
             while (rs.next()) {
                 Task task = taskFromResultSet(rs);
                 if (task != null) {
@@ -140,7 +183,7 @@ public class TaskDao {
             PreparedStatement st = conn.prepareStatement(query);
             st.setLong(1, projectId);
             st.setLong(2, stateId);
-            ResultSet rs = st.executeQuery(query);
+            ResultSet rs = st.executeQuery();
             while (rs.next()) {
                 Task task = taskFromResultSet(rs);
                 if (task != null) {
@@ -168,7 +211,7 @@ public class TaskDao {
             st.setLong(1, projectId);
             st.setLong(2, sprintId);
             st.setLong(3, stateId);
-            ResultSet rs = st.executeQuery(query);
+            ResultSet rs = st.executeQuery();
             while (rs.next()) {
                 Task task = taskFromResultSet(rs);
                 if (task != null) {
@@ -191,13 +234,10 @@ public class TaskDao {
         try (Connection conn = dbConnect.getConnection()) {
             String query = queries.get("addTask");
             PreparedStatement st = conn.prepareStatement(query);
-            st.setString(1, task.getName());
-            st.setString(2, task.getDescription());
-            st.setString(3, task.getTimeEstimacy());
-            st.setInt(4, task.getPriority());
-            st.setLong(5, task.getProjectId());
-            st.setLong(6, task.getSprintId());
-            st.setLong(7, task.getStateId());
+            st.setString(1, task.getDescription());
+            st.setInt(2, task.getPriority());
+            st.setString(3, task.getName());
+            st.setLong(4, task.getProjectId());
             result = st.executeUpdate();
         }
         return result;
@@ -220,28 +260,75 @@ public class TaskDao {
         }
         return result;
     }
+
     /**
      * Modifies an existant task, given its id and a new Task Object with the
      * updated data
+     *
      * @param taskId id of the task we want to modify
      * @param updatedTask task object with new data
      * @return 1 if successfull, 0 in case any error takes place.
      * @throws java.sql.SQLException
      */
-    public int modifyTask(int taskId, Task updatedTask) throws SQLException {
+    public int modifyTask(long taskId, Task updatedTask) throws SQLException {
         int result = 0;
         try (Connection conn = dbConnect.getConnection()) {
             String query = queries.get("modifyTask");
             PreparedStatement st = conn.prepareStatement(query);
             st.setString(1, updatedTask.getName());
             st.setString(2, updatedTask.getDescription());
-            st.setString(3, updatedTask.getTimeEstimacy());
-            st.setInt(4, updatedTask.getPriority());
-            st.setLong(5, updatedTask.getProjectId());
-            st.setLong(6, updatedTask.getSprintId());
-            st.setLong(7, updatedTask.getStateId());
-            st.setLong(8, taskId);
+            st.setInt(3, updatedTask.getPriority());
+            st.setLong(4, updatedTask.getProjectId());
+            st.setLong(5, updatedTask.getSprintId());
+            st.setLong(6, updatedTask.getStateId());
+            st.setLong(7, taskId);
             result = st.executeUpdate();
+        }
+        return result;
+    }
+
+    public int modifyTaskState(long taskId, long stateId) throws SQLException {
+        int result = 0;
+        try (Connection conn = dbConnect.getConnection()) {
+            String query = queries.get("modifyTaskState");
+            PreparedStatement st = conn.prepareStatement(query);
+            st.setLong(1, stateId);
+            st.setLong(2, taskId);
+            result = st.executeUpdate();
+        }
+        return result;
+    }
+
+    public int setTaskSprint(long sprintId, long taskId) throws SQLException {
+        int result = 0;
+        try (Connection conn = dbConnect.getConnection()) {
+            if (conn != null) {
+                String query = queries.get("setTaskSprint");
+                PreparedStatement st = conn.prepareStatement(query);
+                st.setLong(1, sprintId);
+                st.setLong(2, taskId);
+                result = st.executeUpdate();
+            }
+        }
+        return result;
+    }
+
+    public List<Task> selectSprintTasksByState(long sprintId, long stateId) throws SQLException {
+        List<Task> result = new ArrayList<>();
+        try (Connection conn = dbConnect.getConnection()) {
+            if (conn != null) {
+                String query = queries.get("selectSprintTasksByState");
+                PreparedStatement st = conn.prepareStatement(query);
+                st.setLong(1, sprintId);
+                st.setLong(2, stateId);
+                ResultSet rs = st.executeQuery();
+                while (rs.next()) {
+                    Task task = taskFromResultSet(rs);
+                    if (task != null) {
+                        result.add(task);
+                    }
+                }
+            }
         }
         return result;
     }
