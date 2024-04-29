@@ -1,3 +1,4 @@
+
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
@@ -43,11 +44,11 @@ public class TaskDao {
         //Select All Tasks of a Sprint of a Project by State
         queries.put("selectTasksBySprintByProject", "SELECT * FROM task WHERE project_id = ? AND sprint_id = ? AND state_id = ?;");
         //Create Task
-        queries.put("addTask", "INSERT INTO task VALUES (null, ?, ?, ?, ?, ?, ?, ?);");
+        queries.put("addTask", "INSERT INTO task VALUES (null, ?, ?, ?, ?, ?, ?);");
         //Delete Task by ID
         queries.put("deleteTask", "DELETE FROM task WHERE id = ?;");
         //Modify Task
-        queries.put("modifyTask", "UPDATE task SET name = ?, description = ?, timeEstimacy = ?, prioity = ?, projectId = ?, sprintId = ?, stateId = ? WHERE id = ?;");
+        queries.put("modifyTask", "UPDATE task SET name = ?, description = ?, prioity = ?, projectId = ?, sprintId = ?, stateId = ? WHERE id = ?;");
     }
 
     /**
@@ -63,12 +64,11 @@ public class TaskDao {
         long id = rs.getLong("id");
         String name = rs.getString("name");
         String description = rs.getString("description");
-        String timeEstimacy = rs.getString("time_estimacy");
-        int priority = rs.getInt("weight");
+        int priority = rs.getInt("priority");
         long projectId = rs.getLong("project_id");
         long sprintId = rs.getLong("sprint_id");
         long stateId = rs.getLong("state_id");
-        task = new Task(id, name, description, timeEstimacy, priority, projectId, sprintId, stateId);
+        task = new Task(id, name, description, priority, projectId, sprintId, stateId);
         return task;
     }
 
@@ -86,7 +86,7 @@ public class TaskDao {
             String query = queries.get("selectTasksByProject");
             PreparedStatement st = conn.prepareStatement(query);
             st.setLong(1, projectId);
-            ResultSet rs = st.executeQuery(query);
+            ResultSet rs = st.executeQuery();
             while (rs.next()) {
                 Task task = taskFromResultSet(rs);
                 if (task != null) {
@@ -191,13 +191,12 @@ public class TaskDao {
         try (Connection conn = dbConnect.getConnection()) {
             String query = queries.get("addTask");
             PreparedStatement st = conn.prepareStatement(query);
-            st.setString(1, task.getName());
-            st.setString(2, task.getDescription());
-            st.setString(3, task.getTimeEstimacy());
-            st.setInt(4, task.getPriority());
-            st.setLong(5, task.getProjectId());
-            st.setLong(6, task.getSprintId());
-            st.setLong(7, task.getStateId());
+            st.setString(1, task.getDescription());
+            st.setInt(2, task.getPriority());
+            st.setString(3, task.getName());
+            st.setLong(4, task.getProjectId());
+            st.setLong(5, task.getSprintId());
+            st.setLong(6, task.getStateId());
             result = st.executeUpdate();
         }
         return result;
@@ -228,19 +227,18 @@ public class TaskDao {
      * @return 1 if successfull, 0 in case any error takes place.
      * @throws java.sql.SQLException
      */
-    public int modifyTask(int taskId, Task updatedTask) throws SQLException {
+    public int modifyTask(long taskId, Task updatedTask) throws SQLException {
         int result = 0;
         try (Connection conn = dbConnect.getConnection()) {
             String query = queries.get("modifyTask");
             PreparedStatement st = conn.prepareStatement(query);
             st.setString(1, updatedTask.getName());
             st.setString(2, updatedTask.getDescription());
-            st.setString(3, updatedTask.getTimeEstimacy());
-            st.setInt(4, updatedTask.getPriority());
-            st.setLong(5, updatedTask.getProjectId());
-            st.setLong(6, updatedTask.getSprintId());
-            st.setLong(7, updatedTask.getStateId());
-            st.setLong(8, taskId);
+            st.setInt(3, updatedTask.getPriority());
+            st.setLong(4, updatedTask.getProjectId());
+            st.setLong(5, updatedTask.getSprintId());
+            st.setLong(6, updatedTask.getStateId());
+            st.setLong(7, taskId);
             result = st.executeUpdate();
         }
         return result;
