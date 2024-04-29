@@ -55,6 +55,7 @@ public class TaskDao {
         queries.put("deleteTask", "DELETE FROM task WHERE id = ?;");
         //Modify Task
         queries.put("modifyTask", "UPDATE task SET name = ?, description = ?, prioity = ?, projectId = ?, sprintId = ?, stateId = ? WHERE id = ?;");
+
         //Modify Task State
         queries.put("modifyTaskState", "UPDATE task SET state_id = ? WHERE id = ?;");
         //Set Task Sprint

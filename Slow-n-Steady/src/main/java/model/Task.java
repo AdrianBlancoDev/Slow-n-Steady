@@ -13,7 +13,6 @@ public class Task {
     private long id;
     private String name;
     private String description;
-    private String timeEstimacy;
     private int priority;
     private long projectId;
     private long sprintId;
@@ -26,7 +25,6 @@ public class Task {
         this.id = id;
         this.name = name;
         this.description = description;
-        this.timeEstimacy = timeEstimacy;
         this.priority = priority;
         this.projectId = projectId;
         this.sprintId = sprintId;
@@ -37,10 +35,9 @@ public class Task {
         this.id = id;
     }
 
-    public Task(String name, String description, String timeEstimacy, int priority, long projectId, long sprintId, long stateId) {
+    public Task(String name, String description, int priority, long projectId, long sprintId, long stateId) {
         this.name = name;
         this.description = description;
-        this.timeEstimacy = timeEstimacy;
         this.priority = priority;
         this.projectId = projectId;
         this.sprintId = sprintId;
@@ -75,14 +72,6 @@ public class Task {
 
     public void setDescription(String description) {
         this.description = description;
-    }
-
-    public String getTimeEstimacy() {
-        return timeEstimacy;
-    }
-
-    public void setTimeEstimacy(String timeEstimacy) {
-        this.timeEstimacy = timeEstimacy;
     }
 
     public int getPriority() {
@@ -124,7 +113,6 @@ public class Task {
         sb.append("id=").append(id);
         sb.append(", name=").append(name);
         sb.append(", description=").append(description);
-        sb.append(", timeEstimacy=").append(timeEstimacy);
         sb.append(", priority=").append(priority);
         sb.append(", projectId=").append(projectId);
         sb.append(", sprintId=").append(sprintId);
