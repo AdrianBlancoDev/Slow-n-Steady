@@ -51,7 +51,7 @@
                                         </div>
                                         <div class="col-md">
                                             <icon>
-                                                <i class="bi bi-info-circle" data-bs-toggle="modal" data-bs-target="#infoModal"></i>
+                                                <i class="bi bi-info-circle info-btn" data-bs-toggle="modal" data-bs-target="#infoModal" data-project-collaborator="${usernameList}" data-project-name="${projectAdmin.getName()}" data-project-description="${projectAdmin.getDescription()}" data-project-startdate="${projectAdmin.getStartDate()}" ></i>
                                             </icon>
                                         </div>
                                     </div>
@@ -71,8 +71,8 @@
                                         <div class="col-md"></div>
                                         <div class="col-md">
                                             <icon>
-                                                <i class="bi bi-info-circle" data-bs-toggle="modal" data-bs-target="#infoModal"></i>
-                                            </icon>
+                                                <i class="bi bi-info-circle info-btn" data-bs-toggle="modal" data-bs-target="#infoModal" data-project-collaborator="${usernameList}" data-project-name="${project.getName()}" data-project-description="${project.getDescription()}" data-project-startdate="${project.getStartDate()}" ></i>
+                                            </icon>                                  
                                         </div>
                                     </div>
                                 </div>                            
@@ -132,7 +132,7 @@
                             <!-- Modal footer -->
                             <div class="modal-footer">
                                 <button class="btn btn-dark" type="submit" id="addProjectBtn" data-bs-toggle="modal">
-                                    Add Task
+                                    Add Project
                                 </button>
                                 <script>
                                     $(document).ready(function () {
@@ -176,29 +176,29 @@
                         <div class="modal-content bg-image-modal">
                             <!-- Modal Header -->
                             <div class="modal-header">
-                                <h4 class="modal-title col-12 text-center">Task Info</h4>
+                                <h4 class="modal-title col-12 text-center">Project Info</h4>
                             </div>
                             <!-- Modal body -->
                             <div class="modal-body">
                                 <div class="mb-3">
-                                    <label for="basic-url" class="form-label">Task Name:</label>
-                                    <span id="info-modal-name">Name of task</span>
+                                    <label for="basic-url" class="form-label fw-bold">Project Name:</label>
+                                    <span id="info-modal-name">nameProject</span>
                                 </div>
                                 <div class="mb-3">
-                                    <label for="basic-url" class="form-label">Collaborators:</label>
+                                    <label for="basic-url" class="form-label fw-bold">Collaborators:</label>
                                     <div class="input-group">
-                                        <span id="info-modal-colaborator">colaborator 1, etc</span>
+                                        <span id="info-modal-colaborator">collaborator 1, etc</span>
                                     </div>
                                 </div>
                                 <div class="mb-3">
-                                    <label for="basic-url" class="form-label">Description:</label>
+                                    <label for="basic-url" class="form-label fw-bold">Description:</label>
                                     <div class="input-group">
-                                        <span class="form-control" aria-label="With textarea" id="info-modal-description">descripttion dbadbnasbfasdlhjkfbadsbfapdgba dasbfapdgadsf asdufbapusdfb</span>
+                                        <span id="info-modal-description">description</span>
                                     </div>
                                 </div>
                                 <div class="mb-3">
-                                    <label for="basic-url" class="form-label" id="info-modal-date">Start Date:</label>
-                                    <span>fecha</span>
+                                    <label for="basic-url" class="form-label fw-bold" id="info-modal-date">Start Date:</label>
+                                    <span id="info-modal-startdate">startDate</span>
                                 </div>
                             </div>
                             <!-- Modal footer -->
@@ -335,7 +335,6 @@
                                                     console.error("ERROR al eliminar el proyecto: " + error.toString() + " Status: " + status + " XMLHttpRequest: " + xhr);
                                                 }
                                             });
-
                                         });
                                     });
                                 </script>
@@ -364,17 +363,18 @@
     </script>
     <!-- Script placeholder info -->
     <script type="text/javascript">
-        $(".modify-btn").click(function () {
-            var projectId = $(this).data("project-id");
-            var projectName = $(this).data("project-name");
-            var projectDescription = $(this).data("project-description");
-            var projectStartdate = $(this).data("project-startdate");
+        $(document).ready(function () {
+            $(".info-btn").click(function () {
+                var projectCollaborator = $(this).data("project-collaborator");
+                var projectName = $(this).data("project-name");
+                var projectDescription = $(this).data("project-description");
+                var projectStartdate = $(this).data("project-startdate");
 
-            $("#modal_body").attr("value", projectName);
-            $("#modal_description").val(projectDescription);
-            $("#modal_startDate").attr("value", projectStartdate);
-
-            $("#modifyProjectBtn").data("project-id", projectId);
+                $("#info-modal-name").text(projectName);
+                $("#info-modal-colaborator").text(projectCollaborator);
+                $("#info-modal-description").text(projectDescription);
+                $("#info-modal-startdate").text(projectStartdate);
+            });
         });
     </script>
     <script type="text/javascript">
@@ -385,5 +385,3 @@
     </script>
 
 </html>
-
-
