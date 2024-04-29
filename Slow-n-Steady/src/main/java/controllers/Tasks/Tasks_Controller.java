@@ -107,8 +107,6 @@ long id = 0;
             }
         }else if(selection.equals("create")) {
             task.setProjectId(1);
-            task.setSprintId(1);
-            task.setStateId(1);
             task.setName(request.getParameter("name"));
             task.setDescription(request.getParameter("description"));
             task.setPriority(Integer.parseInt(request.getParameter("priority")));
