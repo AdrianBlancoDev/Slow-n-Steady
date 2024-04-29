@@ -85,7 +85,7 @@
                         </div>                    
                     </div>
                 </div>
-                <!-- Add Task Modal -->
+                <!-- Add Project Modal -->
                 <div class="modal fade" id="addTaskModal" data-bs-backdrop="static">
                     <div class="modal-dialog modal-lg">
                         <div class="modal-content bg-image-modal">
@@ -95,39 +95,89 @@
                             </div>
                             <!-- Modal body -->
                             <div class="modal-body">
-                                <form action="./Tasks_Controller" method="post">
-                                    <div class="mb-3">
-                                        <label for="basic-url" class="form-label">New Project:</label>
-                                        <div class="input-group">
-                                            <input type="text" class="form-control" id="modal_name_add" name="name" required/>
-                                        </div>
+                                <div class="mb-3">
+                                    <label for="basic-url" class="form-label">New Project:</label>
+                                    <div class="input-group">
+                                        <input type="text" class="form-control" id="modal_name_add" name="name" required/>
                                     </div>
-                                    <div class="mb-3">
-                                        <label for="basic-url" class="form-label">Collaborators:</label>
-                                        <div class="input-group">
-                                            <button class="btn btn-dark bg-gradient dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                                Collaborators
-                                            </button>
-                                            <ul class="dropdown-menu text-bg-dark">
-                                                <li><button class="dropdown-item btn btn-dark text-light custom-btn" data-bs-toggle="button" aria-pressed="true" href="#">Proyecto 1</button></li>
-                                                <li><button class="dropdown-item btn btn-dark text-light custom-btn" data-bs-toggle="button" aria-pressed="true" href="#">Proyecto 1</button></li>
-                                                <li><button class="dropdown-item btn btn-dark text-light custom-btn" data-bs-toggle="button" aria-pressed="true" href="#">Proyecto 1</button></li>
-                                            </ul>
-                                        </div>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="dni" class="form-label">Collaborators:</label>
+                                    <input type="text" id="collaborators" class="form-control input-form" placeholder="Type to search..." oninput="buscarCiudadano(event)">
+                                    <datalist id="datalistOptions">
+                                        <option value="San Francisco">
+                                        <option value="New York">
+                                        <option value="Seattle">
+                                        <option value="Los Angeles">
+                                        <option value="Chicago">
+                                    </datalist>
+                                    <div id="etiquetas"></div>
+                                </div>
+
+                                <script>
+                                    function buscarCiudadano(event) {
+                                        var input = event.target;
+                                        var value = input.value.toLowerCase();
+                                        var datalist = document.getElementById('datalistOptions');
+
+                                        // Filtra las opciones del datalist para mostrar solo las sugerencias que coincidan con el valor del campo de entrada
+                                        var options = datalist.querySelectorAll('option');
+                                        options.forEach(function (option) {
+                                            var optionValue = option.value.toLowerCase();
+                                            if (optionValue.includes(value)) {
+                                                option.style.display = 'block';
+                                            } else {
+                                                option.style.display = 'none';
+                                            }
+                                        });
+                                    }
+
+                                    document.getElementById('collaborators').addEventListener('keydown', function (event) {
+                                        // Agrega la etiqueta cuando el usuario presiona Enter
+                                        if (event.key === 'Enter' && this.value.trim() !== '') {
+                                            var etiquetasContainer = document.getElementById('etiquetas');
+                                            var value = this.value.trim();
+
+                                            // Verifica si la etiqueta ya existe antes de agregarla
+                                            if (!etiquetasContainer.querySelector('[data-value="' + value + '"]')) {
+                                                var etiqueta = document.createElement('span');
+                                                etiqueta.textContent = value;
+                                                etiqueta.className = 'etiqueta';
+                                                etiqueta.dataset.value = value;
+                                                etiqueta.addEventListener('click', function () {
+                                                    this.remove();
+                                                });
+                                                etiquetasContainer.appendChild(etiqueta);
+                                                this.value = '';
+                                            }
+                                        }
+                                    });
+                                </script>
+
+                                <style>
+                                    .etiqueta {
+                                        display: inline-block;
+                                        background-color: #007bff;
+                                        color: white;
+                                        padding: 4px 8px;
+                                        margin-right: 8px;
+                                        margin-bottom: 8px;
+                                        cursor: pointer;
+                                    }
+                                </style>
+
+                                <div class="mb-3">
+                                    <label for="basic-url" class="form-label">Description:</label>
+                                    <div class="input-group">
+                                        <textarea class="form-control" aria-label="With textarea" id="modal_description_add" name="description" required></textarea>
                                     </div>
-                                    <div class="mb-3">
-                                        <label for="basic-url" class="form-label">Description:</label>
-                                        <div class="input-group">
-                                            <textarea class="form-control" aria-label="With textarea" id="modal_description_add" name="description" required></textarea>
-                                        </div>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="basic-url" class="form-label">Start Date:</label>
+                                    <div class="input-group">
+                                        <input type="text" class="form-control" id="modal_startDate_add" aria-describedby="basic-addon3 basic-addon4">
                                     </div>
-                                    <div class="mb-3">
-                                        <label for="basic-url" class="form-label">Start Date:</label>
-                                        <div class="input-group">
-                                            <input type="text" class="form-control" id="modal_startDate_add" aria-describedby="basic-addon3 basic-addon4">
-                                        </div>
-                                    </div>
-                                </form>
+                                </div>
                             </div>
                             <!-- Modal footer -->
                             <div class="modal-footer">

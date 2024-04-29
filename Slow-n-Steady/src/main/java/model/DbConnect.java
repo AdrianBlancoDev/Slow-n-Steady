@@ -23,11 +23,8 @@ public class DbConnect {
     public static String HOST = "localhost";
     public static String BD_NAME = "sns_db";
     public static String USER = "root";
-<<<<<<< HEAD
-    public static String PASSWORD = "admin";
-=======
     public static String PASSWORD = "123456";
->>>>>>> main
+
     public static String BD_URL;
 
     public static void loadDriver() throws ClassNotFoundException {
