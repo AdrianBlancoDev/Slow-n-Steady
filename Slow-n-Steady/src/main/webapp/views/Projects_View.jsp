@@ -141,7 +141,7 @@
                                             var projectName = $("#modal_name_add").val();
                                             var projectDescription = $("#modal_description_add").val();
                                             var projectStartDate = $("#modal_startDate_add").val();
-                                            var projectDao = "create"
+                                            var projectDao = "create";
                                             // Crear un objeto con los parámetros a enviar al servlet
                                             var requestData = {
                                                 projectName: projectName,
@@ -182,22 +182,22 @@
                             <div class="modal-body">
                                 <div class="mb-3">
                                     <label for="basic-url" class="form-label">Task Name:</label>
-                                    <span>Name of task</span>
+                                    <span id="info-modal-name">Name of task</span>
                                 </div>
                                 <div class="mb-3">
                                     <label for="basic-url" class="form-label">Collaborators:</label>
                                     <div class="input-group">
-                                        <span>colaborator 1, etc</span>
+                                        <span id="info-modal-colaborator">colaborator 1, etc</span>
                                     </div>
                                 </div>
                                 <div class="mb-3">
                                     <label for="basic-url" class="form-label">Description:</label>
                                     <div class="input-group">
-                                        <span class="form-control" aria-label="With textarea">descripttion dbadbnasbfasdlhjkfbadsbfapdgba dasbfapdgadsf asdufbapusdfb</span>
+                                        <span class="form-control" aria-label="With textarea" id="info-modal-description">descripttion dbadbnasbfasdlhjkfbadsbfapdgba dasbfapdgadsf asdufbapusdfb</span>
                                     </div>
                                 </div>
                                 <div class="mb-3">
-                                    <label for="basic-url" class="form-label">Start Date:</label>
+                                    <label for="basic-url" class="form-label" id="info-modal-date">Start Date:</label>
                                     <span>fecha</span>
                                 </div>
                             </div>
@@ -315,9 +315,9 @@
                                         // Manejar clic en botón de eliminar proyecto
                                         $("#deleteProjectBtn").click(function () {
                                             // Obtener el ID del proyecto a eliminar desde el atributo de datos
-                                             var projectId = $("#deleteProjectBtn").data("project-id");
-                                             var projectDao = "delete";
-                                             console.log(projectId);
+                                            var projectId = $("#deleteProjectBtn").data("project-id");
+                                            var projectDao = "delete";
+                                            console.log(projectId);
                                             // Crear un objeto con los parámetros a enviar al servlet
                                             var requestData = {
                                                 projectId: projectId,
@@ -332,7 +332,7 @@
                                                     location.reload(); // Recargar la página para actualizar la tabla
                                                 },
                                                 error: function (xhr, status, error) {
-console.error("ERROR al eliminar el proyecto: " + error.toString() + " Status: " + status + " XMLHttpRequest: " + xhr);
+                                                    console.error("ERROR al eliminar el proyecto: " + error.toString() + " Status: " + status + " XMLHttpRequest: " + xhr);
                                                 }
                                             });
 
@@ -362,11 +362,26 @@ console.error("ERROR al eliminar el proyecto: " + error.toString() + " Status: "
             $("#modifyProjectBtn").data("project-id", projectId);
         });
     </script>
+    <!-- Script placeholder info -->
+    <script type="text/javascript">
+        $(".modify-btn").click(function () {
+            var projectId = $(this).data("project-id");
+            var projectName = $(this).data("project-name");
+            var projectDescription = $(this).data("project-description");
+            var projectStartdate = $(this).data("project-startdate");
+
+            $("#modal_body").attr("value", projectName);
+            $("#modal_description").val(projectDescription);
+            $("#modal_startDate").attr("value", projectStartdate);
+
+            $("#modifyProjectBtn").data("project-id", projectId);
+        });
+    </script>
     <script type="text/javascript">
         $(".delete-btn").click(function () {
-    var projectId = $(this).data("project-id");
-    $("#deleteProjectBtn").data("project-id", projectId);
-});
+            var projectId = $(this).data("project-id");
+            $("#deleteProjectBtn").data("project-id", projectId);
+        });
     </script>
 
 </html>
