@@ -54,8 +54,9 @@ public class TaskDao {
         //Delete Task by ID
         queries.put("deleteTask", "DELETE FROM task WHERE id = ?;");
         //Modify Task
-        queries.put("modifyTask", "UPDATE task SET name = ?, description = ?, prioity = ?, projectId = ?, sprintId = ?, stateId = ? WHERE id = ?;");
-
+        queries.put("modifyTask", "UPDATE task SET name = ?, description = ?, priority = ?, project_id = ?, sprint_id = ?, state_id = ? WHERE id = ?;");
+        //Modify Task Name-Description
+        queries.put("modifyTaskNameDesc", "UPDATE task SET name = ?, description = ?, priority = ? WHERE id = ?;");
         //Modify Task State
         queries.put("modifyTaskState", "UPDATE task SET state_id = ? WHERE id = ?;");
         //Set Task Sprint
@@ -288,6 +289,21 @@ public class TaskDao {
         }
         return result;
     }
+    
+    public int modifyTaskNameDesc(long taskId, Task updatedTask) throws SQLException {
+        int result = 0;
+        try (Connection conn = dbConnect.getConnection()) {
+            String query = queries.get("modifyTaskNameDesc");
+            PreparedStatement st = conn.prepareStatement(query);
+            st.setString(1, updatedTask.getName());
+            st.setString(2, updatedTask.getDescription());
+            st.setInt(3, updatedTask.getPriority());
+            st.setLong(4, taskId);
+            result = st.executeUpdate();
+        }
+        return result;
+    }   
+    
 
     public int modifyTaskState(long taskId, long stateId) throws SQLException {
         int result = 0;
