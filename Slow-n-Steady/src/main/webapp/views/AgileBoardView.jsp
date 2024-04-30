@@ -33,6 +33,7 @@
             <div class="project-sprint-select-create">
                 <form id="selectors" action="getProjectSprints" method="get">
                     <div class="projectSelect">
+                        <label for="project-select">Projects:</label>
                         <select  class="form-select" aria-label="Default Select Example">
                             <option value=""></option>
                             <c:forEach items="${userProjects}" var="userProject">
@@ -42,6 +43,7 @@
                         <input type="hidden" id="projectId" name="project-id">
                     </div>
                     <div class="sprintSelect">
+                        <label for="project-select">Project Sprints:</label>
                         <select class="form-select" aria-label="Default select example">
                         </select>
                     </div>
@@ -362,6 +364,7 @@
                                     alert("Please, select a Project first");
                                     return;
                                 }
+                                var $modalBody = $('#addTaskModal').find('.modal-body');
                                 var requestData = {
                                     action: "getProjectUntrackedTasks",
                                     projectId: projectId
@@ -373,16 +376,17 @@
                                     dataType: "json",
                                     success: function (data) {
                                         //First we clear the modal existing body
-                                        $(".modal-body").empty();
+                                        $modalBody.empty();
                                         //Iteramos sobre las tareas recibidas para mostrar su contenido en el modal
                                         $.each(data, function (index, task) {
+                                            console.log(task);
                                             var taskInput = '<div class="input-group mb-3">' +
                                                     '<div class="input-group-text">' +
                                                     '<input class="form-check-input mt-0" type="checkbox" value="' + task.id + '" aria-label="Checkbox for following text input">' +
                                                     '</div>' +
                                                     '<input type="text" class="form-control" aria-label="Text input with checkbox" value="' + task.name + '" readonly>' +
                                                     '</div>';
-                                            $(".modal-body").append(taskInput);
+                                            $modalBody.append(taskInput);
                                         });
                                     },
                                     error: function (xhr, status, error) {
@@ -392,7 +396,6 @@
                             });
                             $("#confirmAddTasksButton").click(function () {
                                 var projectId = $(".projectSelect select").val();
-                                console.log(projectId);
                                 if (!projectId) {
                                     alert("Please, select a Project first");
                                     return;
@@ -402,7 +405,6 @@
                                     selectedTasksIds.push($(this).val());
                                 });
 
-                                console.log(selectedTasksIds);
                                 // Verificar si se han seleccionado tareas antes de enviar la solicitud
                                 if (selectedTasksIds.length === 0) {
                                     alert("Please, select at least one task to add to the sprint");
@@ -415,7 +417,6 @@
                                     selectedTasksIds: selectedTasksIds
                                 };
 
-                                console.log(requestData);
                                 $.ajax({
                                     url: "sprintTasks",
                                     type: "POST",
