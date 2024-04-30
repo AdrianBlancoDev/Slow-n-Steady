@@ -51,7 +51,7 @@
                                         </div>
                                         <div class="col-md">
                                             <icon>
-                                                <i class="bi bi-info-circle" data-bs-toggle="modal" data-bs-target="#infoModal"></i>
+                                                <i class="bi bi-info-circle info-btn" data-bs-toggle="modal" data-bs-target="#infoModal" data-project-collaborator="${usernameList}" data-project-name="${projectAdmin.getName()}" data-project-description="${projectAdmin.getDescription()}" data-project-startdate="${projectAdmin.getStartDate()}" ></i>
                                             </icon>
                                         </div>
                                     </div>
@@ -71,8 +71,8 @@
                                         <div class="col-md"></div>
                                         <div class="col-md">
                                             <icon>
-                                                <i class="bi bi-info-circle" data-bs-toggle="modal" data-bs-target="#infoModal"></i>
-                                            </icon>
+                                                <i class="bi bi-info-circle info-btn" data-bs-toggle="modal" data-bs-target="#infoModal" data-project-collaborator="${usernameList}" data-project-name="${project.getName()}" data-project-description="${project.getDescription()}" data-project-startdate="${project.getStartDate()}" ></i>
+                                            </icon>                                  
                                         </div>
                                     </div>
                                 </div>                            
@@ -132,7 +132,7 @@
                             <!-- Modal footer -->
                             <div class="modal-footer">
                                 <button class="btn btn-dark" type="submit" id="addProjectBtn" data-bs-toggle="modal">
-                                    Add Task
+                                    Add Project
                                 </button>
                                 <script>
                                     $(document).ready(function () {
@@ -141,7 +141,7 @@
                                             var projectName = $("#modal_name_add").val();
                                             var projectDescription = $("#modal_description_add").val();
                                             var projectStartDate = $("#modal_startDate_add").val();
-                                            var projectDao = "create"
+                                            var projectDao = "create";
                                             // Crear un objeto con los parámetros a enviar al servlet
                                             var requestData = {
                                                 projectName: projectName,
@@ -176,29 +176,29 @@
                         <div class="modal-content bg-image-modal">
                             <!-- Modal Header -->
                             <div class="modal-header">
-                                <h4 class="modal-title col-12 text-center">Task Info</h4>
+                                <h4 class="modal-title col-12 text-center">Project Info</h4>
                             </div>
                             <!-- Modal body -->
                             <div class="modal-body">
                                 <div class="mb-3">
-                                    <label for="basic-url" class="form-label">Task Name:</label>
-                                    <span>Name of task</span>
+                                    <label for="basic-url" class="form-label fw-bold">Project Name:</label>
+                                    <span id="info-modal-name">nameProject</span>
                                 </div>
                                 <div class="mb-3">
-                                    <label for="basic-url" class="form-label">Collaborators:</label>
+                                    <label for="basic-url" class="form-label fw-bold">Collaborators:</label>
                                     <div class="input-group">
-                                        <span>colaborator 1, etc</span>
+                                        <span id="info-modal-colaborator">collaborator 1, etc</span>
                                     </div>
                                 </div>
                                 <div class="mb-3">
-                                    <label for="basic-url" class="form-label">Description:</label>
+                                    <label for="basic-url" class="form-label fw-bold">Description:</label>
                                     <div class="input-group">
-                                        <span class="form-control" aria-label="With textarea">descripttion dbadbnasbfasdlhjkfbadsbfapdgba dasbfapdgadsf asdufbapusdfb</span>
+                                        <span id="info-modal-description">description</span>
                                     </div>
                                 </div>
                                 <div class="mb-3">
-                                    <label for="basic-url" class="form-label">Start Date:</label>
-                                    <span>fecha</span>
+                                    <label for="basic-url" class="form-label fw-bold" id="info-modal-date">Start Date:</label>
+                                    <span id="info-modal-startdate">startDate</span>
                                 </div>
                             </div>
                             <!-- Modal footer -->
@@ -315,9 +315,9 @@
                                         // Manejar clic en botón de eliminar proyecto
                                         $("#deleteProjectBtn").click(function () {
                                             // Obtener el ID del proyecto a eliminar desde el atributo de datos
-                                             var projectId = $("#deleteProjectBtn").data("project-id");
-                                             var projectDao = "delete";
-                                             console.log(projectId);
+                                            var projectId = $("#deleteProjectBtn").data("project-id");
+                                            var projectDao = "delete";
+                                            console.log(projectId);
                                             // Crear un objeto con los parámetros a enviar al servlet
                                             var requestData = {
                                                 projectId: projectId,
@@ -332,10 +332,9 @@
                                                     location.reload(); // Recargar la página para actualizar la tabla
                                                 },
                                                 error: function (xhr, status, error) {
-console.error("ERROR al eliminar el proyecto: " + error.toString() + " Status: " + status + " XMLHttpRequest: " + xhr);
+                                                    console.error("ERROR al eliminar el proyecto: " + error.toString() + " Status: " + status + " XMLHttpRequest: " + xhr);
                                                 }
                                             });
-
                                         });
                                     });
                                 </script>
@@ -362,13 +361,27 @@ console.error("ERROR al eliminar el proyecto: " + error.toString() + " Status: "
             $("#modifyProjectBtn").data("project-id", projectId);
         });
     </script>
+    <!-- Script placeholder info -->
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $(".info-btn").click(function () {
+                var projectCollaborator = $(this).data("project-collaborator");
+                var projectName = $(this).data("project-name");
+                var projectDescription = $(this).data("project-description");
+                var projectStartdate = $(this).data("project-startdate");
+
+                $("#info-modal-name").text(projectName);
+                $("#info-modal-colaborator").text(projectCollaborator);
+                $("#info-modal-description").text(projectDescription);
+                $("#info-modal-startdate").text(projectStartdate);
+            });
+        });
+    </script>
     <script type="text/javascript">
         $(".delete-btn").click(function () {
-    var projectId = $(this).data("project-id");
-    $("#deleteProjectBtn").data("project-id", projectId);
-});
+            var projectId = $(this).data("project-id");
+            $("#deleteProjectBtn").data("project-id", projectId);
+        });
     </script>
 
 </html>
-
-

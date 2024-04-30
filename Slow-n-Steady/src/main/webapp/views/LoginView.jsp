@@ -54,6 +54,31 @@
                 border-radius: 50%;
             }
         </style>
+        <script>
+            /*$(document).ready(() => {
+                $("#loginBtn").click(() => {
+                    const user = $("#user").val();
+                    const password = $("#password").val();
+                    $.ajax({
+                        type: "POST",
+                        url: "userExists",
+                        dataType: "json",
+                        data: {
+                            user: user,
+                            password: password
+                        },
+                        success: function (response) {
+                            window.location = response.url;
+                            console.log("Success:", response); // Log the response to the console
+                        },
+                        error: function (xhr, status, error) {
+                            console.log("Error:", error); // Log the error to the console
+                        }
+                    });
+                });
+            });*/
+
+        </script>
     </head>
     <body>
         <section class="h-100 gradient-form" style="background-color: #eee;">
@@ -77,27 +102,33 @@
                                             <h4 class="mt-1 mb-5 pb-1">Slow and Steady</h4>
                                         </div>
 
-                                        <form method="POST" action="./">
-                                            <div data-mdb-input-init class="form-outline mb-4">
-                                                <input id="user" class="form-control" name="user"
+                                        <form method="POST" action="./" class="needs-validation" novalidate>
+                                            <div class="form-outline mb-4">
+                                                <input id="user" class="form-control" name="user" required
                                                        placeholder="User name" />
+                                                <div class="invalid-feedback">
+                                                    Please enter username
+                                                </div>
                                             </div>
 
-                                            <div data-mdb-input-init class="form-outline mb-4">
-                                                <input type="password" id="password" class="form-control" name="password" placeholder="Password"/>
+                                            <div class="form-outline mb-4">
+                                                <input type="password" id="password" class="form-control" name="password" placeholder="Password" required/>
+                                                <div class="invalid-feedback">
+                                                    Please enter the password
+                                                </div>
                                             </div>
-
                                             <div class="text-center pt-1 mb-5 pb-1 container row">
-                                                <button  class="btn btn-primary btn-block border border-0 gradient-custom-2 col" type="submit">Log
+                                                <button   type="submit" class="btn btn-primary btn-block border border-0 gradient-custom-2 col" id="loginBtn" >Log
                                                     in</button>
                                                 <!--<a class="text-muted text-end col" href="#!">Forgot password?</a>-->
                                             </div>
 
+                                        </form>
+                                        <form>
                                             <div class="d-flex align-items-center justify-content-center pb-4">
                                                 <p class="mb-0 me-2">Don't have an account?</p>
                                                 <button type="submit" formaction="./register" formmethod="GET" class="btn btn-primary btn-block border border-0 btn gradient-custom-2">Create new</button>
                                             </div>
-
                                         </form>
 
                                     </div>
@@ -109,4 +140,25 @@
             </div>
         </section>
     </body>
+    <script>
+        (function () {
+            'use strict';
+
+            // Fetch all the forms we want to apply custom Bootstrap validation styles to
+            var forms = document.querySelectorAll('.needs-validation')
+
+            // Loop over them and prevent submission
+            Array.prototype.slice.call(forms)
+                    .forEach(function (form) {
+                        form.addEventListener('submit', function (event) {
+                            if (!form.checkValidity()) {
+                                event.preventDefault();
+                                event.stopPropagation();
+                            }
+
+                            form.classList.add('was-validated');
+                        }, false);
+                    });
+        })();
+    </script>
 </html>

@@ -5,14 +5,18 @@
     <head>
         <title>Agile Board</title>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <link rel="stylesheet" href="styles/AgileBoardStyles.css" />
-        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-        <script defer src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+        <link rel="stylesheet" href="styles/AgileBoardStyles.css"/>
+        <link rel="stylesheet" href="styles/tasks/tasks_Css.css"/>
         <script src="https://code.jquery.com/jquery-3.7.1.js"
         integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+        <!-- Bootstrap Bundle con Popper -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+        <script defer src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
         <script
         src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>
+        <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js" integrity="sha256-xLD7nhI62fcsEZK2/v8LsBcb4lG7dgULkuXoXB/j91c=" crossorigin="anonymous"></script>
         <script src="scripts/drag.js" defer></script>
         <script>
             $(function () {
@@ -76,7 +80,7 @@
                     <div class="modal fade" id="createSprintModal" tabindex="-1"
                          aria-labelledby="createSprintModalLabel" aria-hidden="true">
                         <div class="modal-dialog">
-                            <div class="modal-content">
+                            <div class="modal-content bg-image-modal">
                                 <div class="modal-header">
                                     <h5 class="modal-title" id="createSprintModalLabel">Creating a Sprint</h5>
                                     <button type="button" class="btn-close" data-bs-dismiss="modal"
@@ -95,26 +99,32 @@
                                         <div class="mb-3">
                                             <label for="start-date-picker" class="col-form-label">Start Date:</label>
                                             <div class="input-group date" id="startDatePicker">
-                                                <input id="startDate" name="start-date-picker" type="text" class="form-control">
-                                                <span class="input-group-append">
+                                                <input name="start-date-picker" size="16" type="date" class="form-control" id="startDate"/>
+                                                <i class="fa fa-calendar"></i>
+                                                <script type="text/javascript">
+                                                    $(document).ready(function () {
+                                                        $("#startDatePicker").datetimepicker({
+                                                            format: 'MM/dd/yyyy hh:ii',
+                                                            autoclose: true
+                                                        });
+                                                    });
+                                                </script>
                                             </div>
-                                            <script type="text/javascript">
-                                                $(function () {
-                                                    $("#startDatePicker").datepicker();
-                                                });
-                                            </script>
                                         </div>
                                         <div class="mb-3">
                                             <label for="end-date-picker" class="col-form-label">End Date:</label>
                                             <div class="input-group date" id="endDatePicker">
-                                                <input id="endDate" name="end-date-picker" type="text" class="form-control">
-                                                <span class="input-group-append">
+                                                <input name="end-date-picker" size="16" type="date" class="form-control" id="endDate"/>
+                                                <i class="fa fa-calendar"></i>
+                                                <script type="text/javascript">
+                                                    $(document).ready(function () {
+                                                        $("#endDatePicker").datetimepicker({
+                                                            format: 'yyyy-mm-dd hh:ii',
+                                                            autoclose: true
+                                                        });
+                                                    });
+                                                </script>
                                             </div>
-                                            <script type="text/javascript">
-                                                $(function () {
-                                                    $("#endDatePicker").datepicker();
-                                                });
-                                            </script>
                                         </div>
                                     </form>
                                 </div>
@@ -157,6 +167,10 @@
                                     success: function (response) {
                                         //Handle server answer
                                         $(".sprintSelect select").append('option value="' + response.id + '">' + response.name + '</option>');
+                                        $("#sprintName").val('');
+                                        $("#sprintDescription").val('');
+                                        $("#startDate").val('');
+                                        $("#endDate").val('');
                                         location.reload();
                                     },
                                     error: function (xhr, status, error) {
@@ -175,7 +189,7 @@
                     <!-- Delete Sprint Modal -->
                     <div class="modal fade" id="deleteSprintModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
                         <div class="modal-dialog">
-                            <div class="modal-content">
+                            <div class="modal-content bg-image-modal">
                                 <div class="modal-header">
                                     <h1 class="modal-title fs-5" id="staticBackdropLabel">Deleting Sprint</h1>
                                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -184,12 +198,13 @@
                                     <form>
                                         <div class="mb-3">
                                             <label for="are-you-sure" class="col-form-label">Are you sure you want to delete this sprint?</label>
+                                            <label class="col-form-label">WARNING! Deleting the sprint will also delete the tasks asigned to it. In order to keep them, remove them from the sprint first.</label>
                                         </div>
                                     </form>
                                 </div>
                                 <div class="modal-footer">
                                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                                    <button id="confirmDeleteSprintButton" type="button" class="btn btn-primary">DELETE</button>
+                                    <button id="confirmDeleteSprintButton" type="button" class="btn btn-danger">DELETE</button>
                                 </div>
                             </div>
                         </div>
@@ -221,13 +236,11 @@
                 <form action="getSprintInfo" method="get">
                     <button class="sprintInfoButton" type="button" data-bs-toggle="modal"
                             data-bs-target="#sprintInfoModal">Sprint Info</button>
-                    <!-- <button class="sprintInfoButton" type="button" data-bs-toggle="modal"
-                    data-bs-target="#sprintInfoModal">Sprint Info</button> -->
-                    <!-- CREATE SPRINT MODAL -->
+                    <!-- SPRINT INFO MODAL -->
                     <div class="modal fade" id="sprintInfoModal" tabindex="-1"
                          aria-labelledby="sprintInfoModalLabel" aria-hidden="true">
                         <div id="sprintInfo" class="modal-dialog">
-                            <div class="modal-content">
+                            <div class="modal-content bg-image-modal">
                                 <div class="modal-header">
                                     <h5 class="modal-title" id="sprintInfoModalLabel">Sprint Information</h5>
                                     <button type="button" class="btn-close" data-bs-dismiss="modal"
@@ -237,23 +250,23 @@
                                     <form>
                                         <div class="mb-3">
                                             <label for="sprint-name" class="col-form-label">Name:</label>
-                                            <input id="sprintName" name="sprint-name" type="text" class="form-control" readonly>
+                                            <input id="sprintNameInfo" name="sprint-name" type="text" class="form-control" readonly>
                                         </div>
                                         <div class="mb-3">
                                             <label for="sprint-description" class="col-form-label">Description:</label>
-                                            <textarea id="sprintDescription" name="sprint-description" class="form-control" readonly></textarea>
+                                            <textarea id="sprintDescriptionInfo" name="sprint-description" class="form-control" readonly></textarea>
                                         </div>
                                         <div class="mb-3">
                                             <label for="start-date-picker" class="col-form-label">Start Date:</label>
                                             <div class="input-group date" id="startDatePicker">
-                                                <input id="startDate" name="start-date-picker" type="text" class="form-control" readonly>
+                                                <input id="startDateInfo" name="start-date-picker" type="text" class="form-control" readonly>
                                                 <span class="input-group-append">
                                             </div>
                                         </div>
                                         <div class="mb-3">
                                             <label for="end-date-picker" class="col-form-label">End Date:</label>
                                             <div class="input-group date" id="endDatePicker">
-                                                <input id="endDate" name="end-date-picker" type="text" class="form-control" readonly>
+                                                <input id="endDateInfo" name="end-date-picker" type="text" class="form-control" readonly>
                                                 <span class="input-group-append">
                                             </div>
                                         </div>
@@ -287,12 +300,14 @@
                                 data: requestData,
                                 dataType: "json",
                                 success: function (data) {
-                                    $("#sprintName").val(data.name);
-                                    $("#sprintDescription").val(data.description);
-                                    $("#startDate").val(data.startDate);
-                                    $("#endDate").val(data.endDate);
-                                    console.log(data);
-                                    infoModal.show();
+                                    var sprintName = data.name;
+                                    var sprintDescription = data.description;
+                                    var startDate = data.startDate;
+                                    var endDate = data.endDate;
+                                    $("#sprintNameInfo").val(sprintName);
+                                    $("#sprintDescriptionInfo").val(sprintDescription);
+                                    $("#startDateInfo").val(startDate);
+                                    $("#endDateInfo").val(endDate);
                                 },
                                 error: function (xhr, status, error) {
                                     console.error("ERROR Getting Sprint Info: " + error);
@@ -338,6 +353,7 @@
                             </div>
                         </div>
                     </form>
+                    <!<!-- Add Task Button functionality Script -->
                     <script>
                         $(document).ready(function () {
                             $("#addTaskButton").click(function () {
@@ -439,6 +455,7 @@
                     <p class="task" draggable="true">Implement Login Backend with Login Views</p> -->
                 </div>
             </div>
+            <!--Lanes functionality Script-->
             <script>
                 $(document).ready(function () {
                     function loadTasksInLane(sprintId, stateId, laneSelector) {
@@ -456,7 +473,10 @@
                                 var tasksContainer = $(laneSelector + " .tasks-container");
                                 tasksContainer.empty();//We clear the existing tasks
                                 $.each(data, function (index, task) {
-                                    tasksContainer.append('<p class="task" draggable="true" data-task-id="' + task.id + '">' + task.name + '</p>');
+                                    // Agregar un identificador único a cada tarea
+                                    var taskId = sprintId + "_" + task.id;
+                                    tasksContainer.append('<p id="' + taskId + '" class="task" draggable="true" data-task-id="' + task.id + '">' + task.name + '</p>');
+//                                    tasksContainer.append('<p id="' + taskId + '" class="task" draggable="true" data-task-id="' + task.id + '" data-bs-toggle="modal" data-bs-target="#taskDetailsModal">' + task.name + '</p>');
                                 });
 
                                 setupDragAndDrop();
@@ -480,6 +500,16 @@
                     $(".sprintSelect select").change(function () {
                         //var newProjectId = $(".projectSelect select").val();
                         var newSprintId = $(".sprintSelect select").val();
+
+                        // Eliminar las tareas del sprint anterior del DOM
+                        $(".task").each(function () {
+                            if (!$(this).attr("id").startsWith(newSprintId + "_")) {
+                                $(this).remove();
+                            }
+                        });
+
+                        // Limpiar las columnas de tareas antes de cargar las tareas del nuevo sprint
+                        $(".swim-lane .tasks-container").empty();
 
                         //Load tasks in each lane with the new selected sprint and project
                         loadTasksInLane(newSprintId, 1, "#sprint-backlog-lane");
@@ -507,10 +537,9 @@
                                 const bottomTask = insertAboveTask(zone, e.clientY);
                                 const curTask = document.querySelector(".is-dragging");
 
-                                if (!bottomTask) {
+                                if (curTask && !zone.contains(curTask)) {
+                                    // Solo si la tarea arrastrada no es hija de esta columna
                                     zone.appendChild(curTask);
-                                } else {
-                                    zone.insertBefore(curTask, bottomTask);
                                 }
                             });
 
@@ -542,35 +571,92 @@
                         });
                     }
                 });
-
-                // Función setupDragAndDrop
-                function setupDragAndDrop() {
-                    const draggables = document.querySelectorAll(".task");
-                    const droppables = document.querySelectorAll(".swim-lane");
-
-                    draggables.forEach((task) => {
-                        task.addEventListener("dragstart", () => {
-                            task.classList.add("is-dragging");
-                        });
-                        task.addEventListener("dragend", () => {
-                            task.classList.remove("is-dragging");
-                        });
+            </script>
+            <!-- Task Info Modal -->
+            <div class="modal fade" id="taskDetailsModal" tabindex="-1" aria-labelledby="taskDetailsModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content bg-image-modal">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="taskDetailsModalLabel">Task Details</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <form>
+                                <div class="mb-3">
+                                    <label for="task-name" class="col-form-label">Task Name:</label>
+                                    <input id="taskNameInfo" name="task-name" type="text" class="form-control" readonly>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="task-description" class="col-form-label">Task Description:</label>
+                                    <input id="taskDescriptionInfo" name="task-description" type="text" class="form-control" readonly>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="task-priority" class="col-form-label">Task Priority:</label>
+                                    <input id="taskPriorityInfo" name="task-priority" type="text" class="form-control" readonly>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            <button type="button" class="btn btn-danger" id="resetTaskStateButton">Remove Task from Sprint</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Task Info Modal Functionality Script -->
+            <script type="text/javascript">
+                const infoModal = bootstrap.Modal.getOrCreateInstance('#taskDetailsModal');
+                // Agregar evento de doble clic a las tareas
+                $(document).on('dblclick', '.task', function () {
+                    // Obtener los detalles de la tarea
+                    var taskId = $(this).data('task-id');
+                    // Establecer el ID de la tarea en el botón que abre el modal
+                    $("#resetTaskStateButton").data('task-id', taskId);
+                    var requestData = {
+                        action: "getTaskDetails",
+                        taskId: taskId
+                    };
+                    $.ajax({
+                        url: "sprintTasks",
+                        type: "GET",
+                        data: requestData,
+                        dataType: "json",
+                        success: function (data) {
+                            // Mostrar los detalles de la tarea en el modal
+                            $("#taskNameInfo").val(data.name);
+                            $("#taskDescriptionInfo").val(data.description);
+                            $("#taskPriorityInfo").val(data.priority);
+                            // Abrir el modal
+                            infoModal.show();
+                        },
+                        error: function (xhr, status, error) {
+                            console.error("Error loading task details: " + error);
+                        }
                     });
+                });
 
-                    droppables.forEach((zone) => {
-                        zone.addEventListener("dragover", (e) => {
-                            e.preventDefault();
-                            const bottomTask = insertAboveTask(zone, e.clientY);
-                            const curTask = document.querySelector(".is-dragging");
-
-                            if (!bottomTask) {
-                                zone.appendChild(curTask);
-                            } else {
-                                zone.insertBefore(curTask, bottomTask);
-                            }
-                        });
+                $("#resetTaskStateButton").click(function () {
+                    var taskId = $(this).data('task-id');
+                    console.log(taskId);
+                    var requestData = {
+                        action: "removeTaskFromSprint",
+                        taskId: taskId
+                    };
+                    $.ajax({
+                        url: "sprintTasks",
+                        type: "POST",
+                        data: requestData,
+                        success: function (response) {
+                            // Cerrar el modal después de restablecer el estado de la tarea
+                            infoModal.hide();
+                            // Actualizar la página para reflejar los cambios
+                            location.reload();
+                        },
+                        error: function (xhr, status, error) {
+                            console.error("Error resetting task state: " + error);
+                        }
                     });
-                }
+                });
             </script>
         </div>
     </body>

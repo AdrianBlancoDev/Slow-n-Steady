@@ -56,14 +56,14 @@ public class ProjectSprintsAPI extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String action = request.getParameter("action");
-        if ("getProjectSprints".equals(action)) {
+        if (action.equals("getProjectSprints")) {
             long projectId = Long.parseLong(request.getParameter("projectId"));
             List<Sprint> projectSprints = getProjectSprints(projectId);
             //We parse the sprint list to JSON
             Gson gsonParser = new Gson();
             String sprintsToJson = gsonParser.toJson(projectSprints);
             response.getWriter().write(sprintsToJson);
-        } else if ("getSprintInfo".equals(action)) {
+        } else if (action.equals("getSprintInfo")) {
             try {
                 //In order to get an specific sprint info
                 long sprintId = Long.parseLong(request.getParameter("sprintId"));
@@ -117,7 +117,7 @@ public class ProjectSprintsAPI extends HttpServlet {
             System.out.println("ID del Proyecto del Sprint: " + projectId);
 
             // Convierte las fechas de cadena a objetos Date
-            SimpleDateFormat dateFormatter = new SimpleDateFormat("MM/dd/yyyy");
+            SimpleDateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd");
             Date sprintStartDate = dateFormatter.parse(startDateString);
             Date sprintEndDate = dateFormatter.parse(endDateString);
 
@@ -150,6 +150,7 @@ public class ProjectSprintsAPI extends HttpServlet {
         } catch (ParseException ex) {
             JsonObject errorResponse = new JsonObject();
             errorResponse.addProperty("error", "ERROR Parsing Dates!");
+            System.out.println(ex.getMessage());
             response.getWriter().write(errorResponse.toString());
             response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
         }
