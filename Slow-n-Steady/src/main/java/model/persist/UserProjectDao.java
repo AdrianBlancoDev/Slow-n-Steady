@@ -38,6 +38,8 @@ public class UserProjectDao {
         queries.put("selectProjectsByUserId", "SELECT project.* FROM project INNER JOIN user_project ON project.id = user_project.project_id WHERE user_project.user_id = ?;");
         //Select User Name By Project Id
         queries.put("selectUserNameByProjectId", "SELECT u.name FROM user AS u JOIN user_project AS up ON u.id = up.user_id WHERE up.project_id = ?;");
+        //Select User Name Not In Project Id
+        queries.put("selectUserNameNotByProjectId", "SELECT u.name FROM user AS u WHERE NOT EXISTS (SELECT 1 FROM user_project AS up WHERE u.id = up.user_id AND up.project_id = ?);");
         //Select UserProjects Where User Admin
         queries.put("selectUserProjectsWhereUserAdmin", "SELECT * FROM user_project WHERE user_id = ? AND privilege_id = 1;");
         //Select Projects Where User Admin
@@ -188,6 +190,22 @@ public class UserProjectDao {
         try (Connection conn = dbConnect.getConnection()) {
             if (conn != null) {
                 String query = queries.get("selectUserNameByProjectId");
+                PreparedStatement st = conn.prepareStatement(query);
+                st.setLong(1, projectId);
+                ResultSet rs = st.executeQuery();
+                while (rs.next()) {
+                String userName = rs.getString("name");
+                result.add(userName);
+            }
+            }
+        }
+        return result;
+    }
+    public List<String> selectUserNameNotByProjectId(long projectId) throws SQLException {
+        List<String> result = new ArrayList<>();
+        try (Connection conn = dbConnect.getConnection()) {
+            if (conn != null) {
+                String query = queries.get("selectUserNameNotByProjectId");
                 PreparedStatement st = conn.prepareStatement(query);
                 st.setLong(1, projectId);
                 ResultSet rs = st.executeQuery();

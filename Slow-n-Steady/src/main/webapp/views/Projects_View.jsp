@@ -12,9 +12,11 @@
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
         <script src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
-        <script
-        src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>
-
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-tagsinput/0.6.0/bootstrap-tagsinput.css" integrity="sha512-3uVpgbpX33N/XhyD3eWlOgFVAraGn3AfpxywfOTEQeBDByJ/J7HkLvl4mJE1fvArGh4ye1EiPfSBnJo2fgfZmg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>
+        <script src="https://twitter.github.io/typeahead.js/releases/latest/typeahead.bundle.js"></script>        
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.7.8/handlebars.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-tagsinput/0.6.0/bootstrap-tagsinput.min.js" integrity="sha512-SXJkO2QQrKk2amHckjns/RYjUIBCI34edl9yh0dzgw3scKu0q4Bo/dUr+sGHMUha0j9Q1Y7fJXJMaBi4xtyfDw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
         <script>
             $(function () {
                 $("#includeHtml").load("views/components/Navbar_View.jsp");
@@ -102,57 +104,46 @@
                                     </div>
                                 </div>
                                 <div class="mb-3">
-                                    <label for="dni" class="form-label">Collaborators:</label>
-                                    <input type="text" id="collaborators" class="form-control input-form" placeholder="Type to search..." oninput="buscarCiudadano(event)">
-                                    <datalist id="datalistOptions">
-                                        <option value="San Francisco">
-                                        <option value="New York">
-                                        <option value="Seattle">
-                                        <option value="Los Angeles">
-                                        <option value="Chicago">
-                                    </datalist>
-                                    <div id="etiquetas"></div>
+                                    <label for="colaborator" class="form-label">Collaborators:</label>
+                                    <input type="text" data-role="tagsinput" id="tags-input" class="form-control" placeholder="Agregar colaboradores">
+
                                 </div>
 
                                 <script>
-                                    function buscarCiudadano(event) {
-                                        var input = event.target;
-                                        var value = input.value.toLowerCase();
-                                        var datalist = document.getElementById('datalistOptions');
+                                    $(document).ready(function () {
+                                        // Tu lista de colaboradores como un array de strings
+                                        var colaboradoresList = ["Colaborador1", "Colaborador2", "Colaborador3"];
 
-                                        // Filtra las opciones del datalist para mostrar solo las sugerencias que coincidan con el valor del campo de entrada
-                                        var options = datalist.querySelectorAll('option');
-                                        options.forEach(function (option) {
-                                            var optionValue = option.value.toLowerCase();
-                                            if (optionValue.includes(value)) {
-                                                option.style.display = 'block';
-                                            } else {
-                                                option.style.display = 'none';
+                                        // Configurar Bloodhound
+                                        var colaboradores = new Bloodhound({
+                                            datumTokenizer: Bloodhound.tokenizers.whitespace,
+                                            queryTokenizer: Bloodhound.tokenizers.whitespace,
+                                            local: colaboradoresList
+                                        });
+                                        console.log("Inicializando Bloodhound");
+                                        // Inicializar Bloodhound
+                                        colaboradores.initialize();
+
+                                        console.log("Configurando Typeahead.js");
+
+                                        // Configurar Typeahead.js
+                                        $('#tags-input').tagsinput({
+                                            typeaheadjs: {
+                                                name: 'colaboradores',
+                                                source: colaboradores.ttAdapter()
                                             }
                                         });
-                                    }
+$('#tags-input').on('itemAdded', function(event) {
+        console.log("Tag añadida: " + event.item);
+    });
 
-                                    document.getElementById('collaborators').addEventListener('keydown', function (event) {
-                                        // Agrega la etiqueta cuando el usuario presiona Enter
-                                        if (event.key === 'Enter' && this.value.trim() !== '') {
-                                            var etiquetasContainer = document.getElementById('etiquetas');
-                                            var value = this.value.trim();
-
-                                            // Verifica si la etiqueta ya existe antes de agregarla
-                                            if (!etiquetasContainer.querySelector('[data-value="' + value + '"]')) {
-                                                var etiqueta = document.createElement('span');
-                                                etiqueta.textContent = value;
-                                                etiqueta.className = 'etiqueta';
-                                                etiqueta.dataset.value = value;
-                                                etiqueta.addEventListener('click', function () {
-                                                    this.remove();
-                                                });
-                                                etiquetasContainer.appendChild(etiqueta);
-                                                this.value = '';
-                                            }
-                                        }
+    // Manejar el evento al eliminar una etiqueta
+    $('#tags-input').on('itemRemoved', function(event) {
+        console.log("Tag eliminada: " + event.item);
+    });
                                     });
                                 </script>
+
 
                                 <style>
                                     .etiqueta {
@@ -191,6 +182,13 @@
                                             var projectName = $("#modal_name_add").val();
                                             var projectDescription = $("#modal_description_add").val();
                                             var projectStartDate = $("#modal_startDate_add").val();
+                                            // Obtener los valores de las etiquetas directamente desde el input
+var tagsSeleccionados = $('#tags-input').val().split(',');
+
+// Verificar que se obtienen los valores correctamente
+console.log("Tags seleccionados:", tagsSeleccionados);
+
+
                                             var projectDao = "create";
                                             // Crear un objeto con los parámetros a enviar al servlet
                                             var requestData = {
