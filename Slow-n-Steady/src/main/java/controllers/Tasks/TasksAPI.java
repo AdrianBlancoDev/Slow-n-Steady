@@ -37,27 +37,7 @@ public class TasksAPI extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         
-            long taskId = Long.parseLong(request.getParameter("taskId"));
-            String taskName = request.getParameter("taskName");
-            String taskDescription = request.getParameter("taskDescription");
-            int taskPriority = Integer.parseInt(request.getParameter("taskPriority"));
-            
-        System.out.println("Priority: " + taskPriority);
-            
-            TaskDao taskDao = new TaskDao();
-            Task newTask = new Task();
-            newTask.setName(taskName);
-            newTask.setDescription(taskDescription);
-            newTask.setPriority(taskPriority);
-        try {
-            taskDao.modifyTaskNameDesc(taskId, newTask);
-        } catch (SQLException ex) {
-            Logger.getLogger(TasksAPI.class.getName()).log(Level.SEVERE, null, ex);
-        }            
-        System.out.println("ID del proyecto: " + taskId);
-        System.out.println("Nombre del proyecto: " + taskName);
-        System.out.println("Descripción del proyecto: " + taskDescription);
-        System.out.println("Priority: " + taskPriority);
+        
         
     }
 
@@ -88,6 +68,26 @@ public class TasksAPI extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         processRequest(request, response);
+        
+            long taskId = Long.parseLong(request.getParameter("taskId"));
+            String taskName = request.getParameter("taskName");
+            String taskDescription = request.getParameter("taskDescription");
+            int taskPriority = Integer.parseInt(request.getParameter("taskPriority"));
+            
+            TaskDao taskDao = new TaskDao();
+            Task newTask = new Task();
+            newTask.setName(taskName);
+            newTask.setDescription(taskDescription);
+            newTask.setPriority(taskPriority);
+        try {
+            taskDao.modifyTaskNameDesc(taskId, newTask);
+        } catch (SQLException ex) {
+            Logger.getLogger(TasksAPI.class.getName()).log(Level.SEVERE, null, ex);
+        }            
+        System.out.println("ID del proyecto: " + taskId);
+        System.out.println("Nombre del proyecto: " + taskName);
+        System.out.println("Descripción del proyecto: " + taskDescription);
+        System.out.println("Priority: " + taskPriority);
     }
 
     /**

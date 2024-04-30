@@ -92,36 +92,93 @@ public class Tasks_Controller extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        try {
+            processRequest(request, response);
+            
+            String taskDaoFunction = request.getParameter("taskDao");
+            TaskDao taskDao = new TaskDao();
+            switch (taskDaoFunction) {
+                case "modify":
+                    long taskIdM = Long.parseLong(request.getParameter("taskId"));
+                    String taskNameM = request.getParameter("taskName");
+                    String taskDescriptionM = request.getParameter("taskDescription");
+                    //String projectStartDateStrM = request.getParameter("projectStartDate");
 
-        TaskDao taskDao = new TaskDao();
-        Task task = new Task();
-        String selection = request.getParameter("selection");
+                    /*Date projectStartDateM = null;
+                    SimpleDateFormat dateFormatM = new SimpleDateFormat("yyyy-MM-dd");
+                    try {
+                    projectStartDateM = (Date) dateFormatM.parse(projectStartDateStrM);
+                    } catch (java.text.ParseException ex) {
+                    Logger.getLogger(ProjectsAPI.class.getName()).log(Level.SEVERE, null, ex);
+                    }*/
+                    
+                    
+                    Task newTask = new Task(taskNameM, taskDescriptionM, 5, 1, 0, 1);
+                    taskDao.modifyTaskNameDesc(taskIdM, newTask);
+                    break;
+                case "delete":
+                    long taskIdD = Long.parseLong(request.getParameter("taskId"));
 
-        if (selection.equals("delete")) {
-            long id = 0;
-            try {
-                taskDao.deleteTask(id);
-            } catch (SQLException ex) {
-                Logger.getLogger(Tasks_Controller.class.getName()).log(Level.SEVERE, null, ex);
+                    taskDao.deleteTask(taskIdD);
+                    break;
+                case "create":
+                    String taskNameC = request.getParameter("taskName");
+                    String taskDescriptionC = request.getParameter("taskDescription");
+                    int taskPriorityC = Integer.parseInt(request.getParameter("taskPriority"));
+                    //String taskStartDateStrC = request.getParameter("projectStartDate");
+
+                    /*Date projectStartDateC = null;
+                    SimpleDateFormat dateFormatC = new SimpleDateFormat("yyyy-MM-dd");
+                    try {
+                    projectStartDateC = (Date) dateFormatC.parse(projectStartDateStrC);
+                    } catch (java.text.ParseException ex) {
+                    Logger.getLogger(ProjectsAPI.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+
+                    Date projectCreationDateC = new Date();*/
+
+                    Task newTaskC = new Task();
+                    newTaskC.setName(taskNameC);
+                    newTaskC.setDescription(taskDescriptionC);
+                    newTaskC.setPriority(taskPriorityC);
+                    newTaskC.setProjectId(1);
+                    //newTaskC.setSprintId();
+                    newTaskC.setStateId(1);
+                    taskDao.createTask(newTaskC);
+                    break;
             }
-        }else if(selection.equals("create")) {
+            
+            /*TaskDao taskDao = new TaskDao();
+            Task task = new Task();
+            String selection = request.getParameter("selection");
+            
+            if (selection.equals("delete")) {
+            long taskId = Long.parseLong(request.getParameter("taskId"));
 
+            try {
+            taskDao.deleteTask(taskId);
+            } catch (SQLException ex) {
+            Logger.getLogger(Tasks_Controller.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            }else if(selection.equals("create")) {
+            
             task.setProjectId(Long.parseLong(request.getParameter("projectId")));
-
-            task.setProjectId(1);
-
+            
+            
             task.setName(request.getParameter("name"));
             task.setDescription(request.getParameter("description"));
             task.setPriority(Integer.parseInt(request.getParameter("priority")));
             try {
-                taskDao.createTask(task);
+            taskDao.createTask(task);
             } catch (SQLException ex) {
-                Logger.getLogger(Tasks_Controller.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(Tasks_Controller.class.getName()).log(Level.SEVERE, null, ex);
             }
+            }*/
+            RequestDispatcher rd = request.getRequestDispatcher("views/Tasks_View.jsp");
+            rd.forward(request, response);
+        } catch (SQLException ex) {
+            Logger.getLogger(Tasks_Controller.class.getName()).log(Level.SEVERE, null, ex);
         }
-        RequestDispatcher rd = request.getRequestDispatcher("views/Tasks_View.jsp");
-        rd.forward(request, response);
 
     }
     

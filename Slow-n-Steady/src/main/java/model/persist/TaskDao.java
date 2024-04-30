@@ -9,6 +9,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Types;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -50,7 +51,7 @@ public class TaskDao {
         //Select All Tasks of a Sprint by State
         queries.put("selectSprintTasksByState", "SELECT * FROM task WHERE sprint_id = ? AND state_id = ?;");
         //Create Task
-        queries.put("addTask", "INSERT INTO `sns_db`.`task` (`description`, `priority`, `name`, `project_id`) VALUES (?, ?, ?, ?);");
+        queries.put("addTask", "INSERT INTO `sns_db`.`task` (`description`, `priority`, `name`, `project_id`, `sprint_id`, `state_id`) VALUES (?, ?, ?, ?, ?, ?);");
         //Delete Task by ID
         queries.put("deleteTask", "DELETE FROM task WHERE id = ?;");
         //Modify Task
@@ -239,6 +240,8 @@ public class TaskDao {
             st.setInt(2, task.getPriority());
             st.setString(3, task.getName());
             st.setLong(4, task.getProjectId());
+            st.setNull(5, Types.BIGINT);
+            st.setLong(6, task.getStateId());
             result = st.executeUpdate();
         }
         return result;
