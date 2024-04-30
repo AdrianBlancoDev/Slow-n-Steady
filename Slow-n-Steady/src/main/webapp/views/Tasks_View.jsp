@@ -26,7 +26,9 @@
                     var taskName = $(this).data("task-name");
                     var taskDescription = $(this).data("task-description");
                     var taskPriority = $(this).data("task-priority");
-
+                    console.log(taskName);
+                    console.log(taskDescription);
+                    console.log(taskPriority);
                     $("#modal_body").attr("value", taskName);
                     $("#modal_description").val(taskDescription);
                     $("#modal_priority").attr("value", taskPriority);
