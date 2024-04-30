@@ -16,6 +16,7 @@
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
         <script
         src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>
+        <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js" integrity="sha256-xLD7nhI62fcsEZK2/v8LsBcb4lG7dgULkuXoXB/j91c=" crossorigin="anonymous"></script>
         <script src="scripts/drag.js" defer></script>
         <script>
             $(function () {
@@ -98,26 +99,32 @@
                                         <div class="mb-3">
                                             <label for="start-date-picker" class="col-form-label">Start Date:</label>
                                             <div class="input-group date" id="startDatePicker">
-                                                <input id="startDate" name="start-date-picker" type="text" class="form-control">
-                                                <span class="input-group-append">
+                                                <input name="start-date-picker" size="16" type="date" class="form-control" id="startDate"/>
+                                                <i class="fa fa-calendar"></i>
+                                                <script type="text/javascript">
+                                                    $(document).ready(function () {
+                                                        $("#startDatePicker").datetimepicker({
+                                                            format: 'MM/dd/yyyy hh:ii',
+                                                            autoclose: true
+                                                        });
+                                                    });
+                                                </script>
                                             </div>
-                                            <script type="text/javascript">
-                                                $(function () {
-                                                    $("#startDatePicker").datepicker();
-                                                });
-                                            </script>
                                         </div>
                                         <div class="mb-3">
                                             <label for="end-date-picker" class="col-form-label">End Date:</label>
                                             <div class="input-group date" id="endDatePicker">
-                                                <input id="endDate" name="end-date-picker" type="text" class="form-control">
-                                                <span class="input-group-append">
+                                                <input name="end-date-picker" size="16" type="date" class="form-control" id="endDate"/>
+                                                <i class="fa fa-calendar"></i>
+                                                <script type="text/javascript">
+                                                    $(document).ready(function () {
+                                                        $("#endDatePicker").datetimepicker({
+                                                            format: 'yyyy-mm-dd hh:ii',
+                                                            autoclose: true
+                                                        });
+                                                    });
+                                                </script>
                                             </div>
-                                            <script type="text/javascript">
-                                                $(function () {
-                                                    $("#endDatePicker").datepicker();
-                                                });
-                                            </script>
                                         </div>
                                     </form>
                                 </div>
@@ -160,6 +167,10 @@
                                     success: function (response) {
                                         //Handle server answer
                                         $(".sprintSelect select").append('option value="' + response.id + '">' + response.name + '</option>');
+                                        $("#sprintName").val('');
+                                        $("#sprintDescription").val('');
+                                        $("#startDate").val('');
+                                        $("#endDate").val('');
                                         location.reload();
                                     },
                                     error: function (xhr, status, error) {
@@ -187,12 +198,13 @@
                                     <form>
                                         <div class="mb-3">
                                             <label for="are-you-sure" class="col-form-label">Are you sure you want to delete this sprint?</label>
+                                            <label class="col-form-label">WARNING! Deleting the sprint will also delete the tasks asigned to it. In order to keep them, remove them from the sprint first.</label>
                                         </div>
                                     </form>
                                 </div>
                                 <div class="modal-footer">
                                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                                    <button id="confirmDeleteSprintButton" type="button" class="btn btn-primary">DELETE</button>
+                                    <button id="confirmDeleteSprintButton" type="button" class="btn btn-danger">DELETE</button>
                                 </div>
                             </div>
                         </div>
