@@ -50,16 +50,19 @@ public class TaskDao {
         //Select All Tasks of a Sprint by State
         queries.put("selectSprintTasksByState", "SELECT * FROM task WHERE sprint_id = ? AND state_id = ?;");
         //Create Task
-        queries.put("addTask", "INSERT INTO task VALUES (null, ?, ?, ?, ?, ?, ?);");
+        queries.put("addTask", "INSERT INTO `sns_db`.`task` (`description`, `priority`, `name`, `project_id`) VALUES (?, ?, ?, ?);");
         //Delete Task by ID
         queries.put("deleteTask", "DELETE FROM task WHERE id = ?;");
         //Modify Task
-        queries.put("modifyTask", "UPDATE task SET name = ?, description = ?, prioity = ?, projectId = ?, sprintId = ?, stateId = ? WHERE id = ?;");
-
+        queries.put("modifyTask", "UPDATE task SET name = ?, description = ?, priority = ?, project_id = ?, sprint_id = ?, state_id = ? WHERE id = ?;");
+        //Modify Task Name-Description
+        queries.put("modifyTaskNameDesc", "UPDATE task SET name = ?, description = ?, priority = ? WHERE id = ?;");
         //Modify Task State
         queries.put("modifyTaskState", "UPDATE task SET state_id = ? WHERE id = ?;");
         //Set Task Sprint
         queries.put("setTaskSprint", "UPDATE task SET sprint_id = ?, state_id = 1 WHERE id = ?;");
+        //Remove Task From Sprint
+        queries.put("removeTaskFromSprint", "UPDATE task SET sprint_id = NULL, state_id = NULL WHERE id = ?;");
 
     }
 
@@ -238,8 +241,6 @@ public class TaskDao {
             st.setInt(2, task.getPriority());
             st.setString(3, task.getName());
             st.setLong(4, task.getProjectId());
-            st.setLong(5, task.getSprintId());
-            st.setLong(6, task.getStateId());
             result = st.executeUpdate();
         }
         return result;
@@ -289,6 +290,20 @@ public class TaskDao {
         return result;
     }
 
+    public int modifyTaskNameDesc(long taskId, Task updatedTask) throws SQLException {
+        int result = 0;
+        try (Connection conn = dbConnect.getConnection()) {
+            String query = queries.get("modifyTaskNameDesc");
+            PreparedStatement st = conn.prepareStatement(query);
+            st.setString(1, updatedTask.getName());
+            st.setString(2, updatedTask.getDescription());
+            st.setInt(3, updatedTask.getPriority());
+            st.setLong(4, taskId);
+            result = st.executeUpdate();
+        }
+        return result;
+    }
+
     public int modifyTaskState(long taskId, long stateId) throws SQLException {
         int result = 0;
         try (Connection conn = dbConnect.getConnection()) {
@@ -309,6 +324,19 @@ public class TaskDao {
                 PreparedStatement st = conn.prepareStatement(query);
                 st.setLong(1, sprintId);
                 st.setLong(2, taskId);
+                result = st.executeUpdate();
+            }
+        }
+        return result;
+    }
+
+    public int removeTaskFromSprint(long taskId) throws SQLException {
+        int result = 0;
+        try (Connection conn = dbConnect.getConnection()) {
+            if (conn != null) {
+                String query = queries.get("removeTaskFromSprint");
+                PreparedStatement st = conn.prepareStatement(query);
+                st.setLong(1, taskId);
                 result = st.executeUpdate();
             }
         }

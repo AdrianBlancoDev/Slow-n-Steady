@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
  */
-package controllers;
+package controllers.Projects;
 
 import jakarta.servlet.RequestDispatcher;
 import java.io.IOException;
@@ -55,11 +55,26 @@ public class Projects_Controller extends HttpServlet {
             List<Project> collaboratorProjectList = userProjectDao.selectProjectsWhereUserCollaborator(id);
             request.setAttribute("projectCollaborator", collaboratorProjectList);
             
+            List<String> userNamesList = userProjectDao.selectUserNameByProjectId(id);
+            String userNameStr = getUserNamesAsString(userNamesList);
+            request.setAttribute("usernameList", userNameStr);
+            
             rd.forward(request, response);
         } catch (SQLException ex) {
             Logger.getLogger(Projects_Controller.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
+    
+    public String getUserNamesAsString(List<String> userNames) {
+    StringBuilder result = new StringBuilder();
+    for (int i = 0; i < userNames.size(); i++) {
+        result.append(userNames.get(i));
+        if (i < userNames.size() - 1) {
+            result.append(", ");
+        }
+    }
+    return result.toString();
+}
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**

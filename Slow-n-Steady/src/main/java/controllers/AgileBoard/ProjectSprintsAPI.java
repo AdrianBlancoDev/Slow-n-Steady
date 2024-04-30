@@ -56,14 +56,14 @@ public class ProjectSprintsAPI extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String action = request.getParameter("action");
-        if ("getProjectSprints".equals(action)) {
+        if (action.equals("getProjectSprints")) {
             long projectId = Long.parseLong(request.getParameter("projectId"));
             List<Sprint> projectSprints = getProjectSprints(projectId);
             //We parse the sprint list to JSON
             Gson gsonParser = new Gson();
             String sprintsToJson = gsonParser.toJson(projectSprints);
             response.getWriter().write(sprintsToJson);
-        } else if ("getSprintInfo".equals(action)) {
+        } else if (action.equals("getSprintInfo")) {
             try {
                 //In order to get an specific sprint info
                 long sprintId = Long.parseLong(request.getParameter("sprintId"));
