@@ -117,7 +117,7 @@ public class ProjectSprintsAPI extends HttpServlet {
             System.out.println("ID del Proyecto del Sprint: " + projectId);
 
             // Convierte las fechas de cadena a objetos Date
-            SimpleDateFormat dateFormatter = new SimpleDateFormat("MM/dd/yyyy");
+            SimpleDateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd");
             Date sprintStartDate = dateFormatter.parse(startDateString);
             Date sprintEndDate = dateFormatter.parse(endDateString);
 
@@ -150,6 +150,7 @@ public class ProjectSprintsAPI extends HttpServlet {
         } catch (ParseException ex) {
             JsonObject errorResponse = new JsonObject();
             errorResponse.addProperty("error", "ERROR Parsing Dates!");
+            System.out.println(ex.getMessage());
             response.getWriter().write(errorResponse.toString());
             response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
         }
