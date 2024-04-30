@@ -1,7 +1,7 @@
 <%-- 
-    Document   : Resgistration
-    Created on : 21 abr 2024, 19:38:33
-    Author     : ivan-
+    Document   : Login
+    Created on : 16 abr 2024, 10:34:02
+    Author     : IvyDeb
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
@@ -29,6 +29,12 @@
                 background: linear-gradient(90deg, rgba(15,15,17,1) 0%, rgba(147,49,189,1) 33%, rgba(26,29,189,1) 100%);
             }
 
+            .purple-background{
+                background: url("https://cdn.discordapp.com/attachments/1229455660035342397/1232234911889621013/bg3.png?ex=6630a0b0&is=662f4f30&hm=658594aeea72b9cf7e989231bbfbc8276576a9ee2321e7fde30a40deda07be8d&");
+                background-repeat: no-repeat;
+                background-size: cover;
+                background-position: center;
+            }
 
 
 
@@ -43,6 +49,10 @@
                     border-bottom-right-radius: .3rem;
                 }
             }
+
+            .logo{
+                border-radius: 50%;
+            }
         </style>
     </head>
     <body>
@@ -52,37 +62,48 @@
                     <div class="col-xl-10">
                         <div class="card rounded-3 text-black">
                             <div class="row g-0">
-                                <div class="col-lg-6 d-flex align-items-center gradient-custom-2">
+                                <div class="col-lg-6 d-flex align-items-center purple-background">
                                     <div class="text-white px-3 py-4 p-md-5 mx-md-4">
-                                        <h4 class="mb-4">[Eslogan]></h4>
-                                        <p class="small mb-0">[Descripcion de la aplicacion]</p>
+                                        <p class="small mb-0">An application to manage little teams with Scrum methodologies</p>
+                                        <h4 class="mb-4">Win the race. Together</h4>
                                     </div>
                                 </div>
                                 <div class="col-lg-6">
                                     <div class="card-body p-md-5 mx-md-4">
 
                                         <div class="text-center">
-                                            <img src="./img/Logo4.jpg"
+                                            <img class="logo" src="views/img/Logo4.jpg"
                                                  style="width: 185px;" alt="logo">
                                             <h4 class="mt-1 mb-5 pb-1">Slow and Steady</h4>
                                         </div>
 
-                                        <form method="POST" action="./login">
-                                            <div data-mdb-input-init class="form-outline mb-4">
+                                        <form class="needs-validation" novalidate>
+                                            <div  class="form-outline mb-4">
                                                 <input id="user" class="form-control"
-                                                       placeholder="User name" name="user"/>
+                                                       placeholder="User name" name="user" required/>
+                                                <div class="invalid-feedback">
+                                                    Please enter username
+                                                </div>
                                             </div>
                                             
-                                            <div data-mdb-input-init class="form-outline mb-4">
-                                                <input type="email" id="email" class="form-control"
+
+                                            <div  class="form-outline mb-4">
+                                                <input type="email" id="email" class="form-control" required
                                                        placeholder="Email" name="email"/>
+                                                <div class="invalid-feedback">
+                                                    Please enter email
+                                                </div>
                                             </div>
 
-                                            <div data-mdb-input-init class="form-outline mb-4">
-                                                <input type="password" id="password" class="form-control" name="password" />
+                                            <div class="form-outline mb-4">
+                                                <input type="password" id="password" class="form-control" name="password" placeholder="Password" required/>
+                                                <div class="invalid-feedback">
+                                                    Please enter password with at least 8 digits, 1 number and special character
+                                                </div>
                                             </div>
+
                                             <div class="d-flex align-items-center justify-content-center pb-4">
-                                                <button type="submit" formaction="./register" class="btn">Sign in</button>
+                                                <button type="submit" formaction="./register" class="btn btn-primary btn-block border border-0 btn gradient-custom-2">Sign in</button>
                                             </div>
 
                                         </form>
@@ -96,4 +117,25 @@
             </div>
         </section>
     </body>
+    <script>
+        (function () {
+            'use strict';
+
+            // Fetch all the forms we want to apply custom Bootstrap validation styles to
+            var forms = document.querySelectorAll('.needs-validation')
+
+            // Loop over them and prevent submission
+            Array.prototype.slice.call(forms)
+                    .forEach(function (form) {
+                        form.addEventListener('submit', function (event) {
+                            if (!form.checkValidity()) {
+                                event.preventDefault();
+                                event.stopPropagation();
+                            }
+
+                            form.classList.add('was-validated')
+                        }, false);
+                    });
+        })();
+    </script>
 </html>
