@@ -7,10 +7,12 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <link rel="stylesheet" href="styles/AgileBoardStyles.css"/>
         <link rel="stylesheet" href="styles/tasks/tasks_Css.css"/>
-        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-        <script defer src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
         <script src="https://code.jquery.com/jquery-3.7.1.js"
         integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+        <!-- Bootstrap Bundle con Popper -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+        <script defer src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
         <script
         src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>
@@ -222,7 +224,7 @@
                 <form action="getSprintInfo" method="get">
                     <button class="sprintInfoButton" type="button" data-bs-toggle="modal"
                             data-bs-target="#sprintInfoModal">Sprint Info</button>
-                    <!-- CREATE SPRINT MODAL -->
+                    <!-- SPRINT INFO MODAL -->
                     <div class="modal fade" id="sprintInfoModal" tabindex="-1"
                          aria-labelledby="sprintInfoModalLabel" aria-hidden="true">
                         <div id="sprintInfo" class="modal-dialog">
@@ -339,6 +341,7 @@
                             </div>
                         </div>
                     </form>
+                    <!<!-- Add Task Button functionality Script -->
                     <script>
                         $(document).ready(function () {
                             $("#addTaskButton").click(function () {
@@ -440,6 +443,7 @@
                     <p class="task" draggable="true">Implement Login Backend with Login Views</p> -->
                 </div>
             </div>
+            <!--Lanes functionality Script-->
             <script>
                 $(document).ready(function () {
                     function loadTasksInLane(sprintId, stateId, laneSelector) {
@@ -460,6 +464,7 @@
                                     // Agregar un identificador único a cada tarea
                                     var taskId = sprintId + "_" + task.id;
                                     tasksContainer.append('<p id="' + taskId + '" class="task" draggable="true" data-task-id="' + task.id + '">' + task.name + '</p>');
+//                                    tasksContainer.append('<p id="' + taskId + '" class="task" draggable="true" data-task-id="' + task.id + '" data-bs-toggle="modal" data-bs-target="#taskDetailsModal">' + task.name + '</p>');
                                 });
 
                                 setupDragAndDrop();
@@ -490,7 +495,7 @@
                                 $(this).remove();
                             }
                         });
-                        
+
                         // Limpiar las columnas de tareas antes de cargar las tareas del nuevo sprint
                         $(".swim-lane .tasks-container").empty();
 
@@ -554,35 +559,92 @@
                         });
                     }
                 });
-//
-//                // Función setupDragAndDrop
-//                function setupDragAndDrop() {
-//                    const draggables = document.querySelectorAll(".task");
-//                    const droppables = document.querySelectorAll(".swim-lane");
-//
-//                    draggables.forEach((task) => {
-//                        task.addEventListener("dragstart", () => {
-//                            task.classList.add("is-dragging");
-//                        });
-//                        task.addEventListener("dragend", () => {
-//                            task.classList.remove("is-dragging");
-//                        });
-//                    });
-//
-//                    droppables.forEach((zone) => {
-//                        zone.addEventListener("dragover", (e) => {
-//                            e.preventDefault();
-//                            const bottomTask = insertAboveTask(zone, e.clientY);
-//                            const curTask = document.querySelector(".is-dragging");
-//
-//                            if (!bottomTask) {
-//                                zone.appendChild(curTask);
-//                            } else {
-//                                zone.insertBefore(curTask, bottomTask);
-//                            }
-//                        });
-//                    });
-//                }
+            </script>
+            <!-- Task Info Modal -->
+            <div class="modal fade" id="taskDetailsModal" tabindex="-1" aria-labelledby="taskDetailsModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content bg-image-modal">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="taskDetailsModalLabel">Task Details</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <form>
+                                <div class="mb-3">
+                                    <label for="task-name" class="col-form-label">Task Name:</label>
+                                    <input id="taskNameInfo" name="task-name" type="text" class="form-control" readonly>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="task-description" class="col-form-label">Task Description:</label>
+                                    <input id="taskDescriptionInfo" name="task-description" type="text" class="form-control" readonly>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="task-priority" class="col-form-label">Task Priority:</label>
+                                    <input id="taskPriorityInfo" name="task-priority" type="text" class="form-control" readonly>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            <button type="button" class="btn btn-danger" id="resetTaskStateButton">Remove Task from Sprint</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Task Info Modal Functionality Script -->
+            <script type="text/javascript">
+                const infoModal = bootstrap.Modal.getOrCreateInstance('#taskDetailsModal');
+                // Agregar evento de doble clic a las tareas
+                $(document).on('dblclick', '.task', function () {
+                    // Obtener los detalles de la tarea
+                    var taskId = $(this).data('task-id');
+                    // Establecer el ID de la tarea en el botón que abre el modal
+                    $("#resetTaskStateButton").data('task-id', taskId);
+                    var requestData = {
+                        action: "getTaskDetails",
+                        taskId: taskId
+                    };
+                    $.ajax({
+                        url: "sprintTasks",
+                        type: "GET",
+                        data: requestData,
+                        dataType: "json",
+                        success: function (data) {
+                            // Mostrar los detalles de la tarea en el modal
+                            $("#taskNameInfo").val(data.name);
+                            $("#taskDescriptionInfo").val(data.description);
+                            $("#taskPriorityInfo").val(data.priority);
+                            // Abrir el modal
+                            infoModal.show();
+                        },
+                        error: function (xhr, status, error) {
+                            console.error("Error loading task details: " + error);
+                        }
+                    });
+                });
+
+                $("#resetTaskStateButton").click(function () {
+                    var taskId = $(this).data('task-id');
+                    console.log(taskId);
+                    var requestData = {
+                        action: "removeTaskFromSprint",
+                        taskId: taskId
+                    };
+                    $.ajax({
+                        url: "sprintTasks",
+                        type: "POST",
+                        data: requestData,
+                        success: function (response) {
+                            // Cerrar el modal después de restablecer el estado de la tarea
+                            infoModal.hide();
+                            // Actualizar la página para reflejar los cambios
+                            location.reload();
+                        },
+                        error: function (xhr, status, error) {
+                            console.error("Error resetting task state: " + error);
+                        }
+                    });
+                });
             </script>
         </div>
     </body>
