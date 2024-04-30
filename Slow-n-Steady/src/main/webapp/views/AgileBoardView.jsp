@@ -549,8 +549,6 @@
                                 const taskId = currTask.dataset.taskId;
                                 const stateId = zone.dataset.stateId;
 
-                                console.log("ID de la tarea a la que le cambiamos el estado: " + taskId);
-                                console.log("ID del estado que le vamos a poner a la tarea: " + stateId);
                                 var reqData = {
                                     action: "modifyTaskState",
                                     taskId: taskId,
