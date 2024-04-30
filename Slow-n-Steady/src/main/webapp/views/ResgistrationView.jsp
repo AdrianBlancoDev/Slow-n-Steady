@@ -77,7 +77,7 @@
                                             <h4 class="mt-1 mb-5 pb-1">Slow and Steady</h4>
                                         </div>
 
-                                        <form class="needs-validation" novalidate>
+                                        <form method="POST" action="./login" class="needs-validation" novalidate>
                                             <div  class="form-outline mb-4">
                                                 <input id="user" class="form-control"
                                                        placeholder="User name" name="user" required/>

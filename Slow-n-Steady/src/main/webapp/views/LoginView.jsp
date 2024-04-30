@@ -55,7 +55,7 @@
             }
         </style>
         <script>
-            $(document).ready(() => {
+            /*$(document).ready(() => {
                 $("#loginBtn").click(() => {
                     const user = $("#user").val();
                     const password = $("#password").val();
@@ -76,7 +76,7 @@
                         }
                     });
                 });
-            });
+            });*/
 
         </script>
     </head>
@@ -102,7 +102,7 @@
                                             <h4 class="mt-1 mb-5 pb-1">Slow and Steady</h4>
                                         </div>
 
-                                        <form  class="needs-validation" novalidate>
+                                        <form method="POST" action="./" class="needs-validation" novalidate>
                                             <div class="form-outline mb-4">
                                                 <input id="user" class="form-control" name="user" required
                                                        placeholder="User name" />
@@ -118,7 +118,7 @@
                                                 </div>
                                             </div>
                                             <div class="text-center pt-1 mb-5 pb-1 container row">
-                                                <button  class="btn btn-primary btn-block border border-0 gradient-custom-2 col" id="loginBtn" >Log
+                                                <button   type="submit" class="btn btn-primary btn-block border border-0 gradient-custom-2 col" id="loginBtn" >Log
                                                     in</button>
                                                 <!--<a class="text-muted text-end col" href="#!">Forgot password?</a>-->
                                             </div>
