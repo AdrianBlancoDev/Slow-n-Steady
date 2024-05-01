@@ -2,33 +2,23 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
  */
-package controllers.Projects;
+package controllers;
 
 import jakarta.servlet.RequestDispatcher;
-import java.io.IOException;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
-import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import model.Project;
-import model.UserProject;
-import model.persist.ProjectDao;
-import model.persist.UserProjectDao;
+import java.io.IOException;
 
 /**
  *
- * @author Mati
+ * @author ivan-
  */
-@WebServlet(name = "Projects", urlPatterns = {"/Projects"})
-public class Projects_Controller extends HttpServlet {
+@WebServlet(name = "Logout", urlPatterns = {"/logout"})
+public class Logout extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -41,39 +31,14 @@ public class Projects_Controller extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        try {
-            response.setContentType("text/html;charset=UTF-8");
-            RequestDispatcher rd = request.getRequestDispatcher("/views/Projects_View.jsp");
-            
-            HttpSession session=request.getSession(false);
-            long  id = (long)session.getAttribute("userId");
-            
-            UserProjectDao userProjectDao = new UserProjectDao();
-            List<Project> adminProjectList = userProjectDao.selectProjectsWhereUserAdmin(id);
-            request.setAttribute("projectAdmin", adminProjectList);
-            
-            List<Project> collaboratorProjectList = userProjectDao.selectProjectsWhereUserCollaborator(id);
-            request.setAttribute("projectCollaborator", collaboratorProjectList);
-            
-            List<String> userNamesList = userProjectDao.selectUserNameByProjectId(id);
-            String userNameStr = getUserNamesAsString(userNamesList);
-            request.setAttribute("usernameList", userNameStr);
-            
-            rd.forward(request, response);
-        } catch (SQLException ex) {
-            Logger.getLogger(Projects_Controller.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
-    
-    public String getUserNamesAsString(List<String> userNames) {
-        StringBuilder result = new StringBuilder();
-        for (int i = 0; i < userNames.size(); i++) {
-            result.append(userNames.get(i));
-            if (i < userNames.size() - 1) {
-                result.append(", ");
-            }
-        }
-        return result.toString();
+        response.setContentType("text/html;charset=UTF-8");
+        HttpSession session = request.getSession(false);
+        response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate"); // HTTP 1.1
+        response.setHeader("Pragma", "no-cache"); // HTTP 1.0
+        response.setHeader("Expires", "0"); // Proxies
+        session.invalidate();
+
+        response.sendRedirect("");
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

@@ -42,11 +42,11 @@ public class Project {
         this.id = id;
     }
 
-    public Project(String name, String description, Date creationDate, Date startDate) {
+    public Project(String name, String description, Date startDate, Date creationDate) {
         this.name = name;
         this.description = description;
-        this.creationDate = creationDate;
         this.startDate = startDate;
+        this.creationDate = creationDate;
     }
 
     public Project() {

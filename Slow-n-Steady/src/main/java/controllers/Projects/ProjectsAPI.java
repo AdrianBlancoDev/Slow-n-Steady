@@ -20,7 +20,9 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import model.Project;
+import model.User;
 import model.persist.ProjectDao;
+import model.persist.UserDao;
 import model.persist.UserProjectDao;
 
 /**
@@ -61,6 +63,7 @@ public class ProjectsAPI extends HttpServlet {
                     break;
                 case "create":
                     String projectNameC = request.getParameter("projectName");
+                    String[] projectTagsC = request.getParameter("tagsSelect").split(",");
                     String projectDescriptionC = request.getParameter("projectDescription");
                     String projectStartDateStrC = request.getParameter("projectStartDate");
 
@@ -80,11 +83,17 @@ public class ProjectsAPI extends HttpServlet {
                     long idProjectC = projectDaoC.selectProjectIdByName(projectNameC);
                     HttpSession session = request.getSession(false);
                     long idUserC = (long) session.getAttribute("userId");
-                    
+
                     UserProjectDao userProjectDaoC = new UserProjectDao();
-
-
                     userProjectDaoC.setProjectAdmin(idProjectC, idUserC);
+                    UserDao userDaoC = new UserDao();
+                    for (String userNameCollaborator : projectTagsC) {
+                        User collaborator = userDaoC.searchUserByUsername(userNameCollaborator);
+                        if (collaborator != null) {
+                            userProjectDaoC.addProjectCollaborator(idProjectC, collaborator.getId());
+                        }
+                    }
+
                     break;
             }
 
@@ -96,7 +105,28 @@ public class ProjectsAPI extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        try {
+            long projectId = Long.parseLong(request.getParameter("projectId"));
+            UserProjectDao userProjectDao = new UserProjectDao();
+            List<String> userNamesList = userProjectDao.selectUserNameByProjectId(projectId);
+            String userNameStr = getUserNamesAsString(userNamesList);
+
+            response.setContentType("text/plain");
+            response.getWriter().write(userNameStr);
+        } catch (SQLException ex) {
+            Logger.getLogger(ProjectsAPI.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    public String getUserNamesAsString(List<String> userNames) {
+        StringBuilder result = new StringBuilder();
+        for (int i = 0; i < userNames.size(); i++) {
+            result.append(userNames.get(i));
+            if (i < userNames.size() - 1) {
+                result.append(", ");
+            }
+        }
+        return result.toString();
     }
 
     @Override

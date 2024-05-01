@@ -33,6 +33,7 @@
             <div class="project-sprint-select-create">
                 <form id="selectors" action="getProjectSprints" method="get">
                     <div class="projectSelect">
+                        <label for="project-select">Projects:</label>
                         <select  class="form-select" aria-label="Default Select Example">
                             <option value=""></option>
                             <c:forEach items="${userProjects}" var="userProject">
@@ -42,6 +43,7 @@
                         <input type="hidden" id="projectId" name="project-id">
                     </div>
                     <div class="sprintSelect">
+                        <label for="project-select">Project Sprints:</label>
                         <select class="form-select" aria-label="Default select example">
                         </select>
                     </div>
@@ -74,7 +76,7 @@
                     </script>
                 </form>
                 <form action="ProjectSprintsAPI" method="post">
-                    <button class="createSprintButton" type="button" data-bs-toggle="modal"
+                    <button class="createSprintButton btn btn-primary btn-lg" type="button" data-bs-toggle="modal"
                             data-bs-target="#createSprintModal">Create Sprint +</button>
                     <!-- CREATE SPRINT MODAL -->
                     <div class="modal fade" id="createSprintModal" tabindex="-1"
@@ -184,7 +186,7 @@
                     </script>
                 </form>
                 <form action="ProjectSprintsAPI" method="delete">
-                    <button class="deleteSprintButton" type="button" data-bs-toggle="modal"
+                    <button class="deleteSprintButton btn btn-danger btn-lg" type="button" data-bs-toggle="modal"
                             data-bs-target="#deleteSprintModal">Delete Sprint</button>
                     <!-- Delete Sprint Modal -->
                     <div class="modal fade" id="deleteSprintModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
@@ -234,7 +236,7 @@
                     </script>
                 </form>
                 <form action="getSprintInfo" method="get">
-                    <button class="sprintInfoButton" type="button" data-bs-toggle="modal"
+                    <button class="sprintInfoButton btn btn-info btn-lg bg-gradient" type="button" data-bs-toggle="modal"
                             data-bs-target="#sprintInfoModal">Sprint Info</button>
                     <!-- SPRINT INFO MODAL -->
                     <div class="modal fade" id="sprintInfoModal" tabindex="-1"
@@ -328,21 +330,14 @@
                         <div class="modal fade" id="addTaskModal" tabindex="-1" aria-labelledby="addTaskModalLabel"
                              aria-hidden="true">
                             <div class="modal-dialog">
-                                <div class="modal-content">
+                                <div class="modal-content bg-image-modal">
                                     <div class="modal-header">
                                         <h5 class="modal-title" id="addTaskModalLabel">Adding Tasks</h5>
                                         <button type="button" class="btn-close" data-bs-dismiss="modal"
                                                 aria-label="Close"></button>
                                     </div>
                                     <div class="modal-body">
-                                        <!-- <div class="input-group mb-3">
-                                            <div class="input-group-text">
-                                                <input class="form-check-input mt-0" type="checkbox" value=""
-                                                       aria-label="Checkbox for following text input">
-                                            </div>
-                                            <input type="text" class="form-control"
-                                                   aria-label="Text input with checkbox" value="User Story 1" readonly>
-                                        </div>-->
+                                        <!-- ADD TASK MODAL BODY GOES HERE -->
                                     </div>
                                     <div class="modal-footer">
                                         <button type="button" class="btn btn-secondary"
@@ -362,6 +357,7 @@
                                     alert("Please, select a Project first");
                                     return;
                                 }
+                                var $modalBody = $('#addTaskModal').find('.modal-body');
                                 var requestData = {
                                     action: "getProjectUntrackedTasks",
                                     projectId: projectId
@@ -373,16 +369,17 @@
                                     dataType: "json",
                                     success: function (data) {
                                         //First we clear the modal existing body
-                                        $(".modal-body").empty();
+                                        $modalBody.empty();
                                         //Iteramos sobre las tareas recibidas para mostrar su contenido en el modal
                                         $.each(data, function (index, task) {
+                                            console.log(task);
                                             var taskInput = '<div class="input-group mb-3">' +
                                                     '<div class="input-group-text">' +
                                                     '<input class="form-check-input mt-0" type="checkbox" value="' + task.id + '" aria-label="Checkbox for following text input">' +
                                                     '</div>' +
                                                     '<input type="text" class="form-control" aria-label="Text input with checkbox" value="' + task.name + '" readonly>' +
                                                     '</div>';
-                                            $(".modal-body").append(taskInput);
+                                            $modalBody.append(taskInput);
                                         });
                                     },
                                     error: function (xhr, status, error) {
@@ -392,7 +389,6 @@
                             });
                             $("#confirmAddTasksButton").click(function () {
                                 var projectId = $(".projectSelect select").val();
-                                console.log(projectId);
                                 if (!projectId) {
                                     alert("Please, select a Project first");
                                     return;
@@ -402,7 +398,6 @@
                                     selectedTasksIds.push($(this).val());
                                 });
 
-                                console.log(selectedTasksIds);
                                 // Verificar si se han seleccionado tareas antes de enviar la solicitud
                                 if (selectedTasksIds.length === 0) {
                                     alert("Please, select at least one task to add to the sprint");
@@ -415,7 +410,6 @@
                                     selectedTasksIds: selectedTasksIds
                                 };
 
-                                console.log(requestData);
                                 $.ajax({
                                     url: "sprintTasks",
                                     type: "POST",
@@ -436,23 +430,14 @@
                 <div id="in-progress-lane" class="swim-lane" data-state-id="2">
                     <h3 class="heading">In Progress</h3>
                     <div class="tasks-container"></div>
-                    <!-- <p class="task" draggable="true">Develop Login</p>
-                    <p class="task" draggable="true">Design Login View</p>
-                    <p class="task" draggable="true">Implement Login Backend with Login Views</p> -->
                 </div>
                 <div id="for-testing-lane" class="swim-lane" data-state-id="3">
                     <h3 class="heading">Ready for Testing</h3>
                     <div class="tasks-container"></div>
-                    <!-- <p class="task" draggable="true">Develop Login</p>
-                    <p class="task" draggable="true">Design Login View</p>
-                    <p class="task" draggable="true">Implement Login Backend with Login Views</p> -->
                 </div>
                 <div id="completed-lane" class="swim-lane" data-state-id="4">
                     <h3 class="heading">Completed</h3>
                     <div class="tasks-container"></div>
-                    <!-- <p class="task" draggable="true">Develop Login</p>
-                    <p class="task" draggable="true">Design Login View</p>
-                    <p class="task" draggable="true">Implement Login Backend with Login Views</p> -->
                 </div>
             </div>
             <!--Lanes functionality Script-->
@@ -549,8 +534,6 @@
                                 const taskId = currTask.dataset.taskId;
                                 const stateId = zone.dataset.stateId;
 
-                                console.log("ID de la tarea a la que le cambiamos el estado: " + taskId);
-                                console.log("ID del estado que le vamos a poner a la tarea: " + stateId);
                                 var reqData = {
                                     action: "modifyTaskState",
                                     taskId: taskId,
@@ -588,7 +571,8 @@
                                 </div>
                                 <div class="mb-3">
                                     <label for="task-description" class="col-form-label">Task Description:</label>
-                                    <input id="taskDescriptionInfo" name="task-description" type="text" class="form-control" readonly>
+<!--                                    <input id="taskDescriptionInfo" name="task-description" type="text" class="form-control" readonly>-->
+                                    <textarea id="taskDescriptionInfo" name="task-description" class="form-control" readonly></textarea>
                                 </div>
                                 <div class="mb-3">
                                     <label for="task-priority" class="col-form-label">Task Priority:</label>
