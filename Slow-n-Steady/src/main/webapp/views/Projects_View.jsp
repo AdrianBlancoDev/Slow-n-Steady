@@ -8,6 +8,7 @@
         <title>Projects</title>
         <link rel="stylesheet" href="./styles/project/project.css"/>
         <link rel="stylesheet" href="styles/tasks/tasks_Css.css"/>
+        <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js" integrity="sha256-xLD7nhI62fcsEZK2/v8LsBcb4lG7dgULkuXoXB/j91c=" crossorigin="anonymous"></script>
         <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.0/font/bootstrap-icons.css" rel="stylesheet">
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
@@ -17,6 +18,8 @@
         <script src="https://twitter.github.io/typeahead.js/releases/latest/typeahead.bundle.js"></script>        
         <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.7.8/handlebars.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-tagsinput/0.6.0/bootstrap-tagsinput.min.js" integrity="sha512-SXJkO2QQrKk2amHckjns/RYjUIBCI34edl9yh0dzgw3scKu0q4Bo/dUr+sGHMUha0j9Q1Y7fJXJMaBi4xtyfDw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>
+  
         <script>
             $(function () {
                 $("#includeHtml").load("views/components/Navbar_View.jsp");
@@ -152,9 +155,18 @@
                                     </div>
                                 </div>
                                 <div class="mb-3">
-                                    <label for="basic-url" class="form-label">Start Date:</label>
-                                    <div class="input-group">
-                                        <input type="text" class="form-control" id="modal_startDate_add" aria-describedby="basic-addon3 basic-addon4">
+                                    <label for="start-date-picker" class="col-form-label">Start Date:</label>
+                                    <div class="input-group date" id="datetimepicker">
+                                        <input name="start-date-picker" size="16" type="date" class="form-control" id="modal_startDate_add"/>
+                                        <i class="fa fa-calendar"></i>
+                                        <script type="text/javascript">
+                                            $(document).ready(function () {
+                                                $("#datetimepicker").datetimepicker({
+                                                    format: 'MM/dd/yyyy hh:ii',
+                                                    autoclose: true
+                                                });
+                                            });
+                                        </script>
                                     </div>
                                 </div>
                             </div>
