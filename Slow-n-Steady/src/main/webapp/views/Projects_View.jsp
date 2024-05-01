@@ -53,7 +53,7 @@
                                         </div>
                                         <div class="col-md">
                                             <icon>
-                                                <i class="bi bi-info-circle info-btn" data-bs-toggle="modal" data-bs-target="#infoModal" data-project-id="${projectAdmin.getId()}" data-project-name="${projectAdmin.getName()}" data-project-description="${projectAdmin.getDescription()}" data-project-startdate="${projectAdmin.getStartDate()}" ></i>
+                                                <i class="bi bi-info-circle info-btn" data-bs-toggle="modal" data-bs-target="#infoModal" data-project-id="${projectAdmin.getId()}" data-project-name="${projectAdmin.getName()}" data-project-description="${projectAdmin.getDescription()}" data-project-startdate="${projectAdmin.getStartDate()}" data-project-creationdate="${projectAdmin.getCreationDate()}"></i>
                                             </icon>
                                         </div>
                                     </div>
@@ -73,7 +73,7 @@
                                         <div class="col-md"></div>
                                         <div class="col-md">
                                             <icon>
-                                                <i class="bi bi-info-circle info-btn" data-bs-toggle="modal" data-bs-target="#infoModal" data-project-id="${projectAdmin.getId()}" data-project-name="${project.getName()}" data-project-description="${project.getDescription()}" data-project-startdate="${project.getStartDate()}" ></i>
+                                                <i class="bi bi-info-circle info-btn" data-bs-toggle="modal" data-bs-target="#infoModal" data-project-id="${projectAdmin.getId()}" data-project-name="${project.getName()}" data-project-description="${project.getDescription()}" data-project-startdate="${project.getStartDate()}" data-project-creationdate="${projectAdmin.getCreationDate()}"></i>
                                             </icon>                                  
                                         </div>
                                     </div>
@@ -230,8 +230,12 @@
                                     </div>
                                 </div>
                                 <div class="mb-3">
-                                    <label for="basic-url" class="form-label fw-bold" id="info-modal-date">Start Date:</label>
+                                    <label for="basic-url" class="form-label fw-bold">Start Date:</label>
                                     <span id="info-modal-startdate">startDate</span>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="basic-url" class="form-label fw-bold">Creation Date:</label>
+                                    <span id="info-modal-creationdate">creationDate</span>
                                 </div>
                             </div>
                             <!-- Modal footer -->
@@ -402,6 +406,7 @@
                 var projectName = $(this).data("project-name");
                 var projectDescription = $(this).data("project-description");
                 var projectStartdate = $(this).data("project-startdate");
+                var projectCreationdate = $(this).data("project-creationdate");
 
                 $.ajax({
                     url: "ProjectsAPI", // URL del servlet o endpoint API
@@ -418,6 +423,7 @@
                 $("#info-modal-name").text(projectName);
                 $("#info-modal-description").text(projectDescription);
                 $("#info-modal-startdate").text(projectStartdate);
+                $("#info-modal-creationdate").text(projectCreationdate);
             });
         });
     </script>
