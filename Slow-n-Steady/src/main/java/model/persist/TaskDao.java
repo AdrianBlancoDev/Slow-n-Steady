@@ -243,7 +243,7 @@ public class TaskDao {
             st.setString(3, task.getName());
             st.setLong(4, task.getProjectId());
             st.setNull(5, Types.BIGINT);
-            st.setLong(6, task.getStateId());
+            st.setNull(6, Types.BIGINT);
             result = st.executeUpdate();
         }
         return result;

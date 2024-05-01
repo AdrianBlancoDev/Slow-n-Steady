@@ -44,7 +44,6 @@ public class Tasks_Controller extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
 
-        
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
@@ -60,19 +59,35 @@ public class Tasks_Controller extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         processRequest(request, response);
-        
+
         HttpSession session = request.getSession(false);
         long id = (long) session.getAttribute("userId");
 
         TaskDao taskDao = new TaskDao();
         UserProjectDao userProjectDao = new UserProjectDao();
+        String projectIdNull = request.getParameter("projectId");
+
+        List<Project> projects;
+        List<Task> tasks = new ArrayList<>();
 
         try {
-            List<Project> projects = userProjectDao.selectProjectsByUserId(id);
-            List<Task> tasks = taskDao.selectProjectTasks(1);
-
-            request.setAttribute("tasks", tasks);
+            projects = userProjectDao.selectProjectsByUserId(id);
+            if (projectIdNull == null) {
+                try {
+                    tasks = taskDao.selectProjectTasks(0);
+                } catch (SQLException ex) {
+                    Logger.getLogger(Tasks_Controller.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            } else {
+                long projectId = Long.parseLong(request.getParameter("projectId"));
+                try {
+                    tasks = taskDao.selectProjectTasks(projectId);
+                } catch (SQLException ex) {
+                    Logger.getLogger(Tasks_Controller.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
             request.setAttribute("projects", projects);
+            request.setAttribute("tasks", tasks);
 
         } catch (SQLException ex) {
             Logger.getLogger(Tasks_Controller.class.getName()).log(Level.SEVERE, null, ex);
@@ -92,7 +107,7 @@ public class Tasks_Controller extends HttpServlet {
      */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {        
+            throws ServletException, IOException {
 
     }
 

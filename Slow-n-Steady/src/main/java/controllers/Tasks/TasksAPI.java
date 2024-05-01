@@ -12,11 +12,15 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import java.sql.SQLException;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import model.Project;
 import model.Task;
 import model.persist.TaskDao;
+import model.persist.UserProjectDao;
 
 /**
  *
@@ -37,9 +41,6 @@ public class TasksAPI extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        
-        
-        
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
@@ -55,6 +56,21 @@ public class TasksAPI extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         processRequest(request, response);
+        
+        
+        long projectId = Long.parseLong(request.getParameter("projectId"));
+        TaskDao taskDao = new TaskDao();
+
+        try {
+            List<Task> tasks = taskDao.selectProjectTasks(projectId);
+
+            request.setAttribute("tasks", tasks);
+
+        } catch (SQLException ex) {
+            Logger.getLogger(Tasks_Controller.class.getName()).log(Level.SEVERE, null, ex);
+        }
+RequestDispatcher rd = request.getRequestDispatcher("/views/Tasks_View.jsp");
+        rd.forward(request, response);
     }
 
     /**
@@ -97,24 +113,12 @@ public class TasksAPI extends HttpServlet {
                     String taskNameC = request.getParameter("taskName");
                     String taskDescriptionC = request.getParameter("taskDescription");
                     int taskPriorityC = Integer.parseInt(request.getParameter("taskPriority"));
-                    //String taskStartDateStrC = request.getParameter("projectStartDate");
-
-                    /*Date projectStartDateC = null;
-                    SimpleDateFormat dateFormatC = new SimpleDateFormat("yyyy-MM-dd");
-                    try {
-                    projectStartDateC = (Date) dateFormatC.parse(projectStartDateStrC);
-                    } catch (java.text.ParseException ex) {
-                    Logger.getLogger(ProjectsAPI.class.getName()).log(Level.SEVERE, null, ex);
-                    }
-
-                    Date projectCreationDateC = new Date();*/
+                    
                     Task newTaskC = new Task();
                     newTaskC.setName(taskNameC);
                     newTaskC.setDescription(taskDescriptionC);
                     newTaskC.setPriority(taskPriorityC);
                     newTaskC.setProjectId(1);
-                    //newTaskC.setSprintId();
-                    newTaskC.setStateId(1);
                     taskDao.createTask(newTaskC);
                     break;
             }
