@@ -571,7 +571,8 @@
                                 </div>
                                 <div class="mb-3">
                                     <label for="task-description" class="col-form-label">Task Description:</label>
-                                    <input id="taskDescriptionInfo" name="task-description" type="text" class="form-control" readonly>
+<!--                                    <input id="taskDescriptionInfo" name="task-description" type="text" class="form-control" readonly>-->
+                                    <textarea id="taskDescriptionInfo" name="task-description" class="form-control" readonly></textarea>
                                 </div>
                                 <div class="mb-3">
                                     <label for="task-priority" class="col-form-label">Task Priority:</label>
