@@ -337,14 +337,7 @@
                                                 aria-label="Close"></button>
                                     </div>
                                     <div class="modal-body">
-                                        <!-- <div class="input-group mb-3">
-                                            <div class="input-group-text">
-                                                <input class="form-check-input mt-0" type="checkbox" value=""
-                                                       aria-label="Checkbox for following text input">
-                                            </div>
-                                            <input type="text" class="form-control"
-                                                   aria-label="Text input with checkbox" value="User Story 1" readonly>
-                                        </div>-->
+                                        <!-- ADD TASK MODAL BODY GOES HERE -->
                                     </div>
                                     <div class="modal-footer">
                                         <button type="button" class="btn btn-secondary"
@@ -437,23 +430,14 @@
                 <div id="in-progress-lane" class="swim-lane" data-state-id="2">
                     <h3 class="heading">In Progress</h3>
                     <div class="tasks-container"></div>
-                    <!-- <p class="task" draggable="true">Develop Login</p>
-                    <p class="task" draggable="true">Design Login View</p>
-                    <p class="task" draggable="true">Implement Login Backend with Login Views</p> -->
                 </div>
                 <div id="for-testing-lane" class="swim-lane" data-state-id="3">
                     <h3 class="heading">Ready for Testing</h3>
                     <div class="tasks-container"></div>
-                    <!-- <p class="task" draggable="true">Develop Login</p>
-                    <p class="task" draggable="true">Design Login View</p>
-                    <p class="task" draggable="true">Implement Login Backend with Login Views</p> -->
                 </div>
                 <div id="completed-lane" class="swim-lane" data-state-id="4">
                     <h3 class="heading">Completed</h3>
                     <div class="tasks-container"></div>
-                    <!-- <p class="task" draggable="true">Develop Login</p>
-                    <p class="task" draggable="true">Design Login View</p>
-                    <p class="task" draggable="true">Implement Login Backend with Login Views</p> -->
                 </div>
             </div>
             <!--Lanes functionality Script-->
