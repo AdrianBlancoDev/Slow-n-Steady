@@ -76,7 +76,7 @@
                     </script>
                 </form>
                 <form action="ProjectSprintsAPI" method="post">
-                    <button class="createSprintButton" type="button" data-bs-toggle="modal"
+                    <button class="createSprintButton btn btn-primary btn-lg" type="button" data-bs-toggle="modal"
                             data-bs-target="#createSprintModal">Create Sprint +</button>
                     <!-- CREATE SPRINT MODAL -->
                     <div class="modal fade" id="createSprintModal" tabindex="-1"
@@ -186,7 +186,7 @@
                     </script>
                 </form>
                 <form action="ProjectSprintsAPI" method="delete">
-                    <button class="deleteSprintButton" type="button" data-bs-toggle="modal"
+                    <button class="deleteSprintButton btn btn-danger btn-lg" type="button" data-bs-toggle="modal"
                             data-bs-target="#deleteSprintModal">Delete Sprint</button>
                     <!-- Delete Sprint Modal -->
                     <div class="modal fade" id="deleteSprintModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
@@ -236,7 +236,7 @@
                     </script>
                 </form>
                 <form action="getSprintInfo" method="get">
-                    <button class="sprintInfoButton" type="button" data-bs-toggle="modal"
+                    <button class="sprintInfoButton btn btn-info btn-lg bg-gradient" type="button" data-bs-toggle="modal"
                             data-bs-target="#sprintInfoModal">Sprint Info</button>
                     <!-- SPRINT INFO MODAL -->
                     <div class="modal fade" id="sprintInfoModal" tabindex="-1"
@@ -330,7 +330,7 @@
                         <div class="modal fade" id="addTaskModal" tabindex="-1" aria-labelledby="addTaskModalLabel"
                              aria-hidden="true">
                             <div class="modal-dialog">
-                                <div class="modal-content">
+                                <div class="modal-content bg-image-modal">
                                     <div class="modal-header">
                                         <h5 class="modal-title" id="addTaskModalLabel">Adding Tasks</h5>
                                         <button type="button" class="btn-close" data-bs-dismiss="modal"
