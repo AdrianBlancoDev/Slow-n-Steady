@@ -27,17 +27,17 @@
                     <select class="form-select bg-dark text-light  projectSelect" required>
                         <option value="0" disabled selected>Selecciona un proyecto</option>
                         <c:forEach items="${projects}" var="project">
-                            <option class="form-select text-light custom-btn" value="${project.getId()}" data-bs-toggle="button" aria-pressed="true" type="submit">
+                            <option class="form-select bg-dark text-light custom-btn" value="${project.getId()}" data-bs-toggle="button" aria-pressed="true" type="submit">
                                 ${project.getName()}
                             </option>
                         </c:forEach>
                     </select>
                     <input type="hidden" id="projectId" name="project-id">
                 </div>
-                <div class="container-sm --bs-warning bg-gradient p-2 rounded-end-4 rounded-bottom-4">
-                    <div class="container-sm p-4 overflow-y-auto" style="height: 500px;">
-                        <c:forEach items="${tasks}" var="tasks">
-                            <div class="row none-margin container-sm border border-dark my-2 py-3 shadow --bs-info-bg-subtle bg-gradient">
+                <div class="container-sm --bs-warning bg-gradient p-2 rounded-end-4 rounded-bottom-4" >
+                    <div class="container-sm p-4 overflow-y-auto"  style="height: 500px;" id="here">
+                        <c:forEach items="${tasks}" var="tasks" >
+                            <div class="row none-margin container-sm border border-dark my-2 py-3 shadow --bs-info-bg-subtle bg-gradient" >
                                 <div class="col-md-6">
                                     <a>${tasks.getName()}</a>
                                 </div>
@@ -359,9 +359,12 @@
                 url: "UserStories",
                 type: "GET",
                 data: requestData,
-                success: function () {
+                success: function (data) {
                     console.log("¡Proyecto seleccionado con éxito!");
-                    location.reload(); // Recargar la página para actualizar la tabla
+                    var contenido = $(data).find("#here").html();
+                    $("#here").html(contenido);
+                    // $("#here").html(data);// Recargar la página para actualizar la tabla
+                   
                 },
                 error: function (xhr, status, error) {
                     console.error("ERROR getting Project Sprints: " + error);
