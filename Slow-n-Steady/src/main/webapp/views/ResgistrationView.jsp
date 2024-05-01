@@ -30,7 +30,7 @@
             }
 
             .purple-background{
-                background: url("https://cdn.discordapp.com/attachments/1229455660035342397/1232234911889621013/bg3.png?ex=6630a0b0&is=662f4f30&hm=658594aeea72b9cf7e989231bbfbc8276576a9ee2321e7fde30a40deda07be8d&");
+                background-image: url('views/img/cool-background1.png');
                 background-repeat: no-repeat;
                 background-size: cover;
                 background-position: center;
