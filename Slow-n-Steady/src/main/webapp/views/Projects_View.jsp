@@ -73,7 +73,7 @@
                                         <div class="col-md"></div>
                                         <div class="col-md">
                                             <icon>
-                                                <i class="bi bi-info-circle info-btn" data-bs-toggle="modal" data-bs-target="#infoModal" data-project-id="${projectAdmin.getId()}" data-project-name="${project.getName()}" data-project-description="${project.getDescription()}" data-project-startdate="${project.getStartDate()}" data-project-creationdate="${projectAdmin.getCreationDate()}"></i>
+                                                <i class="bi bi-info-circle info-btn" data-bs-toggle="modal" data-bs-target="#infoModal" data-project-id="${project.getId()}" data-project-name="${project.getName()}" data-project-description="${project.getDescription()}" data-project-startdate="${project.getStartDate()}" data-project-creationdate="${project.getCreationDate()}"></i>
                                             </icon>                                  
                                         </div>
                                     </div>
