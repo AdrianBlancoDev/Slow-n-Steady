@@ -20,7 +20,9 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import model.Project;
+import model.User;
 import model.persist.ProjectDao;
+import model.persist.UserDao;
 import model.persist.UserProjectDao;
 
 /**
@@ -83,8 +85,13 @@ public class ProjectsAPI extends HttpServlet {
                     long idUserC = (long) session.getAttribute("userId");
 
                     UserProjectDao userProjectDaoC = new UserProjectDao();
-
                     userProjectDaoC.setProjectAdmin(idProjectC, idUserC);
+                    UserDao userDaoC = new UserDao();
+                    for (String userNameCollaborator : projectTagsC) {
+                        User collaborator = userDaoC.searchUserByUsername(userNameCollaborator);
+                        userProjectDaoC.addProjectCollaborator(idProjectC, collaborator.getId());
+                    }
+
                     break;
             }
 
@@ -101,9 +108,9 @@ public class ProjectsAPI extends HttpServlet {
             UserProjectDao userProjectDao = new UserProjectDao();
             List<String> userNamesList = userProjectDao.selectUserNameByProjectId(projectId);
             String userNameStr = getUserNamesAsString(userNamesList);
-            
-        response.setContentType("text/plain");
-        response.getWriter().write(userNameStr);
+
+            response.setContentType("text/plain");
+            response.getWriter().write(userNameStr);
         } catch (SQLException ex) {
             Logger.getLogger(ProjectsAPI.class.getName()).log(Level.SEVERE, null, ex);
         }
