@@ -44,6 +44,23 @@ public class Tasks_Controller extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
 
+        
+    }
+
+    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
+    /**
+     * Handles the HTTP <code>GET</code> method.
+     *
+     * @param request servlet request
+     * @param response servlet response
+     * @throws ServletException if a servlet-specific error occurs
+     * @throws IOException if an I/O error occurs
+     */
+    @Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        processRequest(request, response);
+        
         HttpSession session = request.getSession(false);
         long id = (long) session.getAttribute("userId");
 
@@ -65,22 +82,6 @@ public class Tasks_Controller extends HttpServlet {
         rd.forward(request, response);
     }
 
-    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
-    /**
-     * Handles the HTTP <code>GET</code> method.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
-    @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        processRequest(request, response);
-
-    }
-
     /**
      * Handles the HTTP <code>POST</code> method.
      *
@@ -91,40 +92,10 @@ public class Tasks_Controller extends HttpServlet {
      */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        processRequest(request, response);
-
-        TaskDao taskDao = new TaskDao();
-        Task task = new Task();
-        String selection = request.getParameter("selection");
-
-        if (selection.equals("delete")) {
-            long id = 0;
-            try {
-                taskDao.deleteTask(id);
-            } catch (SQLException ex) {
-                Logger.getLogger(Tasks_Controller.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        }else if(selection.equals("create")) {
-
-            task.setProjectId(Long.parseLong(request.getParameter("projectId")));
-
-            task.setProjectId(1);
-
-            task.setName(request.getParameter("name"));
-            task.setDescription(request.getParameter("description"));
-            task.setPriority(Integer.parseInt(request.getParameter("priority")));
-            try {
-                taskDao.createTask(task);
-            } catch (SQLException ex) {
-                Logger.getLogger(Tasks_Controller.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        }
-        RequestDispatcher rd = request.getRequestDispatcher("views/Tasks_View.jsp");
-        rd.forward(request, response);
+            throws ServletException, IOException {        
 
     }
-    
+
     /**
      * Returns a short description of the servlet.
      *

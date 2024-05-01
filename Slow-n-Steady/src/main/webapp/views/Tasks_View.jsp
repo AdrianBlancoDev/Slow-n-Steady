@@ -15,124 +15,175 @@
         <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js" integrity="sha256-xLD7nhI62fcsEZK2/v8LsBcb4lG7dgULkuXoXB/j91c=" crossorigin="anonymous"></script>
         <script>
             $(function () {
-            $("#includeHtml").load("views/components/Navbar_View.jsp");
-            });
-        </script>
-        <!-- Scripts Modify -->
-        <script type="text/javascript">
-            $(document).ready(function () {
-            $(".modify-btn").click(function () {
-            var taskId = $(this).data("task-id");
-            var taskName = $(this).data("task-name");
-            var taskDescription = $(this).data("task-description");
-            var taskPriority = $(this).data("task-priority")
-
-                    $("#modal_body").attr("value", taskName);
-            $("#modal_description").val(taskDescription);
-            $("#modal_priority").attr("value", taskPriority);
-            $("#modifyTaskBtn").data("task-id", taskId);
-            });
-            });
-        </script>
-        <script>
-            $(document).ready(function () {
-            $("#modifyTaskBtn").click(function () {
-            // Obtener los valores del modal
-            var taskId = $("#modifyTaskBtn").data("task-id");
-            var taskName = $("#modal_body").val();
-            var taskDescription = $("#modal_description").val();
-            var taskPriority = $("#modal_priority").val();
-            console.log(taskPriority);
-            var projectStartDate = $("#modal_startDate").val();
-            // Crear un objeto con los parámetros a enviar al servlet
-            var requestData = {
-            taskId: taskId,
-                    taskName: taskName,
-                    taskPriority: taskPriority,
-                    taskDescription: taskDescription,
-                    projectStartDate: projectStartDate
-            };
-            $.ajax({
-            url: "TasksAPI",
-                    type: "POST", // O cambia a "GET" si prefieres
-                    data: requestData,
-                    success: function () {
-                    console.log("¡Datos enviados al servidor con éxito!");
-                    location.reload();
-                    },
-                    error: function (xhr, status, error) {
-                    console.error("ERROR al enviar datos al servidor: " + error);
-                    }
-            });
-            });
+                $("#includeHtml").load("views/components/Navbar_View.jsp");
             });
         </script>
         <!-- Scripts Add -->
         <script>
             $(document).ready(function () {
-            $("#addTaskBtn").click(function () {
-            // Obtener los valores del modal
-            var taskName = $("#modal_body").val();
-            var taskDescription = $("#modal_description").val();
-            var taskPriority = $("#modal_priority").val();
-            console.log(taskPriority);
-            var projectStartDate = $("#modal_startDate").val();
-            var projectId =
+                $("#addTaskBtn").click(function () {
+                    // Obtener los valores del modal
+                    var taskName = $("#modal_create_name").val();
+                    var taskDescription = $("#modal_create_description").val();
+                    var taskPriority = $("#modal_create_priority").val();
+                    var taskDao = "create"
                     // Crear un objeto con los parámetros a enviar al servlet
                     var requestData = {
-                    taskName: taskName,
-                            taskPriority: taskPriority,
-                            taskDescription: taskDescription,
-                            projectStartDate: projectStartDate
-
+                        taskName: taskName,
+                        taskPriority: taskPriority,
+                        taskDescription: taskDescription,
+                        taskDao: taskDao
                     };
-            $.ajax({
-            url: "UserStories",
-                    type: "POST", // O cambia a "GET" si prefieres
-                    data: requestData,
-                    success: function () {
-                    console.log("¡Datos enviados al servidor con éxito!");
-                    location.reload();
-                    },
-                    error: function (xhr, status, error) {
-                    console.error("ERROR al enviar datos al servidor: " + error);
-                    }
-            });
-            });
+                    $.ajax({
+                        url: "TasksAPI",
+                        type: "POST", // O cambia a "GET" si prefieres
+                        data: requestData,
+                        success: function () {
+                            console.log("¡Datos enviados al servidor con éxito!");
+                            location.reload();
+                        },
+                        error: function (xhr, status, error) {
+                            console.error("ERROR al enviar datos al servidor: " + error);
+                        }
+                    });
+                });
             });
         </script>
+        <!-- Scripts Modify -->
+        <script type="text/javascript">
+            $(document).ready(function () {
+                $(".modify-btn").click(function () {
+                    var taskId = $(this).data("task-id");
+                    var taskName = $(this).data("task-name");
+                    var taskDescription = $(this).data("task-description");
+                    var taskPriority = $(this).data("task-priority");
+                    
+                    $("#modal_modify_name").attr("value", taskName);
+                    $("#modal_modify_description").val(taskDescription);
+                    $("#modal_modify_priority").attr("value", taskPriority);
+                    $("#modifyTaskBtn").data("task-id", taskId);
+                });
+            });
+        </script>
+        <script>
+            $(document).ready(function () {
+                $("#modifyTaskBtn").click(function () {
+                    // Obtener los valores del modal
+                    var taskId = $("#modifyTaskBtn").data("task-id");
+                    var taskName = $("#modal_modify_name").val();
+                    var taskDescription = $("#modal_modify_description").val();
+                    var taskPriority = $("#modal_modify_priority").val();
+                    var taskDao = "modify"
+                    // Crear un objeto con los parámetros a enviar al servlet
+                    var requestData = {
+                        taskId: taskId,
+                        taskName: taskName,
+                        taskPriority: taskPriority,
+                        taskDescription: taskDescription,
+                        taskDao: taskDao
+                    };
+                    $.ajax({
+                        url: "TasksAPI",
+                        type: "POST", // O cambia a "GET" si prefieres
+                        data: requestData,
+                        success: function () {
+                            console.log("¡Datos enviados al servidor con éxito!");
+                            location.reload();
+                        },
+                        error: function (xhr, status, error) {
+                            console.error("ERROR al enviar datos al servidor: " + error);
+                        }
+                    });
+                });
+            });
+        </script>        
+        <!-- Scripts Info -->
+        <script type="text/javascript">
+            $(document).ready(function () {
+                $(".info-btn").click(function () {
+                    var taskId = $(this).data("task-id");
+                    var taskName = $(this).data("task-name");
+                    var taskDescription = $(this).data("task-description");
+                    var taskPriority = $(this).data("task-priority");
+                    console.log("informacion: " + taskName);
+                    console.log("informacion: " + taskDescription);
+                    console.log("informacion: " + taskPriority);
+                    $("#modal_info_name").text(taskName);
+                    $("#modal_info_description").text(taskDescription);
+                    $("#modal_info_priority").text(taskPriority);
+                });
+            });
+        </script>
+        <!-- Scripts Delete -->
+        <script type="text/javascript">
+            $(document).ready(function () {
+                $(".delete-btn").click(function () {
+                    var taskId = $(this).data("task-id");
+                    console.log(taskId);
+                    console.log("boton de eliminar fuera del modal");
+                    $("#deleteTaskBtn").data("task-id", taskId);
+                });
+            });
+        </script>
+        <script>
+            $(document).ready(function () {
+                // Manejar clic en botón de eliminar proyecto
+                $("#deleteTaskBtn").click(function () {
+                    // Obtener el ID del proyecto a eliminar desde el atributo de datos
+                    var taskId = $("#deleteTaskBtn").data("task-id");
+                    var taskDao = "delete";
+                    console.log(taskId);
+                    console.log("boton de eliminar dentro del modal");// Crear un objeto con los parámetros a enviar al servlet
+                    var requestData = {
+                        taskId: taskId,
+                        taskDao: taskDao
+                    };
+                    $.ajax({
+                        url: "TasksAPI", // URL del servlet o endpoint API
+                        type: "POST",
+                        data: requestData,
+                        success: function () {
+                            console.log("¡Proyecto eliminado con éxito!");
+                            location.reload(); // Recargar la página para actualizar la tabla
+                        },
+                        error: function (xhr, status, error) {
+                            console.error("ERROR al eliminar el proyecto: " + error.toString() + " Status: " + status + " XMLHttpRequest: " + xhr);
+                        }
+                    });
+
+                });
+            });
+        </script>        
         <!-- Scripts Projects -->
         <script>
             $(document).ready(function () {
-            $("#searchProjectBtn").click(function () {
-            // Obtener los valores del modal
-            var taskName = $("#modal_body").val();
-            var taskDescription = $("#modal_description").val();
-            var taskPriority = $("#modal_priority").val();
-            console.log(taskPriority);
-            var projectStartDate = $("#modal_startDate").val();
-            var projectId = $("#modal_project").val();
+                $(".searchProjectBtn").click(function () {
+                    // Obtener los valores del modal
+                    var taskName = $("#modal_body").val();
+                    var taskDescription = $("#modal_description").val();
+                    var taskPriority = $("#modal_priority").val();
+                    var projectId = $("#modal_project").val();
                     // Crear un objeto con los parámetros a enviar al servlet
                     var requestData = {
-                    taskName: taskName,
-                            taskPriority: taskPriority,
-                            taskDescription: taskDescription,
-                            projectStartDate: projectStartDate,
-                            projectId: projectId
+                        taskName: taskName,
+                        taskPriority: taskPriority,
+                        taskDescription: taskDescription,
+                        projectStartDate: projectStartDate,
+                        projectId: projectId
                     };
-            $.ajax({
-            url: "UserStories",
-                    type: "POST", // O cambia a "GET" si prefieres
-                    data: requestData,
-                    success: function () {
-                    console.log("¡Datos enviados al servidor con éxito!");
-                    location.reload();
-                    },
-                    error: function (xhr, status, error) {
-                    console.error("ERROR al enviar datos al servidor: " + error);
-                    }
-            });
-            });
+                    $.ajax({
+                        url: "UserStories",
+                        type: "POST", // O cambia a "GET" si prefieres
+                        data: requestData,
+                        success: function () {
+                            console.log("¡Datos enviados al servidor con éxito!");
+                            location.reload();
+                        },
+                        error: function (xhr, status, error) {
+                            console.error("ERROR al enviar datos al servidor: " + error);
+                        }
+                    });
+                });
             });
         </script>
     </head>
@@ -140,10 +191,10 @@
         <div id="includeHtml"></div>
         <div class="bg-image fullSizeView">
             <div class="container-sm p-5">
-                <div class="container-sm">
+                <div class="container-sm project-selected">
                     <select class="form-select bg-dark text-light" id="validationDefault04" required>
                         <c:forEach items="${projects}" var="projects">
-                            <option class="form-select text-light custom-btn" id="searchProjectBtn" value="${projects.getId()}" data-bs-toggle="button" aria-pressed="true" type="submit">${projects.getName()}</option>
+                            <option class="form-select text-light custom-btn searchProjectBtn"  data-bs-toggle="button" aria-pressed="true" type="submit">${projects.getName()}</option>
                         </c:forEach>
                     </select>
                 </div>
@@ -152,25 +203,33 @@
                         <c:forEach items="${tasks}" var="tasks">
                             <div class="row none-margin container-sm border border-dark my-2 py-3 shadow --bs-info-bg-subtle bg-gradient">
                                 <div class="col-md-6">
-                                    <a name="taskName">${tasks.getName()}</a>
+                                    <a>${tasks.getName()}</a>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="row">
                                         <div class="col-md">
-                                            <a>pepe</a>
                                         </div>
                                         <div class="col-md">
                                             Priority: ${tasks.getPriority()}
                                         </div>
                                         <div class="col-md">
-                                            <a class="btn btn-outline-* p-0 fw-bold text-decoration-underline modify-btn" data-bs-toggle="modal" data-bs-target="#modifyModal">Modificar</a>
+                                            <a class="btn btn-outline-* p-0 fw-bold text-decoration-underline modify-btn" data-bs-toggle="modal" data-bs-target="#modifyModal" 
+                                               data-task-id="${tasks.getId()}" 
+                                               data-task-name="${tasks.getName()}" 
+                                               data-task-priority="${tasks.getPriority()}"
+                                               data-task-description="${tasks.getDescription()}">Modify</a>
                                         </div>
                                         <div class="col-md">
-                                            <a type="button" class="btn btn-outline-* p-0 fw-bold text-decoration-underline" data-bs-toggle="modal" data-bs-target="#deleteModal">Eliminar</a>
+                                            <a class="btn btn-outline-* p-0 fw-bold text-decoration-underline delete-btn" data-bs-toggle="modal" data-bs-target="#deleteModal" 
+                                               data-task-id="${tasks.getId()}">Delete</a>
                                         </div>
                                         <div class="col-md">
                                             <icon>
-                                                <i class="bi bi-info-circle" data-bs-toggle="modal" data-bs-target="#infoModal"></i>
+                                                <i class="bi bi-info-circle info-btn" data-bs-toggle="modal" data-bs-target="#infoModal"
+                                                   data-task-id="${tasks.getId()}" 
+                                                   data-task-name="${tasks.getName()}" 
+                                                   data-task-priority="${tasks.getPriority()}"
+                                                   data-task-description="${tasks.getDescription()}"></i>
                                             </icon>
                                         </div>
                                     </div>
@@ -188,70 +247,40 @@
                 <div class="modal fade" id="addTaskModal" data-bs-backdrop="static">
                     <div class="modal-dialog modal-lg">
                         <div class="modal-content bg-image-modal">
-                            <form action="./UserStories" method="post">
-                                <!-- Modal Header -->
-                                <div class="modal-header">
-                                    <h4 class="modal-title col-12 text-center">New Task</h4>
+                            <!-- Modal Header -->
+                            <div class="modal-header">
+                                <h4 class="modal-title col-12 text-center">New Task</h4>
+                            </div>
+                            <!-- Modal body -->
+                            <div class="modal-body">
+                                <div class="mb-3">
+                                    <label for="basic-url" id="validationDefault01" class="form-label">Task Name:</label>
+                                    <div class="input-group">
+                                        <input type="text"  class="form-control" id="modal_create_name" name="taskName" required/>
+                                    </div>
                                 </div>
-                                <!-- Modal body -->
-                                <div class="modal-body">
+                                <div class="mb-3">
+                                    <label for="basic-url" class="form-label">Priority (0-10):</label>
+                                    <div class="input-group">
+                                        <input type="number" class="form-control" id="modal_create_priority" name="taskPriority" min="1" max="10">
+                                    </div>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="basic-url" class="form-label">Description:</label>
+                                    <div class="input-group">
+                                        <textarea class="form-control" aria-label="With textarea" id="modal_create_description" name="taskDescription" required></textarea>
+                                    </div>
+                                </div>
 
-                                    <div class="mb-3">
-                                        <label for="basic-url" id="validationDefault01" class="form-label">Task Name:</label>
-                                        <div class="input-group">
-                                            <input type="text" id="validationDefault01" class="form-control" id="modal_body" id="name" name="name" required/>
-                                        </div>
-                                    </div>
-                                    <div class="mb-3">
-                                        <label for="basic-url" class="form-label">Collaborators:</label>
-                                        <div class="input-group">
-                                            <button class="btn btn-dark bg-gradient dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                                Collaborators
-                                            </button>
-                                            <ul class="dropdown-menu text-bg-dark">
-                                                <li><button class="dropdown-item btn btn-dark text-light custom-btn" data-bs-toggle="button" aria-pressed="true" href="#">Proyecto 1</button></li>
-                                                <li><button class="dropdown-item btn btn-dark text-light custom-btn" data-bs-toggle="button" aria-pressed="true" href="#">Proyecto 1</button></li>
-                                                <li><button class="dropdown-item btn btn-dark text-light custom-btn" data-bs-toggle="button" aria-pressed="true" href="#">Proyecto 1</button></li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                    <div class="mb-3">
-                                        <label for="basic-url" class="form-label">Priority (0-10):</label>
-                                        <div class="input-group">
-                                            <input type="number" class="form-control" id="modal_priority" name="priority" min="1" max="10">
-                                        </div>
-                                    </div>
-                                    <div class="mb-3">
-                                        <label for="basic-url" class="form-label">Description:</label>
-                                        <div class="input-group">
-                                            <textarea class="form-control" aria-label="With textarea" id="modal_description" name="description" required></textarea>
-                                        </div>
-                                    </div>
-                                    <div class="mb-3">
-                                        <label for="basic-url" class="form-label">Start Date:</label>
-                                        <div class="input-group date">
-                                            <input size="16" type="date" class="form-control" id="datetime"/>
-                                            <i class="fa fa-calendar"></i>
-                                            <script type="text/javascript">
-                                                $(document).ready(function () {
-                                                $("#datetime").datetimepicker({
-                                                format: 'yyyy-mm-dd hh:ii',
-                                                        autoclose: true
-                                                });
-                                                });
-                                            </script>
-                                        </div>
-                                    </div>
-                                </div>
-                                <!-- Modal footer -->
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-dark" data-bs-dismiss="modal">Close</button>
-                                    <input type="hidden" name="selection" value="create"/>
-                                    <button class="btn btn-dark" id="addTaskBtn" type="submit" data-bs-toggle="modal" data-bs-target="#addTaskModal">
-                                        Add Task
-                                    </button>
-                                </div>
-                            </form>
+                            </div>
+                            <!-- Modal footer -->
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-dark" data-bs-dismiss="modal">Close</button>
+                                <input type="hidden" name="selection" value="create"/>
+                                <button class="btn btn-dark" id="addTaskBtn" type="submit" data-bs-toggle="modal" data-bs-target="#addTaskModal">
+                                    Add Task
+                                </button>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -265,28 +294,20 @@
                             </div>
                             <!-- Modal body -->
                             <div class="modal-body">
-                                <form>
-                                    <div class="mb-3">
-                                        <label for="basic-url" class="form-label">Task Name:</label>
-                                        <span>Name of task</span>
+                                <div class="mb-3">
+                                    <label for="basic-url" class="form-label fw-bold">Project Name:</label>
+                                    <span id="modal_info_name">nameProject</span>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="basic-url" class="form-label fw-bold">Priority:</label>
+                                    <span id="modal_info_priority"></span>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="basic-url" class="form-label fw-bold">Description:</label>
+                                    <div class="input-group">
+                                        <span id="modal_info_description">description</span>
                                     </div>
-                                    <div class="mb-3">
-                                        <label for="basic-url" class="form-label">Collaborators:</label>
-                                        <div class="input-group">
-                                            <span>colaborator 1, etc</span>
-                                        </div>
-                                    </div>
-                                    <div class="mb-3">
-                                        <label for="basic-url" class="form-label">Description:</label>
-                                        <div class="input-group">
-                                            <span class="form-control" aria-label="With textarea"></span>
-                                        </div>
-                                    </div>
-                                    <div class="mb-3">
-                                        <label for="basic-url" class="form-label">Start Date:</label>
-                                        <span>fecha</span>
-                                    </div>
-                                </form>
+                                </div>
                             </div>
                             <!-- Modal footer -->
                             <div class="modal-footer">
@@ -308,38 +329,19 @@
                                 <div class="mb-3">
                                     <label for="basic-url" class="form-label">Task Name:</label>
                                     <div class="input-group">
-                                        <input type="text" class="form-control" id="modal_body" aria-describedby="basic-addon3 basic-addon4">
-                                    </div>
-                                </div>
-                                <div class="mb-3">
-                                    <label for="basic-url" class="form-label">Collaborators:</label>
-                                    <div class="input-group">
-                                        <button class="btn btn-dark bg-gradient dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                            Collaborators
-                                        </button>
-                                        <ul class="dropdown-menu text-bg-dark">
-                                            <li><button class="dropdown-item btn btn-dark text-light custom-btn" data-bs-toggle="button" aria-pressed="true" href="#">Proyecto 1</button></li>
-                                            <li><button class="dropdown-item btn btn-dark text-light custom-btn" data-bs-toggle="button" aria-pressed="true" href="#">Proyecto 1</button></li>
-                                            <li><button class="dropdown-item btn btn-dark text-light custom-btn" data-bs-toggle="button" aria-pressed="true" href="#">Proyecto 1</button></li>
-                                        </ul>
+                                        <input type="text" class="form-control" id="modal_modify_name" aria-describedby="basic-addon3 basic-addon4">
                                     </div>
                                 </div>
                                 <div class="mb-3">
                                     <label for="basic-url" class="form-label">Priority (0-10):</label>
                                     <div class="input-group">
-                                        <input type="number" class="form-control" id="modal_priority" name="priority" min="1" max="10">
+                                        <input type="number" class="form-control" id="modal_modify_priority" name="priority" min="1" max="10">
                                     </div>
                                 </div>
                                 <div class="mb-3">
                                     <label for="basic-url" class="form-label">Description:</label>
                                     <div class="input-group">
-                                        <textarea class="form-control" aria-label="With textarea" id="modal_description"></textarea>
-                                    </div>
-                                </div>
-                                <div class="mb-3">
-                                    <label for="basic-url" class="form-label">Start Date:</label>
-                                    <div class="input-group">
-                                        <input type="text" class="form-control" id="basic-url" aria-describedby="basic-addon3 basic-addon4">
+                                        <textarea class="form-control" aria-label="With textarea" id="modal_modify_description"></textarea>
                                     </div>
                                 </div>
                             </div>
@@ -370,10 +372,7 @@
                             <!-- Modal footer -->
                             <div class="modal-footer d-grid gap-2 d-md-flex justify-content-center">
                                 <button type="button" class="btn btn-light" data-bs-dismiss="modal">Cancel</button>
-                                <form action="./UserStories" method="post">
-                                    <input type="hidden" name="selection" value="delete"/>
-                                    <button type="submit" class="btn btn-danger" data-bs-dismiss="modal">Delete</button>
-                                </form>
+                                <button id="deleteTaskBtn" type="button" class="btn btn-danger" data-bs-dismiss="modal">Delete</button>
                             </div>
                         </div>
                     </div>
