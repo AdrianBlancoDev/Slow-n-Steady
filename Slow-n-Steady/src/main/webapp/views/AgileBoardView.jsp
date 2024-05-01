@@ -35,7 +35,7 @@
                     <div class="projectSelect">
                         <label for="project-select">Projects:</label>
                         <select  class="form-select" aria-label="Default Select Example">
-                            <option value=""></option>
+                            <option disabled selected value="">Select a project</option>
                             <c:forEach items="${userProjects}" var="userProject">
                                 <option value="${userProject.getId()}">${userProject.getName()}</option>
                             </c:forEach>
@@ -62,7 +62,7 @@
                                     dataType: "json",
                                     success: function (data) {
                                         //Now we list the existing sprints for the selected project
-                                        $sprintSelect.append('<option value=""></option>');
+                                        $sprintSelect.append('<option selected disabled value="">Select a sprint</option>');
                                         $.each(data, function (index, sprint) {
                                             $sprintSelect.append('<option value="' + sprint.id + '">' + sprint.name + '</option>');
                                         });
