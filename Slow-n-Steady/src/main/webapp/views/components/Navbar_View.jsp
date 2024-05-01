@@ -51,6 +51,11 @@
                                             <a class="btn btn-dark bg-gradient" aria-current="page" href="./Projects">Home</a>
                                         </li>
                                         <li class="nav-item p-2">
+                                            <form>
+                                                <button class="btn btn-dark bg-gradient"  type="submit" formaction="./logout" formmethod="POST">Logout</button>
+                                            </form>
+                                        </li> 
+                                        <li class="nav-item p-2">
                                             <button class="btn btn-dark bg-gradient" href="#">Profile</button>
                                         </li>
                                         <li class="nav-item p-2 d-md-none">
