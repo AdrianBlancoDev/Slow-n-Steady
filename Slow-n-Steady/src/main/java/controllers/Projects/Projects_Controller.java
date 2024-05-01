@@ -66,15 +66,15 @@ public class Projects_Controller extends HttpServlet {
     }
     
     public String getUserNamesAsString(List<String> userNames) {
-    StringBuilder result = new StringBuilder();
-    for (int i = 0; i < userNames.size(); i++) {
-        result.append(userNames.get(i));
-        if (i < userNames.size() - 1) {
-            result.append(", ");
+        StringBuilder result = new StringBuilder();
+        for (int i = 0; i < userNames.size(); i++) {
+            result.append(userNames.get(i));
+            if (i < userNames.size() - 1) {
+                result.append(", ");
+            }
         }
+        return result.toString();
     }
-    return result.toString();
-}
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**

@@ -53,7 +53,7 @@
                                         </div>
                                         <div class="col-md">
                                             <icon>
-                                                <i class="bi bi-info-circle info-btn" data-bs-toggle="modal" data-bs-target="#infoModal" data-project-collaborator="${usernameList}" data-project-name="${projectAdmin.getName()}" data-project-description="${projectAdmin.getDescription()}" data-project-startdate="${projectAdmin.getStartDate()}" ></i>
+                                                <i class="bi bi-info-circle info-btn" data-bs-toggle="modal" data-bs-target="#infoModal" data-project-id="${projectAdmin.getId()}" data-project-name="${projectAdmin.getName()}" data-project-description="${projectAdmin.getDescription()}" data-project-startdate="${projectAdmin.getStartDate()}" ></i>
                                             </icon>
                                         </div>
                                     </div>
@@ -73,7 +73,7 @@
                                         <div class="col-md"></div>
                                         <div class="col-md">
                                             <icon>
-                                                <i class="bi bi-info-circle info-btn" data-bs-toggle="modal" data-bs-target="#infoModal" data-project-collaborator="${usernameList}" data-project-name="${project.getName()}" data-project-description="${project.getDescription()}" data-project-startdate="${project.getStartDate()}" ></i>
+                                                <i class="bi bi-info-circle info-btn" data-bs-toggle="modal" data-bs-target="#infoModal" data-project-id="${projectAdmin.getId()}" data-project-name="${project.getName()}" data-project-description="${project.getDescription()}" data-project-startdate="${project.getStartDate()}" ></i>
                                             </icon>                                  
                                         </div>
                                     </div>
@@ -133,29 +133,17 @@
                                                 source: colaboradores.ttAdapter()
                                             }
                                         });
-$('#tags-input').on('itemAdded', function(event) {
-        console.log("Tag añadida: " + event.item);
-    });
+                                        $('#tags-input').on('itemAdded', function (event) {
+                                            console.log("Tag añadida: " + event.item);
+                                        });
 
-    // Manejar el evento al eliminar una etiqueta
-    $('#tags-input').on('itemRemoved', function(event) {
-        console.log("Tag eliminada: " + event.item);
-    });
+                                        // Manejar el evento al eliminar una etiqueta
+                                        $('#tags-input').on('itemRemoved', function (event) {
+                                            console.log("Tag eliminada: " + event.item);
+                                        });
                                     });
                                 </script>
 
-
-                                <style>
-                                    .etiqueta {
-                                        display: inline-block;
-                                        background-color: #007bff;
-                                        color: white;
-                                        padding: 4px 8px;
-                                        margin-right: 8px;
-                                        margin-bottom: 8px;
-                                        cursor: pointer;
-                                    }
-                                </style>
 
                                 <div class="mb-3">
                                     <label for="basic-url" class="form-label">Description:</label>
@@ -183,18 +171,14 @@ $('#tags-input').on('itemAdded', function(event) {
                                             var projectDescription = $("#modal_description_add").val();
                                             var projectStartDate = $("#modal_startDate_add").val();
                                             // Obtener los valores de las etiquetas directamente desde el input
-var tagsSeleccionados = $('#tags-input').val().split(',');
-
-// Verificar que se obtienen los valores correctamente
-console.log("Tags seleccionados:", tagsSeleccionados);
-
-
+                                            var tagsSeleccionados = $('#tags-input').val();
                                             var projectDao = "create";
                                             // Crear un objeto con los parámetros a enviar al servlet
                                             var requestData = {
                                                 projectName: projectName,
                                                 projectDescription: projectDescription,
                                                 projectStartDate: projectStartDate,
+                                                tagsSelect: tagsSeleccionados,
                                                 projectDAO: projectDao
                                             };
 
@@ -413,13 +397,24 @@ console.log("Tags seleccionados:", tagsSeleccionados);
     <script type="text/javascript">
         $(document).ready(function () {
             $(".info-btn").click(function () {
-                var projectCollaborator = $(this).data("project-collaborator");
+                var projectId = $(this).data("project-id");
                 var projectName = $(this).data("project-name");
                 var projectDescription = $(this).data("project-description");
                 var projectStartdate = $(this).data("project-startdate");
 
+                $.ajax({
+                    url: "ProjectsAPI", // URL del servlet o endpoint API
+                    type: "GET",
+                    data: {projectId: projectId},
+                    success: function (data) {
+                        $("#info-modal-colaborator").text(data);
+                    },
+                    error: function (xhr, status, error) {
+                        console.error("ERROR al eliminar el proyecto: " + error.toString() + " Status: " + status + " XMLHttpRequest: " + xhr);
+                    }
+                });
+
                 $("#info-modal-name").text(projectName);
-                $("#info-modal-colaborator").text(projectCollaborator);
                 $("#info-modal-description").text(projectDescription);
                 $("#info-modal-startdate").text(projectStartdate);
             });
