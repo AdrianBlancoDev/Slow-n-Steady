@@ -1,4 +1,5 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@page import="java.util.*" %>
 <!DOCTYPE html>
 <html>
     <head>
@@ -26,7 +27,7 @@
                                             <a class="btn btn-dark bg-gradient" aria-current="page" href="./Projects">Projects</a>
                                         </li>
                                         <li class="nav-item p-2">
-                                            <a class="btn btn-dark bg-gradient" aria-current="page" href="./UserStories">User Stories</a>
+                                            <a class="btn btn-dark bg-gradient" aria-current="page" href="./UserStories">Tasks</a>
                                         </li>        
                                         <li class="nav-item p-2">
                                             <a class="btn btn-dark bg-gradient" aria-current="page" href="./AgileBoard">Agile Board</a>
@@ -35,6 +36,7 @@
                                 </div>
                             </nav>
                         </div>
+                        <% String name = (String) session.getAttribute("name"); %>
                         <!-- Offcanvas -->
                         <div class="col col-md-1">
                             <button class="navbar-toggler dropdown-button border border-4 border-black" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasDarkNavbar" aria-controls="offcanvasDarkNavbar" aria-label="Toggle navigation">
@@ -42,44 +44,26 @@
                             </button>
                             <div class="bg-image offcanvas offcanvas-end text-bg-dark" tabindex="-1" id="offcanvasDarkNavbar" aria-labelledby="offcanvasDarkNavbarLabel">
                                 <div class="offcanvas-header">
-                                    <h5 class="offcanvas-title" id="offcanvasDarkNavbarLabel">Username</h5>
+                                    <h5 class="offcanvas-title text-dark" id="offcanvasDarkNavbarLabel"><%= name %></h5>
                                     <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas" aria-label="Close"></button>
                                 </div>
                                 <div class="offcanvas-body">
                                     <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
-                                        <li class="nav-item p-2">
-                                            <a class="btn btn-dark bg-gradient" aria-current="page" href="./Projects">Home</a>
-                                        </li>
-                                        <li class="nav-item p-2">
-                                            <form>
-                                                <button class="btn btn-dark bg-gradient"  type="submit" formaction="./logout" formmethod="POST">Logout</button>
-                                            </form>
-                                        </li> 
-                                        <li class="nav-item p-2">
-                                            <button class="btn btn-dark bg-gradient" href="#">Profile</button>
-                                        </li>
                                         <li class="nav-item p-2 d-md-none">
                                             <a class="btn btn-dark bg-gradient" aria-current="page" href="./Projects">Projects</a>
                                         </li>
                                         <li class="nav-item p-2 d-md-none">
-                                            <a class="btn btn-dark bg-gradient" aria-current="page" href="./UserStories">User Stories</a>
+                                            <a class="btn btn-dark bg-gradient" aria-current="page" href="./UserStories">Tasks</a>
                                         </li>        
                                         <li class="nav-item p-2 d-md-none">
                                             <a class="btn btn-dark bg-gradient" aria-current="page" href="./AgileBoard">Agile Board</a>
                                         </li>
-                                        <li class="nav-item dropdown p-2">
-                                            <button class="btn btn-dark bg-gradient dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                                Dropdown
-                                            </button>
-                                            <ul class="dropdown-menu text-bg-dark">
-                                                <li><button class="dropdown-item btn btn-dark text-light custom-btn" href="#">Action</button></li>
-                                                <li><button class="dropdown-item btn btn-dark text-light custom-btn" href="#">Another action</button></li>
-                                                <li>
-                                                    <hr class="dropdown-divider">
-                                                </li>
-                                                <li><button class="dropdown-item btn btn-dark text-light custom-btn" href="#">Something else here</button></li>
-                                            </ul>
-                                        </li>
+                                        
+                                        <li class="nav-item p-2">
+                                            <form>
+                                                <button class="btn btn-danger bg-gradient"  type="submit" formaction="./logout" formmethod="POST">Logout</button>
+                                            </form>
+                                        </li> 
                                         <li class="nav-item p-2 ">
                                             <a type="button" class="btn btn-outline-* p-0 fw-bold text-decoration-underline" data-bs-toggle="modal" data-bs-target="#presentacionModal">About Us</a>
                                         </li>
