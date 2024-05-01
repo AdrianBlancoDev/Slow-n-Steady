@@ -23,12 +23,12 @@
         <div id="includeHtml"></div>
         <div class="bg-image fullSizeView">
             <div class="container-sm p-5">
-                <div class="container-sm">
-                    <select class="form-select bg-dark text-light  projectSelect" required>
+                <div class="container-sm" id="coger-id">
+                    <select class="form-select bg-dark text-light projectSelect"  required>
                         <option value="0" disabled selected>Selecciona un proyecto</option>
                         <c:forEach items="${projects}" var="project">
-                            <option class="form-select bg-dark text-light custom-btn" value="${project.getId()}" data-bs-toggle="button" aria-pressed="true" type="submit">
-                                ${project.getName()}
+                            <option class="form-select bg-dark text-light custom-btn " value="${project.getId()}"  data-bs-toggle="button" aria-pressed="true" type="submit">
+                            <a data-project-id="project-id">${project.getName()}</a>
                             </option>
                         </c:forEach>
                     </select>
@@ -71,6 +71,104 @@
                                     </div>
                                 </div>                            
                             </div>
+                            <!-- Scripts Modify -->
+                            <script type="text/javascript">
+                                $(document).ready(function () {
+                                    $(".modify-btn").click(function () {
+                                        var taskId = $(this).data("task-id");
+                                        var taskName = $(this).data("task-name");
+                                        var taskDescription = $(this).data("task-description");
+                                        var taskPriority = $(this).data("task-priority");
+
+                                        $("#modal_modify_name").attr("value", taskName);
+                                        $("#modal_modify_description").val(taskDescription);
+                                        $("#modal_modify_priority").attr("value", taskPriority);
+                                        $("#modifyTaskBtn").data("task-id", taskId);
+                                    });
+                                });
+                            </script>
+                            <script>
+                                $("#modifyTaskBtn").click(function () {
+                                    // Obtener los valores del modal
+                                    var taskId = $("#modifyTaskBtn").data("task-id");
+                                    var taskName = $("#modal_modify_name").val();
+                                    var taskDescription = $("#modal_modify_description").val();
+                                    var taskPriority = $("#modal_modify_priority").val();
+                                    var taskDao = "modify"
+                                    // Crear un objeto con los parámetros a enviar al servlet
+                                    var requestData = {
+                                        taskId: taskId,
+                                        taskName: taskName,
+                                        taskPriority: taskPriority,
+                                        taskDescription: taskDescription,
+                                        taskDao: taskDao
+                                    };
+                                    $.ajax({
+                                        url: "TasksAPI",
+                                        type: "POST", // O cambia a "GET" si prefieres
+                                        data: requestData,
+                                        success: function () {
+                                            console.log("¡Datos enviados al servidor con éxito!");
+                                            location.reload();
+                                        },
+                                        error: function (xhr, status, error) {
+                                            console.error("ERROR al enviar datos al servidor: " + error);
+                                        }
+                                    });
+                                });
+                            </script>        
+                            <!-- Scripts Info -->
+                            <script type="text/javascript">
+                                $(document).ready(function () {
+                                    $(".info-btn").click(function () {
+                                        var taskId = $(this).data("task-id");
+                                        var taskName = $(this).data("task-name");
+                                        var taskDescription = $(this).data("task-description");
+                                        var taskPriority = $(this).data("task-priority");
+                                        console.log("informacion: " + taskName);
+                                        console.log("informacion: " + taskDescription);
+                                        console.log("informacion: " + taskPriority);
+                                        $("#modal_info_name").text(taskName);
+                                        $("#modal_info_description").text(taskDescription);
+                                        $("#modal_info_priority").text(taskPriority);
+                                    });
+                                });
+                            </script>
+                            <!-- Scripts Delete -->
+                            <script type="text/javascript">
+                                $(document).ready(function () {
+                                    $(".delete-btn").click(function () {
+                                        var taskId = $(this).data("task-id");
+                                        $("#deleteTaskBtn").data("task-id", taskId);
+                                    });
+                                });
+                            </script>
+                            <script>
+                                // Manejar clic en botón de eliminar proyecto
+                                $("#deleteTaskBtn").click(function () {
+                                    // Obtener el ID del proyecto a eliminar desde el atributo de datos
+                                    var taskId = $("#deleteTaskBtn").data("task-id");
+                                    var taskDao = "delete";
+                                    // Crear un objeto con los parámetros a enviar al servlet
+                                    var requestData = {
+                                        taskId: taskId,
+                                        taskDao: taskDao
+                                    };
+                                    $.ajax({
+                                        url: "TasksAPI", // URL del servlet o endpoint API
+                                        type: "POST",
+                                        data: requestData,
+                                        success: function () {
+                                            console.log("¡Proyecto eliminado con éxito!");
+                                            location.reload(); // Recargar la página para actualizar la tabla
+                                        },
+                                        error: function (xhr, status, error) {
+                                            console.error("ERROR al eliminar el proyecto: " + error.toString() + " Status: " + status + " XMLHttpRequest: " + xhr);
+                                        }
+                                    });
+
+                                });
+                            </script>       
                         </c:forEach>
                     </div>
                     <div class="container-sm d-grid gap-1 none-padding">
@@ -214,21 +312,31 @@
                     </div>
                 </div>
             </div>
-        </div>        
+        </div> 
     </body>
     <!-- Scripts Add -->
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("#coger-id").click(function () {
+                var projectId = $(this).data("project-id");
+                $("#projectIdBtn").data("project-id", projectId);
+            });
+        });
+    </script>
     <script>
         $("#addTaskBtn").click(function () {
             // Obtener los valores del modal
             var taskName = $("#modal_create_name").val();
             var taskDescription = $("#modal_create_description").val();
             var taskPriority = $("#modal_create_priority").val();
+            var projectId = $(".projectSelect").find("option:selected").val();
             var taskDao = "create"
             // Crear un objeto con los parámetros a enviar al servlet
             var requestData = {
                 taskName: taskName,
                 taskPriority: taskPriority,
                 taskDescription: taskDescription,
+                projectId: projectId,
                 taskDao: taskDao
             };
             $.ajax({
@@ -245,106 +353,6 @@
             });
         });
     </script>
-    <!-- Scripts Modify -->
-    <script type="text/javascript">
-        $(document).ready(function () {
-            $(".modify-btn").click(function () {
-                var taskId = $(this).data("task-id");
-                var taskName = $(this).data("task-name");
-                var taskDescription = $(this).data("task-description");
-                var taskPriority = $(this).data("task-priority");
-
-                $("#modal_modify_name").attr("value", taskName);
-                $("#modal_modify_description").val(taskDescription);
-                $("#modal_modify_priority").attr("value", taskPriority);
-                $("#modifyTaskBtn").data("task-id", taskId);
-            });
-        });
-    </script>
-    <script>
-        $("#modifyTaskBtn").click(function () {
-            // Obtener los valores del modal
-            var taskId = $("#modifyTaskBtn").data("task-id");
-            var taskName = $("#modal_modify_name").val();
-            var taskDescription = $("#modal_modify_description").val();
-            var taskPriority = $("#modal_modify_priority").val();
-            var taskDao = "modify"
-            // Crear un objeto con los parámetros a enviar al servlet
-            var requestData = {
-                taskId: taskId,
-                taskName: taskName,
-                taskPriority: taskPriority,
-                taskDescription: taskDescription,
-                taskDao: taskDao
-            };
-            $.ajax({
-                url: "TasksAPI",
-                type: "POST", // O cambia a "GET" si prefieres
-                data: requestData,
-                success: function () {
-                    console.log("¡Datos enviados al servidor con éxito!");
-                    location.reload();
-                },
-                error: function (xhr, status, error) {
-                    console.error("ERROR al enviar datos al servidor: " + error);
-                }
-            });
-        });
-    </script>        
-    <!-- Scripts Info -->
-    <script type="text/javascript">
-        $(document).ready(function () {
-            $(".info-btn").click(function () {
-                var taskId = $(this).data("task-id");
-                var taskName = $(this).data("task-name");
-                var taskDescription = $(this).data("task-description");
-                var taskPriority = $(this).data("task-priority");
-                console.log("informacion: " + taskName);
-                console.log("informacion: " + taskDescription);
-                console.log("informacion: " + taskPriority);
-                $("#modal_info_name").text(taskName);
-                $("#modal_info_description").text(taskDescription);
-                $("#modal_info_priority").text(taskPriority);
-            });
-        });
-    </script>
-    <!-- Scripts Delete -->
-    <script type="text/javascript">
-        $(document).ready(function () {
-            $(".delete-btn").click(function () {
-                var taskId = $(this).data("task-id");
-                console.log(taskId);
-                console.log("boton de eliminar fuera del modal");
-                $("#deleteTaskBtn").data("task-id", taskId);
-            });
-        });
-    </script>
-    <script>
-        // Manejar clic en botón de eliminar proyecto
-        $("#deleteTaskBtn").click(function () {
-            // Obtener el ID del proyecto a eliminar desde el atributo de datos
-            var taskId = $("#deleteTaskBtn").data("task-id");
-            var taskDao = "delete";
-            // Crear un objeto con los parámetros a enviar al servlet
-            var requestData = {
-                taskId: taskId,
-                taskDao: taskDao
-            };
-            $.ajax({
-                url: "TasksAPI", // URL del servlet o endpoint API
-                type: "POST",
-                data: requestData,
-                success: function () {
-                    console.log("¡Proyecto eliminado con éxito!");
-                    location.reload(); // Recargar la página para actualizar la tabla
-                },
-                error: function (xhr, status, error) {
-                    console.error("ERROR al eliminar el proyecto: " + error.toString() + " Status: " + status + " XMLHttpRequest: " + xhr);
-                }
-            });
-
-        });
-    </script>        
     <!-- Scripts Projects -->
     <script>
         $(".projectSelect").change(function () {
@@ -364,7 +372,7 @@
                     var contenido = $(data).find("#here").html();
                     $("#here").html(contenido);
                     // $("#here").html(data);// Recargar la página para actualizar la tabla
-                   
+
                 },
                 error: function (xhr, status, error) {
                     console.error("ERROR getting Project Sprints: " + error);

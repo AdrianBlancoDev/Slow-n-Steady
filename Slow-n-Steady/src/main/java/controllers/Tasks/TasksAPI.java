@@ -113,42 +113,16 @@ RequestDispatcher rd = request.getRequestDispatcher("/views/Tasks_View.jsp");
                     String taskNameC = request.getParameter("taskName");
                     String taskDescriptionC = request.getParameter("taskDescription");
                     int taskPriorityC = Integer.parseInt(request.getParameter("taskPriority"));
+                    long projectId = Long.parseLong(request.getParameter("projectId"));
                     
                     Task newTaskC = new Task();
                     newTaskC.setName(taskNameC);
                     newTaskC.setDescription(taskDescriptionC);
                     newTaskC.setPriority(taskPriorityC);
-                    newTaskC.setProjectId(1);
+                    newTaskC.setProjectId(projectId);
                     taskDao.createTask(newTaskC);
                     break;
             }
-
-            /*TaskDao taskDao = new TaskDao();
-            Task task = new Task();
-            String selection = request.getParameter("selection");
-            
-            if (selection.equals("delete")) {
-            long taskId = Long.parseLong(request.getParameter("taskId"));
-
-            try {
-            taskDao.deleteTask(taskId);
-            } catch (SQLException ex) {
-            Logger.getLogger(Tasks_Controller.class.getName()).log(Level.SEVERE, null, ex);
-            }
-            }else if(selection.equals("create")) {
-            
-            task.setProjectId(Long.parseLong(request.getParameter("projectId")));
-            
-            
-            task.setName(request.getParameter("name"));
-            task.setDescription(request.getParameter("description"));
-            task.setPriority(Integer.parseInt(request.getParameter("priority")));
-            try {
-            taskDao.createTask(task);
-            } catch (SQLException ex) {
-            Logger.getLogger(Tasks_Controller.class.getName()).log(Level.SEVERE, null, ex);
-            }
-            }*/
             RequestDispatcher rd = request.getRequestDispatcher("views/Tasks_View.jsp");
             rd.forward(request, response);
         } catch (SQLException ex) {
