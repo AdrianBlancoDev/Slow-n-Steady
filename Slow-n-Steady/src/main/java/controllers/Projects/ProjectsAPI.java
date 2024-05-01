@@ -89,7 +89,9 @@ public class ProjectsAPI extends HttpServlet {
                     UserDao userDaoC = new UserDao();
                     for (String userNameCollaborator : projectTagsC) {
                         User collaborator = userDaoC.searchUserByUsername(userNameCollaborator);
-                        userProjectDaoC.addProjectCollaborator(idProjectC, collaborator.getId());
+                        if (collaborator != null) {
+                            userProjectDaoC.addProjectCollaborator(idProjectC, collaborator.getId());
+                        }
                     }
 
                     break;

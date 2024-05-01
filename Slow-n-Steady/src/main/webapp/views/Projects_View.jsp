@@ -192,6 +192,7 @@
                                                 },
                                                 error: function (xhr, status, error) {
                                                     console.error("ERROR al enviar datos al servidor: " + error);
+                                                    location.reload();
                                                 }
                                             });
                                         });
