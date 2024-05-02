@@ -5,6 +5,7 @@
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
 <html>
     <head>
@@ -56,27 +57,27 @@
         </style>
         <script>
             /*$(document).ready(() => {
-                $("#loginBtn").click(() => {
-                    const user = $("#user").val();
-                    const password = $("#password").val();
-                    $.ajax({
-                        type: "POST",
-                        url: "userExists",
-                        dataType: "json",
-                        data: {
-                            user: user,
-                            password: password
-                        },
-                        success: function (response) {
-                            window.location = response.url;
-                            console.log("Success:", response); // Log the response to the console
-                        },
-                        error: function (xhr, status, error) {
-                            console.log("Error:", error); // Log the error to the console
-                        }
-                    });
-                });
-            });*/
+             $("#loginBtn").click(() => {
+             const user = $("#user").val();
+             const password = $("#password").val();
+             $.ajax({
+             type: "POST",
+             url: "userExists",
+             dataType: "json",
+             data: {
+             user: user,
+             password: password
+             },
+             success: function (response) {
+             window.location = response.url;
+             console.log("Success:", response); // Log the response to the console
+             },
+             error: function (xhr, status, error) {
+             console.log("Error:", error); // Log the error to the console
+             }
+             });
+             });
+             });*/
 
         </script>
     </head>
@@ -89,8 +90,8 @@
                             <div class="row g-0">
                                 <div class="col-lg-6 d-flex align-items-center purple-background">
                                     <div class="text-white px-3 py-4 p-md-5 mx-md-4">
-                                        <p class="small mb-0">An application to manage little teams with Scrum methodologies</p>
-                                        <h4 class="mb-4">Win the race. Together</h4>
+                                        <p class="small mb-0">An application to manage teams with Scrum methodologies</p>
+                                        <h4 class="mb-4">Win the race. Together.</h4>
                                     </div>
                                 </div>
                                 <div class="col-lg-6">
@@ -103,6 +104,11 @@
                                         </div>
 
                                         <form method="POST" action="./" class="needs-validation" novalidate>
+                                            <c:if test="${not empty errorMessage}">
+                                                <div class="alert alert-danger" role="alert">
+                                                    <p>${errorMessage}</p>
+                                                </div>
+                                            </c:if>
                                             <div class="form-outline mb-4">
                                                 <input id="user" class="form-control" name="user" required
                                                        placeholder="User name" />

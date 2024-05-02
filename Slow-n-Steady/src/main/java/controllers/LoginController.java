@@ -16,6 +16,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import model.User;
 import model.persist.UserDao;
+import utils.Encrypt;
 
 /**
  *
@@ -49,7 +50,6 @@ public class LoginController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        System.out.println("as");
         response.setContentType("text/html;charset=UTF-8");
         request.getRequestDispatcher("./views/LoginView.jsp").forward(request, response);
     }
@@ -74,16 +74,21 @@ public class LoginController extends HttpServlet {
         User oUser = null;
         try {
             oUser = userDao.searchUserByUsernameAndPassword(sUser, sPassword);
+            //oUser = userDao.searchUserByUsername(sUser);
+           // boolean sameUserPassword = Encrypt.checkPassword(sPassword, oUser.getPassword());
         } catch (SQLException ex) {
             Logger.getLogger(LoginController.class.getName()).log(Level.SEVERE, null, ex);
         }
-        if (oUser != null) {
+        if (oUser != null) {//if(sameUserPassword)
             session = request.getSession();
             String name = oUser.getUsername();
             session.setAttribute("userId", oUser.getId()); //send to project view
             session.setAttribute("name", name);
-            request.getRequestDispatcher("/Projects").forward(request, response);
-        }    
+            request.getRequestDispatcher("/views/Projects_View.jsp").forward(request, response);
+        } else {
+            request.setAttribute("errorMessage", "User or password incorrect");
+            request.getRequestDispatcher("/views/LoginView.jsp").forward(request, response);
+        }
     }
 
     /**

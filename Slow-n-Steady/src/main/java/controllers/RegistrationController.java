@@ -15,6 +15,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import model.User;
 import model.persist.UserDao;
+import utils.Encrypt;
 
 /**
  *
@@ -65,19 +66,24 @@ public class RegistrationController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
+            response.setContentType("text/html;charset=UTF-8");
         String sUser = request.getParameter("user");
         String sPassword = request.getParameter("password");
         String sEmail = request.getParameter("email");
         UserDao userDao = new UserDao();
+        request.setAttribute("errorMessage",null);
         int x = -1;
         try {
+            //x = userDao.registerUser(new User(sUser, Encrypt.hashPassword(sPassword), sEmail));
             x = userDao.registerUser(new User(sUser, sPassword, sEmail));
         } catch (SQLException ex) {
             Logger.getLogger(RegistrationController.class.getName()).log(Level.SEVERE, null, ex);
         }
         if (x == 1) {
             request.getRequestDispatcher("./views/LoginView.jsp").forward(request, response);
+        }else{
+            request.setAttribute("errorMessage","The user or email is currently registered");
+            request.getRequestDispatcher("/views/ResgistrationView.jsp").forward(request, response);
         }
     }
 

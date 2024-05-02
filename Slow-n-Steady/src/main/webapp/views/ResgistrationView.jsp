@@ -5,6 +5,7 @@
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
 <html>
     <head>
@@ -64,8 +65,8 @@
                             <div class="row g-0">
                                 <div class="col-lg-6 d-flex align-items-center purple-background">
                                     <div class="text-white px-3 py-4 p-md-5 mx-md-4">
-                                        <p class="small mb-0">An application to manage little teams with Scrum methodologies</p>
-                                        <h4 class="mb-4">Win the race. Together</h4>
+                                        <p class="small mb-0">An application to manage teams with Scrum methodologies</p>
+                                        <h4 class="mb-4">Win the race. Together.</h4>
                                     </div>
                                 </div>
                                 <div class="col-lg-6">
@@ -78,6 +79,11 @@
                                         </div>
 
                                         <form method="POST" action="./login" class="needs-validation" novalidate>
+                                            <c:if test="${not empty errorMessage}">
+                                                <div class="alert alert-danger" role="alert">
+                                                    <p>${errorMessage}</p>
+                                                </div>
+                                            </c:if>
                                             <div  class="form-outline mb-4">
                                                 <input id="user" class="form-control"
                                                        placeholder="User name" name="user" required/>
@@ -98,7 +104,7 @@
                                             <div class="form-outline mb-4">
                                                 <input type="password" id="password" class="form-control" name="password" placeholder="Password" required/>
                                                 <div class="invalid-feedback">
-                                                    Please enter password with at least 8 digits, 1 number and special character
+                                                    Please enter password
                                                 </div>
                                             </div>
 
